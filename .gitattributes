@@ -1,0 +1,4 @@
+﻿* text=auto eol=lf
+oz_installer_vi binary
+oz_installer_vi-arm64 binary
+*.sig binary
