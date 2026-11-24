@@ -1,4 +1,9 @@
-﻿* text=auto eol=lf
+* text=auto eol=lf
+*.sh text eol=lf
+*.sha256 text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
 oz_installer_vi binary
 oz_installer_vi-arm64 binary
 *.sig binary
