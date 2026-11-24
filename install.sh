@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# OZPanel 9.1.2 (OZV7-Fortress) — Signed Native Bootstrap & Atomic Updater
+# OZPanel 9.1.3 (OZV8-Fortress) — Signed Native Bootstrap & Atomic Updater
 # ==============================================================================
 # - Acquires /etc/ozon/native/release.lock BEFORE any state read or mutation.
 # - Preserves /etc/ozon/native/revoked.lock, /etc/ozon/native/runtime.lease, and
@@ -159,13 +159,17 @@ if [ -f "$NATIVE_DIR/release.pub.pem" ] && [ ! -L "$NATIVE_DIR/release.pub.pem" 
 fi
 
 # 3. Download manifest & signature into $STAGE and verify Ed25519 signature BEFORE reading fields
-curl -fsSL --proto '=https' --tlsv1.2 --connect-timeout 10 --max-time 60 \
-    "$BASE_URL/release.manifest.json" -o "$STAGE/release.manifest.json" || \
-    curl -fsSL --connect-timeout 10 --max-time 60 "$BASE_URL/release.manifest.json" -o "$STAGE/release.manifest.json"
+oz_secure_fetch() {
+    local url="$1" dst="$2" max_t="${3:-60}"
+    if [ "${OZ_ALLOW_LOCAL_TEST_URL:-0}" = "1" ]; then
+        curl -fsSL --connect-timeout 10 --max-time "$max_t" "$url" -o "$dst"
+    else
+        curl -fsSL --proto '=https' --tlsv1.2 --connect-timeout 10 --max-time "$max_t" "$url" -o "$dst"
+    fi
+}
 
-curl -fsSL --proto '=https' --tlsv1.2 --connect-timeout 10 --max-time 60 \
-    "$BASE_URL/release.manifest.sig" -o "$STAGE/release.manifest.sig.b64" || \
-    curl -fsSL --connect-timeout 10 --max-time 60 "$BASE_URL/release.manifest.sig" -o "$STAGE/release.manifest.sig.b64"
+oz_secure_fetch "$BASE_URL/release.manifest.json" "$STAGE/release.manifest.json" 60
+oz_secure_fetch "$BASE_URL/release.manifest.sig" "$STAGE/release.manifest.sig.b64" 60
 
 if [ "$(wc -c < "$STAGE/release.manifest.sig.b64" | tr -d '[:space:]')" = "64" ]; then
     cp -f "$STAGE/release.manifest.sig.b64" "$STAGE/release.manifest.sig"
@@ -235,9 +239,11 @@ PY_VERIFY_MANIFEST
 )
 
 # 5. Download binary artifact and verify byte size + SHA-256 + --native-check BEFORE any state change
-curl -fL --proto '=https' --tlsv1.2 --connect-timeout 15 --max-time 600 \
-    "$BASE_URL/$ASSET" -o "$STAGE/$ASSET" || \
+if [ "${OZ_ALLOW_LOCAL_TEST_URL:-0}" = "1" ]; then
     curl -fL --connect-timeout 15 --max-time 600 "$BASE_URL/$ASSET" -o "$STAGE/$ASSET"
+else
+    curl -fL --proto '=https' --tlsv1.2 --connect-timeout 15 --max-time 600 "$BASE_URL/$ASSET" -o "$STAGE/$ASSET"
+fi
 
 ACTUAL_SIZE="$(wc -c < "$STAGE/$ASSET" | tr -d '[:space:]')"
 if [ "$ACTUAL_SIZE" != "$EXPECTED_SIZE" ]; then

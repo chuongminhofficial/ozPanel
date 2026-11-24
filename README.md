@@ -1,10 +1,10 @@
 <div align="center">
 
-# ⚡ OZPanel Cloud & OzonFS — v9.1.2
+# ⚡ OZPanel Cloud & OzonFS — v9.1.3
 
 **Next-Generation Linux Control Panel · Standalone Web Admin GUI · Autonomous AI DevOps Engineer · 854 Enterprise REST API Endpoints**
 
-[![Version](https://img.shields.io/badge/version-v9.1.2-2563eb?style=for-the-badge)](https://github.com/chuongminhofficial/ozPanel)
+[![Version](https://img.shields.io/badge/version-v9.1.3-2563eb?style=for-the-badge)](https://github.com/chuongminhofficial/ozPanel)
 [![Platform](https://img.shields.io/badge/Linux-x86__64%20%7C%20ARM64-10b981?style=for-the-badge)](https://github.com/chuongminhofficial/ozPanel)
 [![Security](https://img.shields.io/badge/Security-OZV8--Fortress%20Ed25519-f59e0b?style=for-the-badge)](SECURITY.md)
 [![Modules](https://img.shields.io/badge/Modules-46%20Groups%20%C2%B7%20312%2B%20Actions-7c3aed?style=for-the-badge)](docs/FEATURES.md)
@@ -18,7 +18,7 @@
 
 ## Tổng quan (Overview)
 
-**OZPanel v9.1.2** là nền tảng quản trị máy chủ Linux tốc độ Native (Ubuntu / Debian / AlmaLinux / Rocky / CentOS / RHEL — hỗ trợ **x86_64 & ARM64**), kết hợp **46 nhóm chức năng cốt lõi**, giao diện **Web Admin GUI `[27]` hoạt động độc lập 100% không phụ thuộc CLI**, cổng **Enterprise API Gateway `[31]` chuẩn OpenAPI 3.1 (854 endpoints / 119 resources)**, trình quản lý tệp & IDE **OzonFS `[5]`**, và **Kỹ sư Trưởng AI DevOps tự hành `[32]`** tích hợp **7-Tool MCP Server** cho Claude Code CLI, OpenAI Codex CLI, Gemini CLI & Ollama.
+**OZPanel v9.1.3** là nền tảng quản trị máy chủ Linux tốc độ Native (Ubuntu / Debian / AlmaLinux / Rocky / CentOS / RHEL — hỗ trợ **x86_64 & ARM64**), kết hợp **46 nhóm chức năng cốt lõi**, giao diện **Web Admin GUI `[27]` hoạt động độc lập 100% không phụ thuộc CLI**, cổng **Enterprise API Gateway `[31]` chuẩn OpenAPI 3.1 (854 endpoints / 119 resources)**, trình quản lý tệp & IDE **OzonFS `[5]`**, và **Kỹ sư Trưởng AI DevOps tự hành `[32]`** tích hợp **7-Tool MCP Server** cho Claude Code CLI, OpenAI Codex CLI, Gemini CLI & Ollama.
 
 ---
 
@@ -58,11 +58,11 @@ Toàn bộ gói cài đặt nhị phân đã biên dịch và chữ ký số n�
 | `release.manifest.sig` | Chữ ký số **Ed25519 (64-byte)** của Publisher | `https://raw.githubusercontent.com/chuongminhofficial/ozPanel/main/release.manifest.sig` |
 | `oz_installer_vi.sha256` | Checksum SHA-256 cho bản `x86_64` | `https://raw.githubusercontent.com/chuongminhofficial/ozPanel/main/oz_installer_vi.sha256` |
 | `oz_installer_vi-arm64.sha256` | Checksum SHA-256 cho bản `ARM64` | `https://raw.githubusercontent.com/chuongminhofficial/ozPanel/main/oz_installer_vi-arm64.sha256` |
-| `version.txt` | Phiên bản phát hành hiện hành (`9.1.2`) | `https://raw.githubusercontent.com/chuongminhofficial/ozPanel/main/version.txt` |
+| `version.txt` | Phiên bản phát hành hiện hành (`9.1.3`) | `https://raw.githubusercontent.com/chuongminhofficial/ozPanel/main/version.txt` |
 
 ---
 
-## Điểm nổi bật phiên bản v9.1.2
+## Điểm nổi bật phiên bản v9.1.3
 
 | Trụ cột | Tính năng nổi bật |
 | :--- | :--- |

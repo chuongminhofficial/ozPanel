@@ -2,7 +2,7 @@
 
 All notable releases of **OZPanel Cloud & OzonFS** are documented in this file.
 
-## [9.1.2] — Enterprise Standalone GUI, 854-Endpoint API, Multi-Task AI DevOps & OZV8-Fortress
+## [9.1.3] — Enterprise Standalone GUI, 854-Endpoint API, Multi-Task AI DevOps & OZV8-Fortress
 - **Standalone Web Admin GUI `[27]`**: 100% standalone execution without CLI dependency (0 `/usr/bin/oz` calls in backend), OZM Studio executive layout (preserving original Login UI), `Ctrl+K` global command palette, live `services_matrix` & `1m/5m/15m` load telemetry, `Quick Exec` vs `Live PTY` terminal switcher, integrated API Live Tester `[31]`, and AI DevOps Studio `[32]`.
 - **Enterprise API Gateway `[31]` (854 Endpoints / 119 Resources)**: Full headless server administration without SSH or GUI — added `panel:batch`, `panel:dag`, `cloudflare:*` full zone/record/SSL/cache CRUD, `domains:alias_*` & `docroot_set`, `ssl:inspect_cert` & `generate_csr`, `database:tables_list` & `query_readonly`, `fileops:trash_list` & `trash_restore`, `monitor:service_*`, real IAM RBAC `effective_permissions`, `DELETE` query parameter + confirmation support, and automatic Nginx `/api/v1/` reverse proxy sync.
 - **Autonomous AI DevOps Engineer `[32]` & 7-Tool MCP Server**: Compound 1-prompt multi-task DevOps orchestration (Domain + Cloudflare Grey-to-Orange staging + SSL + Force HTTPS; 5-tier deleted file recovery + syntax-verified new file synthesis; deep Domain DNS/HTTP/SSL inspection + live API Gateway & AI Provider discovery), unified 7-tool MCP server (`panel_api_discover` added) with `Content-Length` + JSONL framing, and Gemini/Ollama/OpenCode CLI adapters.
