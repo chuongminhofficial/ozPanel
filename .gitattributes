@@ -4,6 +4,10 @@
 *.json text eol=lf
 *.txt text eol=lf
 *.md text eol=lf
+*.html text eol=lf
+*.py text eol=lf
 oz_installer_vi binary
 oz_installer_vi-arm64 binary
+*.ozaddon binary
 *.sig binary
+*.pem binary

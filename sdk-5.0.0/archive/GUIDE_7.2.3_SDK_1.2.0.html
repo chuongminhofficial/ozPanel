@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ozon Panel Cloud v7.2.3 · Addon Developer SDK v1.2.0 — Tài Liệu Nhà Phát Triển | Chương Minh® Studio</title>
+<meta name="description" content="Tài liệu chính thức bộ công cụ phát triển Addon (SDK v1.2.0) cho Ozon Panel Cloud v7.2.3: Manifest Schema v1, chữ ký số Ed25519, Hook Lifecycle, GUI [27] Workbench, OzonFS [5], Mail Anti-Spam [9] và 90+ REST API Endpoints [31].">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   OZON DEVELOPER PORTAL — DESIGN SYSTEM · SQUARE MONO (ĐỒNG BỘ OZPANEL.PHP)
+   Không bo góc · viền đậm 2px · bóng cứng (hard shadow) · xen kẽ khối tối/sáng
+   ═══════════════════════════════════════════════════════════════════════════ */
+.dk{--bg:#0a0a0a;--bg2:#111;--card:#151515;--card2:#1c1c1c;--line:#2e2e2e;--line2:#4d4d4d;--text:#f4f4f4;--sub:#a6a6a6;--mute:#6e6e6e;--inv:#fff;--invtext:#0a0a0a;--sh:#3a3a3a;--invsub:#444;--invsh:#9a9a9a;--invcode:#e6e6e6;--invcodeline:#bbb;color-scheme:dark;background:var(--bg);color:var(--text)}
+.lt{--bg:#f1f1f1;--bg2:#e6e6e6;--card:#fff;--card2:#f8f8f8;--line:#cdcdcd;--line2:#9a9a9a;--text:#0a0a0a;--sub:#555;--mute:#8a8a8a;--inv:#0a0a0a;--invtext:#fff;--sh:#0a0a0a;--invsub:#b5b5b5;--invsh:#555;--invcode:#1c1c1c;--invcodeline:#444;color-scheme:light;background:var(--bg);color:var(--text)}
+*{box-sizing:border-box;border-radius:0!important}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.65;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+h1,h2,h3,h4,h5,h6{color:inherit;margin:0}
+code{font:600 .82em 'Fira Code',ui-monospace,monospace;color:var(--text);background:var(--bg2);border:1px solid var(--line);padding:1px 6px;word-break:break-word}
+.oz-wrap{width:min(100% - 32px,1380px);margin-inline:auto}
+
+/* ── TOP STICKY COMMAND BAR ── */
+.oz-topbar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:2px solid var(--text)}
+.oz-topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:68px;padding:10px 0;flex-wrap:wrap}
+.oz-brand{display:flex;align-items:center;gap:12px}
+.oz-brand-box{width:42px;height:42px;display:grid;place-items:center;background:var(--inv);color:var(--invtext);font:900 1rem 'Fira Code',monospace;border:2px solid var(--text);box-shadow:3px 3px 0 var(--line2)}
+.oz-brand-copy strong{display:block;font:900 .95rem 'Inter',sans-serif;text-transform:uppercase;letter-spacing:-.02em}
+.oz-brand-copy small{display:block;font:700 .64rem 'Fira Code',monospace;color:var(--sub);text-transform:uppercase;letter-spacing:.08em}
+.oz-top-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto}
+.oz-search-box{display:flex;align-items:center;gap:8px;border:2px solid var(--text);background:var(--card);padding:0 12px;min-height:40px;width:min(320px,65vw)}
+.oz-search-box input{border:0;outline:0;background:transparent;color:var(--text);font:600 .8rem 'Inter',sans-serif;width:100%}
+.oz-search-box kbd{font:700 .62rem 'Fira Code',monospace;padding:2px 6px;border:1px solid var(--line2);color:var(--sub)}
+
+/* ── BUTTONS & PILLS ── */
+.oz-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;font:800 .74rem 'Fira Code',monospace;letter-spacing:.05em;text-transform:uppercase;border:2px solid var(--text);background:var(--card);color:var(--text);cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s,color .15s}
+.oz-btn:hover{background:var(--text);color:var(--bg)}
+.oz-btn-solid{background:var(--inv);color:var(--invtext)!important;border-color:var(--inv);box-shadow:4px 4px 0 var(--line2)}
+.oz-btn-solid:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line2);background:var(--inv);color:var(--invtext)!important}
+.oz-pill{display:inline-flex;align-items:stretch;border:2px solid var(--text);font:700 .7rem 'Fira Code',monospace;text-transform:uppercase;letter-spacing:.08em}
+.oz-pill span{padding:5px 12px}
+.oz-pill b{background:var(--inv);color:var(--invtext);padding:5px 12px}
+
+/* ── HERO & TERMINAL CONSOLE ── */
+.oz-hero{position:relative;padding:clamp(3rem,6vw,5rem) 0 clamp(2.5rem,5vw,4rem);text-align:center;border-bottom:2px solid var(--text);overflow:hidden}
+.oz-hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;opacity:.5;-webkit-mask-image:linear-gradient(#000 45%,transparent);mask-image:linear-gradient(#000 45%,transparent)}
+.oz-hero .oz-wrap{position:relative;z-index:1}
+.oz-title{margin:20px auto 14px;max-width:980px;font-size:clamp(2rem,4.8vw,4rem);line-height:1.18;letter-spacing:-.03em;font-weight:900;text-transform:uppercase}
+.oz-mark{background:var(--text);color:var(--bg);padding:0 .18em}
+.oz-lead{color:var(--sub);font-size:clamp(.92rem,1.1vw,1.04rem);max-width:820px;margin:0 auto 14px}
+.oz-os-line{margin:0 auto 24px;max-width:820px;color:var(--mute);font:600 .74rem/1.7 'Fira Code',monospace}
+
+.oz-install{position:relative;max-width:1040px;margin:32px auto 0;text-align:left;border:2px solid var(--text);background:#050505;box-shadow:10px 10px 0 var(--line2)}
+.oz-install-bar{display:flex;align-items:stretch;justify-content:space-between;background:#fff;color:#0a0a0a;border-bottom:2px solid var(--text);flex-wrap:wrap}
+.oz-install-meta{display:flex;align-items:center;gap:12px;padding:0 0 0 12px;flex-wrap:wrap}
+.oz-dots{display:flex;gap:6px}.oz-dots i{width:10px;height:10px;display:block;background:#0a0a0a}
+.oz-dots i:nth-child(2){background:#777}.oz-dots i:nth-child(3){background:#bbb;border:1px solid #0a0a0a}
+.oz-install-title{font:700 .68rem 'Fira Code',monospace;text-transform:uppercase;padding:10px 0}
+.oz-distro{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border:2px solid #0a0a0a;font:800 .62rem 'Fira Code',monospace;text-transform:uppercase}
+.oz-tabs{display:flex;align-self:stretch;overflow-x:auto}
+.oz-tab{display:inline-flex;align-items:center;gap:6px;border:0;border-left:1px solid #0a0a0a;background:transparent;color:#0a0a0a;font:800 .68rem 'Fira Code',monospace;text-transform:uppercase;padding:12px 15px;cursor:pointer;white-space:nowrap}
+.oz-tab:hover{background:#e6e6e6}
+.oz-tab[aria-selected="true"]{background:#0a0a0a;color:#fff}
+.oz-install-body{display:flex;align-items:stretch}
+.oz-cmd-wrap{flex:1;min-width:0;padding:16px 18px;overflow-x:auto;background:#000}
+.oz-cmd{margin:0;font:600 .8rem/1.55 'Fira Code',ui-monospace,monospace;color:#f4f4f4;white-space:pre;background:transparent;border:0}
+.oz-cmd[hidden]{display:none}
+.oz-copybtn{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:165px;padding:0 18px;border:0;border-left:2px solid var(--text);background:#fff;color:#0a0a0a;font:800 .72rem 'Fira Code',monospace;text-transform:uppercase;cursor:pointer}
+.oz-copybtn:hover{background:#d8d8d8}
+.oz-copybtn.is-done{background:#0a0a0a;color:#fff}
+.oz-install-foot{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;padding:10px 14px;border-top:2px solid var(--text);background:#0f0f0f;color:#a6a6a6;font:600 .7rem 'Fira Code',monospace}
+.oz-install-foot code{background:#1c1c1c;color:#fff;border-color:#333}
+
+/* ── STATS BAR & MARQUEE ── */
+.oz-stats{display:grid;grid-template-columns:repeat(6,1fr);margin-top:42px;border:2px solid var(--line);background:var(--card)}
+.oz-stat{padding:16px;border-right:1px solid var(--line);text-align:left}
+.oz-stat:last-child{border-right:0}
+.oz-stat b{display:block;font-size:clamp(1.15rem,1.8vw,1.6rem);font-weight:900;letter-spacing:-.03em}
+.oz-stat span{display:block;margin-top:3px;color:var(--sub);font:700 .62rem 'Fira Code',monospace;text-transform:uppercase}
+.oz-stat em{font-style:normal;float:right;font:800 .55rem 'Fira Code',monospace;background:var(--inv);color:var(--invtext);padding:1px 6px;text-transform:uppercase}
+.oz-marq{overflow:hidden;border-bottom:2px solid var(--text);background:var(--inv);color:var(--invtext)}
+.oz-marq-t{display:flex;width:max-content;animation:ozm 45s linear infinite}
+@keyframes ozm{to{transform:translateX(-50%)}}
+.oz-chip{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-right:1px solid #0a0a0a;font:800 .72rem 'Fira Code',monospace;text-transform:uppercase;white-space:nowrap}
+.oz-chip small{padding:2px 6px;border:1px solid currentColor;font:700 .56rem 'Fira Code',monospace}
+
+/* ── 2-COLUMN DOCS SHELL ── */
+.oz-doc-shell{display:grid;grid-template-columns:290px minmax(0,1fr);align-items:start}
+.oz-sidebar{position:sticky;top:70px;height:calc(100dvh - 70px);overflow-y:auto;border-right:2px solid var(--text);background:var(--card);padding:18px 14px 36px}
+.oz-nav-title{font:800 .66rem 'Fira Code',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--sub);padding:8px 10px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.oz-nav-link{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:2px 0;font:700 .73rem 'Fira Code',monospace;color:var(--sub);border:1px solid transparent;transition:background .12s,color .12s,border-color .12s}
+.oz-nav-link:hover{background:var(--bg2);color:var(--text);border-color:var(--line2)}
+.oz-nav-link.active{background:var(--inv);color:var(--invtext);border-color:var(--inv)}
+.oz-nav-num{font-weight:900;opacity:.8}
+
+.oz-doc-main{min-width:0}
+.oz-sec{padding:clamp(2.4rem,4.5vw,3.8rem) clamp(1.5rem,4vw,3.4rem);border-bottom:2px solid var(--text)}
+.oz-kicker{display:inline-flex;align-items:center;gap:10px;font:700 .7rem 'Fira Code',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--sub)}
+.oz-kicker::before{content:"";width:12px;height:12px;background:var(--text);flex:none}
+.oz-h2{margin:10px 0 12px;font-size:clamp(1.4rem,2.6vw,2.15rem);line-height:1.25;letter-spacing:-.025em;font-weight:900;text-transform:uppercase}
+.oz-h3{margin:24px 0 10px;font-size:1.02rem;font-weight:850;text-transform:uppercase;letter-spacing:-.01em}
+.oz-sec p{margin:0 0 14px;color:var(--sub);font-size:.92rem}
+.oz-sec ul,.oz-sec ol{margin:0 0 16px;padding-left:20px;color:var(--sub);font-size:.9rem}
+.oz-sec li{margin-bottom:7px}
+.oz-sec li strong{color:var(--text)}
+
+/* ── CARDS, NOTES & BADGES ── */
+.oz-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:20px 0}
+.oz-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
+.oz-card{background:var(--card);border:2px solid var(--line);padding:20px;transition:transform .16s,box-shadow .16s,border-color .16s}
+.oz-card:hover{transform:translate(-3px,-3px);border-color:var(--text);box-shadow:6px 6px 0 var(--sh)}
+.oz-card.inv{background:var(--inv);color:var(--invtext);border-color:var(--inv)}
+.oz-card.inv p{color:var(--invsub)}
+.oz-card h4{font:850 .92rem 'Inter',sans-serif;text-transform:uppercase;margin:0 0 8px}
+.oz-card p{margin:0;font-size:.84rem}
+.oz-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border:1px solid var(--text);font:800 .6rem 'Fira Code',monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--text);background:var(--card2)}
+.oz-badge.inv{background:var(--inv);color:var(--invtext);border-color:var(--inv)}
+.oz-note{margin:18px 0;padding:15px 18px;border:2px solid var(--text);border-left-width:6px;background:var(--card2);font-size:.88rem;color:var(--text);box-shadow:5px 5px 0 var(--sh)}
+.oz-note strong{text-transform:uppercase;font-family:'Fira Code',monospace;font-size:.78rem;letter-spacing:.04em}
+
+/* ── CODE BLOCKS ── */
+.oz-code{margin:18px 0;border:2px solid var(--text);background:#050505;color:#f4f4f4;box-shadow:6px 6px 0 var(--sh)}
+.oz-code-head{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#fff;color:#0a0a0a;border-bottom:2px solid var(--text);font:800 .68rem 'Fira Code',monospace;text-transform:uppercase}
+.oz-code-head button{border:1px solid #0a0a0a;background:#0a0a0a;color:#fff;font:800 .64rem 'Fira Code',monospace;text-transform:uppercase;padding:4px 10px;cursor:pointer}
+.oz-code-head button:hover{background:#333}
+.oz-code pre{margin:0;padding:16px 18px;overflow-x:auto;font:500 .8rem/1.6 'Fira Code',ui-monospace,monospace;color:#f4f4f4;white-space:pre}
+.oz-code pre code{background:transparent;border:0;padding:0;color:inherit;font-size:inherit}
+
+/* ── TABLES & MATRIX ── */
+.oz-table-wrap{overflow-x:auto;margin:18px 0;border:2px solid var(--text);background:var(--card);box-shadow:6px 6px 0 var(--sh)}
+.oz-table{width:100%;border-collapse:separate;border-spacing:0;font-size:.83rem}
+.oz-table th{background:var(--inv);color:var(--invtext);padding:12px 14px;text-align:left;font:800 .68rem 'Fira Code',monospace;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--text)}
+.oz-table td{padding:12px 14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;color:var(--sub)}
+.oz-table td:last-child{border-right:0}
+.oz-table tr:last-child td{border-bottom:0}
+.oz-table tbody tr:hover td{background:var(--bg2);color:var(--text)}
+
+/* ── FILTER BAR FOR API MATRIX ── */
+.oz-filter-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0;flex-wrap:wrap}
+.oz-filters{display:flex;flex-wrap:wrap;border:2px solid var(--text)}
+.oz-filters button{border:0;border-right:1px solid var(--text);background:transparent;color:var(--text);font:700 .68rem 'Fira Code',monospace;text-transform:uppercase;padding:9px 13px;cursor:pointer}
+.oz-filters button:last-child{border-right:0}
+.oz-filters button.active{background:var(--inv);color:var(--invtext)}
+
+/* ── RELEASE EXPLORER ── */
+.oz-release-grid{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;margin-top:18px}
+.oz-release-list{border:2px solid var(--text);background:var(--card)}
+.oz-release-btn{display:block;width:100%;text-align:left;padding:12px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;font-family:inherit}
+.oz-release-btn:last-child{border-bottom:0}
+.oz-release-btn.active{background:var(--inv);color:var(--invtext)}
+.oz-release-btn b{display:block;font:800 .8rem 'Fira Code',monospace}
+.oz-release-btn small{display:block;font-size:.72rem;opacity:.8;margin-top:2px}
+.oz-release-detail{border:2px solid var(--text);background:var(--card);padding:20px;box-shadow:6px 6px 0 var(--sh)}
+
+@media (max-width:1024px){
+  .oz-doc-shell{grid-template-columns:1fr}
+  .oz-sidebar{position:static;height:auto;max-height:240px;border-right:0;border-bottom:2px solid var(--text);display:grid;grid-template-columns:repeat(2,1fr);gap:4px}
+  .oz-nav-title{grid-column:1/-1}
+  .oz-stats{grid-template-columns:repeat(3,1fr)}
+  .oz-grid-3,.oz-release-grid{grid-template-columns:1fr}
+}
+@media (max-width:680px){
+  .oz-grid-2,.oz-stats{grid-template-columns:1fr}
+  .oz-sidebar{grid-template-columns:1fr}
+  .oz-install-body{flex-direction:column}
+  .oz-copybtn{width:100%;min-height:44px;border-left:0;border-top:2px solid var(--text)}
+}
+@media print{
+  .oz-topbar,.oz-sidebar,.oz-marq,.oz-copybtn{display:none!important}
+  .oz-doc-shell{display:block}
+  .oz-sec{page-break-inside:avoid}
+}
+</style>
+</head>
+<body class="dk" id="ozDocBody">
+
+<!-- ════════════════════ STICKY COMMAND BAR ════════════════════ -->
+<header class="oz-topbar">
+  <div class="oz-wrap oz-topbar-inner">
+    <div class="oz-brand">
+      <div class="oz-brand-box">OZ</div>
+      <div class="oz-brand-copy">
+        <strong>OZPanel Addon Developer SDK</strong>
+        <small>CORE v7.2.3 · SDK v1.2.0 · SQUARE MONO EDITION</small>
+      </div>
+    </div>
+    <div class="oz-top-controls">
+      <label class="oz-search-box" aria-label="Tìm kiếm tài liệu">
+        <i class="ph-bold ph-magnifying-glass"></i>
+        <input type="search" id="ozDocSearch" placeholder="Tìm lệnh SDK, API /api/v1, Mail, OzonFS…" autocomplete="off">
+        <kbd>Ctrl+K</kbd>
+      </label>
+      <button type="button" class="oz-btn" id="ozThemeBtn"><i class="ph-bold ph-sun-dim"></i><span>Sáng / Tối</span></button>
+      <button type="button" class="oz-btn" onclick="window.print()"><i class="ph-bold ph-printer"></i><span>In / PDF</span></button>
+      <a class="oz-btn" href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_demo_9001.sh" target="_blank" rel="noopener" id="ozDownloadSampleBtn"><i class="ph-bold ph-file-code"></i><span>Tải Addon Mẫu (.sh)</span></a>
+      <a class="oz-btn oz-btn-solid" href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip" target="_blank" rel="noopener" id="ozDownloadSdkZipBtn"><i class="ph-bold ph-download-simple"></i><span>Tải Bộ SDK (.zip)</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════ HERO & 4-TAB SDK CONSOLE ════════════════════ -->
+<section class="oz-hero">
+  <div class="oz-wrap">
+    <div class="oz-pill"><span>Ozon Panel Cloud v7.2.3</span><b>SDK v1.2.0</b></div>
+    <h1 class="oz-title">Kiến trúc Phát triển Addon<br><span class="oz-mark">Chuẩn Enterprise Zero-Trust</span></h1>
+    <p class="oz-lead">Xây dựng, ký số Ed25519, kiểm thử tự động và phân phối tiện ích mở rộng tương thích 100% với 46 Module của OZPanel v7.2.3: Giao diện trực quan GUI [27], OzonFS [5], Máy chủ thư chống Spam [9], SSL Cloudflare [3] và 90+ REST API Endpoints [31].</p>
+    <p class="oz-os-line">Hỗ trợ Ubuntu 24.04 LTS · Debian 11/12/13 · AlmaLinux 9/10 · Rocky Linux 9/10 · Python 3.9+ · Bash 4+ · OpenSSL 3 / Cryptography</p>
+
+    <div class="oz-install" id="sdkConsole">
+      <div class="oz-install-bar">
+        <div class="oz-install-meta">
+          <div class="oz-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <span class="oz-install-title" id="ozConsolePrompt">dev@workstation:~/oz-sdk# ozsdk.py v1.2.0</span>
+          <span class="oz-distro"><i class="ph-fill ph-shield-check"></i>Ed25519 Signed</span>
+        </div>
+        <div class="oz-tabs" role="tablist">
+          <button class="oz-tab" role="tab" type="button" data-tab="init" aria-selected="true"><i class="ph-bold ph-package"></i>1. Khởi tạo &amp; Pack</button>
+          <button class="oz-tab" role="tab" type="button" data-tab="deploy" aria-selected="false"><i class="ph-bold ph-rocket-launch"></i>2. Cài lên VPS 7.2.3</button>
+          <button class="oz-tab" role="tab" type="button" data-tab="legacy" aria-selected="false"><i class="ph-bold ph-storefront"></i>3. Kho Legacy [15]</button>
+          <button class="oz-tab" role="tab" type="button" data-tab="repair" aria-selected="false"><i class="ph-bold ph-arrows-clockwise"></i>4. Cập nhật Core 7.2.3</button>
+        </div>
+      </div>
+      <div class="oz-install-body">
+        <div class="oz-cmd-wrap">
+          <pre class="oz-cmd" id="ozPaneInit">curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip && unzip -q OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip && cd OZPanel_Addon_Developer_Kit && python3 ozsdk.py init ./my-addon --id 9002 --publisher your-studio && python3 ozsdk.py keygen --private ../pub.key --public ../pub.pem && python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/release.ozaddon --private ../pub.key</pre>
+          <pre class="oz-cmd" id="ozPaneDeploy" hidden>sudo python3 ozsdk.py runtime-install --confirm && sudo python3 ozsdk.py --root /etc/ozon trust your-studio ../pub.pem --confirm && sudo python3 ozsdk.py --root /etc/ozon install ./my-addon/dist/release.ozaddon --confirm --legacy</pre>
+          <pre class="oz-cmd" id="ozPaneLegacy" hidden>python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/addon_9002.sh --private ../pub.key --legacy && python3 ozsdk.py catalog ./my-addon --url https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.sh --out ./my-addon/dist/catalog.txt</pre>
+          <pre class="oz-cmd" id="ozPaneRepair" hidden>curl -fsSL -H "Cache-Control: no-cache" "https://usercontent.chgm.in/ozpanel/oz_installer_vi?t=$(date +%s)" -o /usr/bin/.oz.new && chmod 755 /usr/bin/.oz.new && mv -f /usr/bin/.oz.new /usr/bin/oz && /usr/bin/oz --upgrade-ui && oz</pre>
+        </div>
+        <button type="button" class="oz-copybtn" id="ozHeroCopyBtn"><i class="ph-bold ph-copy"></i><span>Sao chép lệnh</span></button>
+      </div>
+      <div class="oz-install-foot">
+        <span id="ozConsoleHint"><i class="ph-bold ph-check-circle"></i><strong>Chuẩn SDK v1.2.0:</strong> Tự động kiểm tra cú pháp <code>bash -n</code>, tạo bảng băm SHA-256 và ký Ed25519</span>
+        <span><i class="ph-bold ph-terminal"></i>Kiểm thử: <code>python3 -m unittest discover -s tests -v</code></span>
+      </div>
+    </div>
+
+    <div class="oz-stats">
+      <div class="oz-stat"><em>Core</em><b>v7.2.3</b><span>Phiên bản Panel</span></div>
+      <div class="oz-stat"><em>SDK</em><b>v1.2.0</b><span>Phiên bản Bộ Kit</span></div>
+      <div class="oz-stat"><b>46</b><span>Modules Hệ thống</span></div>
+      <div class="oz-stat"><b>25</b><span>Nhóm REST API [31]</span></div>
+      <div class="oz-stat"><b>42/42</b><span>Unit Tests Đạt 100%</span></div>
+      <div class="oz-stat"><b>Ed25519</b><span>Chữ ký Số Chuẩn</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ MARQUEE BAR ════════════════════ -->
+<div class="oz-marq" aria-hidden="true">
+  <div class="oz-marq-t">
+    <div class="oz-chip"><i class="ph-bold ph-fingerprint"></i>Ed25519 Manifest Signing<small>64-Byte Raw Sig</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-browsers"></i>GUI [27] Visual Workbench<small>OZ_GUI_FORM=1</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-folder-notch-open"></i>OzonFS [5] Smart FileOps<small>Copy/Move/Conflict</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-envelope-simple-open"></i>Mail [9] Multi-Domain Anti-Spam<small>SPF·DKIM·DMARC·MTA-STS</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-lock-key"></i>SSL [3] Cloudflare Orange-Cloud<small>ACME HTTP-01</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-plugs-connected"></i>API Gateway [31]<small>25 Resource Groups</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-arrows-counter-clockwise"></i>Atomic Staging &amp; Rollback<small>flock Guarded</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-sparkle"></i>Shimmer Light-Sweep UI<small>oz_shimmer_banner</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-fingerprint"></i>Ed25519 Manifest Signing<small>64-Byte Raw Sig</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-browsers"></i>GUI [27] Visual Workbench<small>OZ_GUI_FORM=1</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-folder-notch-open"></i>OzonFS [5] Smart FileOps<small>Copy/Move/Conflict</small></div>
+    <div class="oz-chip"><i class="ph-bold ph-envelope-simple-open"></i>Mail [9] Multi-Domain Anti-Spam<small>SPF·DKIM·DMARC·MTA-STS</small></div>
+  </div>
+</div>
+
+<!-- ════════════════════ MAIN 2-COLUMN DOCUMENTATION SHELL ════════════════════ -->
+<div class="oz-doc-shell">
+  <nav class="oz-sidebar" aria-label="Mục lục tài liệu SDK">
+    <div class="oz-nav-title">Mục lục Kỹ thuật (20 Chương)</div>
+    <a class="oz-nav-link active" href="#sec-01"><span class="oz-nav-num">01</span>Tổng quan v7.2.3 &amp; SDK 1.2.0</a>
+    <a class="oz-nav-link" href="#sec-02"><span class="oz-nav-num">02</span>3 Luồng Tích hợp Addon</a>
+    <a class="oz-nav-link" href="#sec-03"><span class="oz-nav-num">03</span>Hàm [15] Kho Tiện Ích</a>
+    <a class="oz-nav-link" href="#sec-04"><span class="oz-nav-num">04</span>Quickstart trong 60 Giây</a>
+    <a class="oz-nav-link" href="#sec-05"><span class="oz-nav-num">05</span>Đặc tả manifest.json v1</a>
+    <a class="oz-nav-link" href="#sec-06"><span class="oz-nav-num">06</span>Bộ lệnh CLI ozsdk.py</a>
+    <a class="oz-nav-link" href="#sec-07"><span class="oz-nav-num">07</span>Ký số Ed25519 &amp; Trust</a>
+    <a class="oz-nav-link" href="#sec-08"><span class="oz-nav-num">08</span>Vòng đời Hook &amp; Rollback</a>
+    <a class="oz-nav-link" href="#sec-09"><span class="oz-nav-num">09</span>Bash Helper &amp; Shimmer UI</a>
+    <a class="oz-nav-link" href="#sec-10"><span class="oz-nav-num">10</span>Python Context &amp; Typed API</a>
+    <a class="oz-nav-link" href="#sec-11"><span class="oz-nav-num">11</span>Tương thích Web GUI [27]</a>
+    <a class="oz-nav-link" href="#sec-12"><span class="oz-nav-num">12</span>Tích hợp OzonFS [5]</a>
+    <a class="oz-nav-link" href="#sec-13"><span class="oz-nav-num">13</span>Tích hợp Mail Chống Spam [9]</a>
+    <a class="oz-nav-link" href="#sec-14"><span class="oz-nav-num">14</span>Tích hợp SSL &amp; Cloudflare [3]</a>
+    <a class="oz-nav-link" href="#sec-15"><span class="oz-nav-num">15</span>Ma trận REST API [31] v7.2.3</a>
+    <a class="oz-nav-link" href="#sec-16"><span class="oz-nav-num">16</span>Cầu nối Local-Ops Engine</a>
+    <a class="oz-nav-link" href="#sec-17"><span class="oz-nav-num">17</span>3 Cơ chế Bản quyền Addon</a>
+    <a class="oz-nav-link" href="#sec-18"><span class="oz-nav-num">18</span>Catalog 10 Trường &amp; Phát hành</a>
+    <a class="oz-nav-link" href="#sec-19"><span class="oz-nav-num">19</span>Kiểm thử Tự động (42 Tests)</a>
+    <a class="oz-nav-link" href="#sec-20"><span class="oz-nav-num">20</span>Release Explorer &amp; Changelog</a>
+  </nav>
+
+  <main class="oz-doc-main" id="ozDocMain">
+
+    <!-- 01 -->
+    <section class="oz-sec lt" id="sec-01">
+      <div class="oz-kicker">Chương 01 · Architecture Overview</div>
+      <h2 class="oz-h2">Tổng quan OZPanel v7.2.3 &amp; Bộ SDK v1.2.0</h2>
+      <p>Bộ công cụ <strong>OZPanel Addon Developer Kit v1.2.0</strong> được thiết kế đồng bộ trực tiếp với lõi <strong>OZPanel Cloud v7.2.3</strong>. Toàn bộ công cụ đóng gói, xác thực chữ ký số Ed25519, quản lý vòng đời phiên bản (Staging, Health-check, Rollback) và thư viện gọi API từ xa đều hoạt động độc lập bằng Python 3.9+ Standard Library kết hợp Bash 4+ và OpenSSL 3 / Python Cryptography.</p>
+      <div class="oz-grid-3">
+        <div class="oz-card inv">
+          <span class="oz-badge">Zero-Trust Packaging</span>
+          <h4 style="margin-top:10px">Đóng gói .ozaddon Tái lập</h4>
+          <p>Tự động quét cú pháp <code>bash -n</code>, chặn rò rỉ khóa bí mật (<code>.env</code>, <code>.key</code>), băm SHA-256 từng tệp và ký Ed25519 trên JSON canonical.</p>
+        </div>
+        <div class="oz-card">
+          <span class="oz-badge inv">GUI [27] &amp; CLI Ready</span>
+          <h4 style="margin-top:10px">Tương thích Kép CLI + Web GUI</h4>
+          <p>Tự động nhận diện biến môi trường <code>OZ_GUI_FORM=1</code> để hiển thị nút bấm trực quan trên Giao diện Quản trị [27] hoặc hiệu ứng ánh sáng Shimmer trên CLI.</p>
+        </div>
+        <div class="oz-card">
+          <span class="oz-badge inv">25 API Resource Groups</span>
+          <h4 style="margin-top:10px">Kết nối Toàn diện v7.2.3</h4>
+          <p>Hỗ trợ gọi trực tiếp 25 nhóm tài nguyên của cổng API [31] (Mail chống Spam, OzonFS, SSL Cloudflare, DNS BIND9, Cảnh báo đa kênh, WAF, Backup, Fleet/MCP).</p>
+        </div>
+      </div>
+      <div class="oz-table-wrap">
+        <table class="oz-table">
+          <thead><tr><th>Phân hệ trong SDK v1.2.0</th><th>Tệp tin / Lệnh chính</th><th>Năng lực cốt lõi đã xác minh</th></tr></thead>
+          <tbody>
+            <tr><td><strong>SDK CLI Tooling</strong></td><td><code>ozsdk.py</code></td><td><code>doctor</code>, <code>init</code>, <code>validate</code>, <code>pack</code>, <code>inspect</code>, <code>verify</code>, <code>list</code>, <code>api-catalog</code>, <code>core-status</code>, <code>core-trust-cmd</code></td></tr>
+            <tr><td><strong>Phân phối &amp; Chữ ký số</strong></td><td><code>ozsdk.py keygen / trust / catalog</code></td><td>Sinh cặp khóa Ed25519, ghim khóa công khai theo Publisher, xuất gói <code>.ozaddon</code> hoặc bundle <code>--legacy</code> <code>.sh</code> kèm dòng Catalog 10 trường</td></tr>
+            <tr><td><strong>Runtime Lifecycle</strong></td><td><code>ozsdk.py runtime-install / install / rollback / remove</code></td><td>Cài đặt nguyên tử vào <code>/etc/ozon/sdk-releases/ID/VER</code>, kiểm tra <code>health</code> trước khi kích hoạt, giữ bản cũ để <code>rollback</code> tức thì</td></tr>
+            <tr><td><strong>Thư viện Helper</strong></td><td><code>lib/ozaddon.py</code> &amp; <code>lib/ozaddon.sh</code></td><td>Lưu cấu hình JSON atomic (<code>0600</code> + <code>flock</code>), đa ngôn ngữ (<code>vi</code>/<code>en</code>), gọi API <code>/api/v1/*</code> chống lộ Bearer Token qua Redirect, hiệu ứng <code>oz_shimmer_banner</code></td></tr>
+            <tr><td><strong>Kiểm thử Tự động</strong></td><td><code>tests/test_sdk.py</code></td><td>42 bài kiểm thử tự động kiểm tra chống Path Traversal, Symlink, giả mạo chữ ký, lỗi Hook, khóa đồng thời và các helper v7.2.3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="oz-sec dk" id="sec-02">
+      <div class="oz-kicker">Chương 02 · Integration Tracks</div>
+      <h2 class="oz-h2">Ma trận 3 Luồng Tích hợp Addon trong OZPanel v7.2.3</h2>
+      <p>OZPanel hỗ trợ 3 phương thức tích hợp tiện ích mở rộng tùy theo mục đích sử dụng (phát triển nội bộ, phát hành gói đa tệp có hook/rollback, hoặc phân phối qua Kho tiện ích `[15]`):</p>
+      <div class="oz-table-wrap">
+        <table class="oz-table">
+          <thead><tr><th>Tiêu chí kỹ thuật</th><th>1. Addon SDK Native (<code>.ozaddon</code>)</th><th>2. Addon Kho Legacy [15] (<code>.sh / .bin</code>)</th><th>3. Addon Nội bộ [15] → [6]</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Định dạng gói</strong></td><td>Archive nén <code>.ozaddon</code> đa tệp (hoặc đóng gói tự giải nén <code>.sh</code> qua cờ <code>--legacy</code>)</td><td>1 tệp thực thi Bash (<code>.sh</code>) hoặc ELF Binary (<code>.bin</code>) duy nhất</td><td>Tệp Bash hoặc Linux ELF 64-bit tải qua URL trực tiếp</td></tr>
+            <tr><td><strong>Cấu trúc &amp; Đa tệp</strong></td><td>Hỗ trợ đầy đủ <code>manifest.json</code>, <code>bin/</code>, <code>hooks/</code>, <code>lib/</code>, <code>locales/</code></td><td>Tự đóng gói trong 1 file duy nhất</td><td>1 file thực thi + metadata JSON nội bộ do Core tự sinh</td></tr>
+            <tr><td><strong>Xác thực toàn vẹn</strong></td><td>Bắt buộc khớp SHA-256 từng file + chữ ký số <strong>Ed25519</strong> của Publisher đã Trust</td><td>Kiểm tra dung lượng khác rỗng; khuyến nghị dùng Bundle SDK <code>--legacy</code> để ép kiểm tra Ed25519</td><td>Kiểm tra <code>bash -n</code> hoặc ELF header + đối chiếu SHA-256 trước mỗi lần chạy</td></tr>
+            <tr><td><strong>Nâng cấp &amp; Rollback</strong></td><td>Có thư mục Staging riêng, tự giữ bản cũ và hỗ trợ <code>ozsdk.py rollback ID --confirm</code></td><td>Ghi đè trực tiếp file <code>addon_ID.sh</code> khi version trên Store lớn hơn</td><td>Hỗ trợ cách ly tự động (Quarantine) sau 3 lần lỗi liên tiếp và khôi phục có kiểm tra băm</td></tr>
+            <tr><td><strong>Hiển thị ở Menu chính &amp; [15]</strong></td><td>Bật cờ <code>--legacy</code> khi cài hoặc pack để tự sinh trình khởi chạy <code>/etc/ozon/addons/addon_ID.sh</code></td><td>Tự động xuất hiện tại menu chính với phím tắt <code>[ID + 100]</code></td><td>Tự cấp ID trong dải <code>900000–999999</code> và hiển thị trong <code>[15]</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="oz-note">
+        <strong>Nguyên tắc vàng khi đăng lên Kho [15]:</strong> Không bao giờ đặt trực tiếp đường dẫn file <code>.ozaddon</code> vào cột URL của <code>store.list</code> vì trình tải cổ điển của [15] chỉ đọc <code>.sh</code> hoặc <code>.bin</code>. Hãy dùng lệnh <code>python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/addon_9002.sh --private ../pub.key --legacy</code> để xuất ra file <code>.sh</code> tự xác thực chữ ký Ed25519!
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="oz-sec lt" id="sec-03">
+      <div class="oz-kicker">Chương 03 · Module [15] Addon Store</div>
+      <h2 class="oz-h2">Hàm [15] Kho Tiện Ích &amp; Cơ chế Phím tắt Menu Chính</h2>
+      <p>Khi một Addon được cài đặt vào <code>/etc/ozon/addons/addon_ID.sh</code> (hoặc <code>.bin</code>), hàm <code>draw_menu()</code> của OZPanel v7.2.3 tự động quét và hiển thị ngay trong khối <strong>TIỆN ÍCH ĐÃ CÀI</strong> ở màn hình chính CLI với phím tắt nhanh <code>[ID + 100]</code> (ví dụ Addon ID <code>9001</code> có phím tắt <code>[9101]</code>).</p>
+      <div class="oz-table-wrap">
+        <table class="oz-table">
+          <thead><tr><th>Tùy chọn trong [15]</th><th>Chức năng trong OZPanel v7.2.3</th><th>Hợp đồng kỹ thuật cần lưu ý</th></tr></thead>
+          <tbody>
+            <tr><td><code>[1] Cài đặt Addon</code></td><td>Tra cứu ID từ <code>/etc/ozon/store.list</code>, hỏi License Key nếu cột 8 ghi <code>Trả phí</code>, tải về <code>/etc/ozon/addons/</code></td><td>Tự động đặt quyền <code>0700</code> cho payload và <code>0600</code> cho <code>addon_ID.version</code> / <code>license_ID.key</code></td></tr>
+            <tr><td><code>[2] Cập nhật Addon</code></td><td>So sánh <code>addon_ID.version</code> với phiên bản trên Catalog bằng <code>sort -V</code></td><td>Luôn đặt phiên bản theo chuẩn Semantic Versioning <code>X.Y.Z</code> (ví dụ <code>1.2.0</code>)</td></tr>
+            <tr><td><code>[3] Khởi chạy Addon</code></td><td>Thực thi Addon qua bộ bảo vệ <code>oz_run_guarded_addon</code>, truyền <code>OZON_ROOT_DIR</code>, <code>OZON_ADDON_DIR</code>, <code>OZON_LICENSE_FILE</code></td><td>Nếu Addon đã đăng ký Public Key với Core (<code>--addon-license-trust</code>), Core tự động kiểm tra biên nhận bản quyền trước khi cho chạy</td></tr>
+            <tr><td><code>[4] Gỡ bỏ Addon</code></td><td>Xóa <code>addon_ID.{sh,bin,version}</code> và <code>license_ID.key</code></td><td>Nếu dùng SDK Native, hãy gỡ qua <code>ozsdk.py remove ID --confirm</code> để kích hoạt <code>hooks/uninstall.sh</code></td></tr>
+            <tr><td><code>[5] Làm mới Kho</code></td><td>Đồng bộ danh sách mới nhất từ Cloud API về <code>/etc/ozon/store.list</code></td><td>Giữ nguyên cache cũ nếu mất kết nối mạng tạm thời</td></tr>
+            <tr><td><code>[6] Nhập Addon nội bộ</code></td><td>Tải trực tiếp script/ELF từ URL bất kỳ, tự cấp ID <code>900000–999999</code></td><td>Kiểm tra chặt <code>bash -n</code>, kiến trúc CPU ELF (<code>x86_64</code> / <code>aarch64</code>) và SHA-256</td></tr>
+            <tr><td><code>[7] Nhật ký Addon</code></td><td>Đọc log JSONL tại <code>/etc/ozon/addons/.internal/logs/</code></td><td>Xoay vòng tự động ở ngưỡng 2 MiB; không ghi mật khẩu hoặc token vào stdout/stderr</td></tr>
+            <tr><td><code>[8] Khu cách ly</code></td><td>Xem và khôi phục Addon nội bộ bị cách ly do lỗi liên tiếp</td><td>Kiểm tra lại SHA-256 gốc trước khi mở khóa trở lại</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section class="oz-sec dk" id="sec-04">
+      <div class="oz-kicker">Chương 04 · 60-Second Quickstart &amp; CDN Mirror</div>
+      <h2 class="oz-h2">Quickstart: Tải từ CDN &amp; Chạy thử Addon trong 60 Giây</h2>
+      <p>Toàn bộ bộ công cụ SDK và các tệp mẫu chuẩn được lưu trữ trực tiếp trên CDN chính thức <code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2</code> (thuộc dải tên miền <code>https://usercontent.chgm.in/ozpanel/</code> được OZPanel Core tin cậy mặc định):</p>
+      <div class="oz-grid-2">
+        <div>
+          <h3 class="oz-h3">Cách A · Cài nhanh Addon Mẫu Classic từ CDN (1 File Bash)</h3>
+          <div class="oz-code">
+            <div class="oz-code-head"><span>bash · classic quickstart (cdn)</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+            <pre><code>sudo install -d -m 700 /etc/ozon/addons
+sudo curl -fsSL https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_demo_9001.sh \
+  -o /etc/ozon/addons/addon_9001.sh
+sudo chmod 700 /etc/ozon/addons/addon_9001.sh
+bash -n /etc/ozon/addons/addon_9001.sh
+printf '1.2.0\n' | sudo tee /etc/ozon/addons/addon_9001.version >/dev/null
+sudo chmod 600 /etc/ozon/addons/addon_9001.version
+# Mở Panel bằng lệnh `oz` -> nhập 9101 (hoặc vào [15] -> [3] -> 9001)</code></pre>
+          </div>
+        </div>
+        <div>
+          <h3 class="oz-h3">Cách B · Tải Bộ SDK từ CDN &amp; Khởi tạo Dự án Native</h3>
+          <div class="oz-code">
+            <div class="oz-code-head"><span>bash · sdk native quickstart (cdn)</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+            <pre><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip
+unzip -q OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip && cd OZPanel_Addon_Developer_Kit
+python3 ozsdk.py doctor
+python3 ozsdk.py init ./my-addon --id 9002 --publisher chgm-studio --name "Mail & SSL Guard"
+python3 ozsdk.py validate ./my-addon
+python3 ozsdk.py keygen --private ../publisher.key --public ../publisher.pem
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/mail-guard.ozaddon --private ../publisher.key
+python3 ozsdk.py inspect ./my-addon/dist/mail-guard.ozaddon</code></pre>
+          </div>
+        </div>
+      </div>
+      <h3 class="oz-h3">Danh mục Tệp Mẫu &amp; Gói Phân phối trên CDN (<code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2</code>)</h3>
+      <div class="oz-table-wrap">
+        <table class="oz-table">
+          <thead>
+            <tr>
+              <th>Tệp mẫu trên CDN</th>
+              <th>Đường dẫn Trực tiếp (URL)</th>
+              <th>Lệnh tải / Kiểm thử nhanh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Trọn bộ SDK Developer Kit</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/OZPanel_Addon_Developer_Kit_7.2.3_SDK_1.2.0.zip</code></td>
+            </tr>
+            <tr>
+              <td><strong>SDK CLI Độc lập (<code>ozsdk.py</code>)</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/ozsdk.py" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/ozsdk.py</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/ozsdk.py &amp;&amp; python3 ozsdk.py doctor</code></td>
+            </tr>
+            <tr>
+              <td><strong>Addon Mẫu Classic (<code>#9001</code>)</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_demo_9001.sh" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_demo_9001.sh</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_demo_9001.sh &amp;&amp; bash -n addon_demo_9001.sh</code></td>
+            </tr>
+            <tr>
+              <td><strong>Bundle Mẫu Legacy Đã Ký (<code>#9002</code>)</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.sh" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.sh</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.sh &amp;&amp; bash -n addon_9002.sh</code></td>
+            </tr>
+            <tr>
+              <td><strong>Gói Native Mẫu (<code>.ozaddon</code>)</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.ozaddon" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.ozaddon</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.ozaddon &amp;&amp; python3 ozsdk.py inspect addon_9002.ozaddon</code></td>
+            </tr>
+            <tr>
+              <td><strong>Khóa Public Ed25519 Mẫu</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/publisher-demo-public.pem" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/publisher-demo-public.pem</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/publisher-demo-public.pem</code></td>
+            </tr>
+            <tr>
+              <td><strong>Catalog 10 Trường Mẫu</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/catalog-row.example.txt" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/catalog-row.example.txt</code></a></td>
+              <td><code>curl -fsSL https://usercontent.chgm.in/ozpanel/sdk-1.0.2/catalog-row.example.txt</code></td>
+            </tr>
+            <tr>
+              <td><strong>Manifest Schema v1 Mẫu</strong></td>
+              <td><a href="https://usercontent.chgm.in/ozpanel/sdk-1.0.2/manifest.example.json" target="_blank" rel="noopener"><code>https://usercontent.chgm.in/ozpanel/sdk-1.0.2/manifest.example.json</code></a></td>
+              <td><code>curl -fsSLO https://usercontent.chgm.in/ozpanel/sdk-1.0.2/manifest.example.json</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="oz-sec lt" id="sec-05">
+      <div class="oz-kicker">Chương 05 · Manifest Specification</div>
+      <h2 class="oz-h2">Đặc tả manifest.json Schema v1 (Nâng cấp v7.2.3)</h2>
+      <p>Mỗi dự án SDK Native bắt buộc có tệp <code>manifest.json</code> ở thư mục gốc. Trong SDK v1.2.0, ngoài các trường cốt lõi của Schema v1, bạn có thể khai báo thêm <code>category</code> và <code>gui_workbench</code> để tối ưu hiển thị trên Giao diện Quản trị Web <code>[27]</code>:</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>json · manifest.json</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code>{
+  "schema": 1,
+  "id": 9002,
+  "publisher": "chgm-studio",
+  "name": "OZ Mail & SSL Deliverability Suite",
+  "version": "1.2.0",
+  "min_panel_version": "7.2.3",
+  "category": "mail",
+  "entrypoint": "bin/main.sh",
+  "architectures": ["any"],
+  "permissions": [
+    "system.read",
+    "mail.read",
+    "mail.write",
+    "ssl.read"
+  ],
+  "hooks": {
+    "install": "hooks/install.sh",
+    "upgrade": "hooks/upgrade.sh",
+    "health": "hooks/health.sh",
+    "rollback": "hooks/rollback.sh",
+    "uninstall": "hooks/uninstall.sh"
+  },
+  "locales": {
+    "vi": "locales/vi.json",
+    "en": "locales/en.json"
+  },
+  "platforms": [
+    "ubuntu:24.04",
+    "debian:11",
+    "debian:12",
+    "debian:13"
+  ],
+  "gui_workbench": {
+    "actions": [
+      {"key": "1", "label": "Kiểm tra điểm chống Spam (SPF/DKIM/DMARC/rDNS)"},
+      {"key": "2", "label": "Xuất bảng bản ghi DNS chuẩn Gmail & Outlook"},
+      {"key": "3", "label": "Kiểm tra trạng thái Core v7.2.3"}
+    ]
+  }
+}</code></pre>
+      </div>
+      <ul>
+        <li><strong>Giới hạn an toàn của gói <code>.ozaddon</code>:</strong> Tối đa <code>24 MiB</code> nén, <code>64 MiB</code> sau giải nén, <code>16 MiB</code> mỗi file đơn lẻ và tối đa <code>2.000</code> tệp tin.</li>
+        <li><strong>Chống rò rỉ dữ liệu nhạy cảm:</strong> Trình đóng gói <code>ozsdk.py pack</code> tự động từ chối mọi symlink, đường dẫn chứa <code>..</code>, tệp <code>.env*</code>, <code>*.key</code>, <code>*.p12</code>, <code>*.pfx</code>, <code>id_rsa</code>, <code>id_ed25519</code> hoặc bất kỳ tệp nào chứa chuỗi <code>PRIVATE KEY-----</code>.</li>
+      </ul>
+    </section>
+
+    <!-- 06 -->
+    <section class="oz-sec dk" id="sec-06">
+      <div class="oz-kicker">Chương 06 · SDK CLI Reference</div>
+      <h2 class="oz-h2">Bộ Lệnh CLI ozsdk.py v1.2.0 Toàn diện</h2>
+      <p>Lưu ý: tham số toàn cục <code>--root /etc/ozon</code> luôn đặt <strong>trước</strong> tên lệnh con (ví dụ: <code>python3 ozsdk.py --root /etc/ozon list</code>).</p>
+      <div class="oz-table-wrap">
+        <table class="oz-table">
+          <thead><tr><th>Lệnh con</th><th>Cú pháp mẫu</th><th>Mô tả chi tiết</th></tr></thead>
+          <tbody>
+            <tr><td><code>doctor</code></td><td><code>python3 ozsdk.py doctor</code></td><td>Kiểm tra phiên bản Python, Bash, OpenSSL/Cryptography backend, trình quản lý gói và số lượng nhóm API v7.2.3</td></tr>
+            <tr><td><code>api-catalog</code></td><td><code>python3 ozsdk.py api-catalog [--resource mail]</code></td><td><strong>[Mới v1.2.0]</strong> Xuất danh mục JSON toàn bộ 25 nhóm tài nguyên REST API <code>/api/v1</code> của OZPanel v7.2.3 kèm quyền hạn</td></tr>
+            <tr><td><code>core-status</code></td><td><code>python3 ozsdk.py --root /etc/ozon core-status</code></td><td><strong>[Mới v1.2.0]</strong> Đọc phiên bản Core thực tế, trạng thái GUI [27], API [31], danh sách tên miền Mail [9] và các Addon đã cài</td></tr>
+            <tr><td><code>core-trust-cmd</code></td><td><code>python3 ozsdk.py core-trust-cmd --id 9002 --public pub.pem --product my-pro</code></td><td><strong>[Mới v1.2.0]</strong> Sinh bộ lệnh chuẩn để đăng ký khóa Ed25519 của Addon vào trình kiểm tra bản quyền gốc của OZPanel Core</td></tr>
+            <tr><td><code>init</code></td><td><code>python3 ozsdk.py init ./dir --id 9002 --publisher slug</code></td><td>Khởi tạo khung dự án Addon chuẩn v7.2.3 kèm đa ngôn ngữ <code>vi/en</code>, 5 hooks và thư viện <code>lib/</code></td></tr>
+            <tr><td><code>validate</code></td><td><code>python3 ozsdk.py validate ./dir</code></td><td>Kiểm tra hợp lệ <code>manifest.json</code>, chạy <code>bash -n</code> toàn bộ file <code>.sh</code> và tính bảng băm SHA-256</td></tr>
+            <tr><td><code>keygen</code></td><td><code>python3 ozsdk.py keygen --private priv.pem --public pub.pem</code></td><td>Sinh cặp khóa bất đối xứng Ed25519 bằng OpenSSL</td></tr>
+            <tr><td><code>pack</code></td><td><code>python3 ozsdk.py pack ./dir --out ./dir/dist/a.ozaddon --private priv.pem [--legacy]</code></td><td>Đóng gói bản phát hành <code>.ozaddon</code> (hoặc <code>.sh</code> tự cài đặt khi thêm <code>--legacy</code>) kèm file <code>.sha256</code></td></tr>
+            <tr><td><code>runtime-install</code></td><td><code>sudo python3 ozsdk.py runtime-install --confirm</code></td><td>Cài đặt SDK Runtime vào <code>/usr/local/lib/ozpanel/sdk/ozsdk.py</code> (tự sao lưu bản cũ nếu khác nội dung)</td></tr>
+            <tr><td><code>trust</code></td><td><code>sudo python3 ozsdk.py --root /etc/ozon trust slug pub.pem --confirm</code></td><td>Ghim khóa công khai Ed25519 của nhà phát hành vào <code>/etc/ozon/sdk-trust/&lt;publisher&gt;/public.pem</code></td></tr>
+            <tr><td><code>install</code></td><td><code>sudo python3 ozsdk.py --root /etc/ozon install a.ozaddon --confirm [--legacy]</code></td><td>Giải nén vào vùng tạm, chạy hook <code>install</code>/<code>upgrade</code> + <code>health</code>, kiểm tra tính bất biến rồi kích hoạt</td></tr>
+            <tr><td><code>rollback</code></td><td><code>sudo python3 ozsdk.py --root /etc/ozon rollback 9002 --confirm</code></td><td>Chuyển về phiên bản liền trước đã lưu, chạy hook <code>rollback</code> + <code>health</code> và cập nhật trình khởi chạy</td></tr>
+            <tr><td><code>remove</code></td><td><code>sudo python3 ozsdk.py --root /etc/ozon remove 9002 --confirm [--purge-data]</code></td><td>Chạy hook <code>uninstall</code>, gỡ bỏ phiên bản đã cài (mặc định bảo toàn dữ liệu tại <code>addon-data/ID</code> trừ khi có <code>--purge-data</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="oz-sec lt" id="sec-07">
+      <div class="oz-kicker">Chương 07 · Ed25519 Supply-Chain Security</div>
+      <h2 class="oz-h2">Ký số Ed25519, Publisher Trust &amp; Chuỗi Phân phối Zero-Trust</h2>
+      <p>SDK v1.2.0 áp dụng cơ chế xác thực chữ ký số nghiêm ngặt: một khi nhà phát hành (Publisher) đã được ghim khóa công khai trong <code>/etc/ozon/sdk-trust/&lt;publisher&gt;/public.pem</code>, <strong>mọi gói cài đặt hoặc nâng cấp của Publisher đó bắt buộc phải có chữ ký Ed25519 hợp lệ</strong> — ngay cả khi người gọi truyền cờ <code>--allow-unsigned</code>, hệ thống vẫn chặn đứng để chống tấn công hạ cấp (downgrade attack).</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · quy trình ký và xác minh độc lập</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># 1. Tạo khóa trên máy trạm của Developer (TUYỆT ĐỐI không đưa private.pem lên VPS/Git)
+python3 ozsdk.py keygen --private ~/keys/studio-private.pem --public ~/keys/studio-public.pem
+
+# 2. Đóng gói và ký số
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/addon-1.2.0.ozaddon --private ~/keys/studio-private.pem
+
+# 3. Trên VPS khách hàng: Trust khóa công khai và xác minh gói trước khi cài
+sudo python3 ozsdk.py --root /etc/ozon trust your-studio ./studio-public.pem --confirm
+sudo python3 ozsdk.py --root /etc/ozon verify ./addon-1.2.0.ozaddon
+sudo python3 ozsdk.py --root /etc/ozon install ./addon-1.2.0.ozaddon --confirm --legacy</code></pre>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="oz-sec dk" id="sec-08">
+      <div class="oz-kicker">Chương 08 · Atomic Lifecycle &amp; Concurrency</div>
+      <h2 class="oz-h2">Vòng đời Hook, Tính Bất biến Payload &amp; Khóa Đồng thời (flock)</h2>
+      <p>Khi thực thi <code>install</code>, <code>rollback</code> hoặc <code>remove</code>, SDK đảm bảo tính toàn vẹn qua 4 chốt chặn:</p>
+      <div class="oz-grid-2">
+        <div class="oz-card">
+          <h4>1. Staging &amp; Immutable Payload</h4>
+          <p>Toàn bộ tệp trong <code>.ozaddon</code> được giải nén vào thư mục ẩn <code>.staging-*</code>. Sau khi hook <code>install</code>/<code>upgrade</code> và <code>health</code> chạy xong, SDK kiểm tra lại mã băm SHA-256 của toàn bộ tệp thực thi. Nếu hook tự ý sửa đổi mã nguồn trong <code>$OZ_SDK_RELEASE</code>, quá trình cài đặt bị hủy ngay lập tức.</p>
+        </div>
+        <div class="oz-card">
+          <h4>2. Per-Addon Shared/Exclusive Locking</h4>
+          <p>Các lệnh <code>run</code> và <code>health</code> sử dụng khóa chia sẻ (<code>LOCK_SH</code>) theo từng Addon ID, trong khi <code>install</code>, <code>rollback</code> và <code>remove</code> dùng khóa độc quyền (<code>LOCK_EX</code>). Hai Addon khác ID hoàn toàn chạy song song không chặn nhau.</p>
+        </div>
+      </div>
+      <div class="oz-table-wrap">
+        <table class="oz-table">
+          <thead><tr><th>Biến Môi Trường Runtime</th><th>Giá trị mẫu trên VPS</th><th>Mục đích sử dụng trong Script Addon</th></tr></thead>
+          <tbody>
+            <tr><td><code>OZ_ADDON_ID</code></td><td><code>9002</code></td><td>Mã định danh số của Addon đang chạy</td></tr>
+            <tr><td><code>OZ_ADDON_VERSION</code></td><td><code>1.2.0</code></td><td>Phiên bản hiện hành của Release</td></tr>
+            <tr><td><code>OZ_SDK_RELEASE</code></td><td><code>/etc/ozon/sdk-releases/9002/1.2.0</code></td><td>Thư mục chứa mã nguồn bất biến (Chỉ đọc — không ghi dữ liệu vào đây)</td></tr>
+            <tr><td><code>OZ_ADDON_DATA</code></td><td><code>/etc/ozon/addon-data/9002</code></td><td>Thư mục dữ liệu bền vững (<code>0700</code>), được giữ nguyên khi nâng cấp hoặc rollback</td></tr>
+            <tr><td><code>OZON_ROOT_DIR</code></td><td><code>/etc/ozon</code></td><td>Thư mục cấu hình gốc của OZPanel</td></tr>
+            <tr><td><code>OZON_LICENSE_FILE</code></td><td><code>/etc/ozon/addons/license_9002.key</code></td><td>Đường dẫn file License chuẩn của Kho [15]</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="oz-sec lt" id="sec-09">
+      <div class="oz-kicker">Chương 09 · Bash Helper Library</div>
+      <h2 class="oz-h2">Thư viện Helper Bash (lib/ozaddon.sh) &amp; Hiệu ứng Shimmer v7.2.3</h2>
+      <p>Chỉ cần nạp <code>source "$OZ_SDK_RELEASE/lib/ozaddon.sh"</code> ở đầu tệp <code>bin/main.sh</code>, bạn có ngay bộ hàm chuẩn hóa tương thích cả CLI lẫn Web GUI <code>[27]</code>, bao gồm cả hàm <code>oz_shimmer_banner</code> tạo hiệu ứng ánh sáng vàng kim lướt nhẹ đồng bộ với giao diện OZPanel v7.2.3:</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · sử dụng lib/ozaddon.sh</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code>#!/usr/bin/env bash
+set -Eeuo pipefail
+source "${OZ_SDK_RELEASE:?}/lib/ozaddon.sh"
+
+# 1. Hiển thị tiêu đề có hiệu ứng ánh sáng chuyển động (tự tắt hiệu ứng khi chạy trong Web GUI [27])
+oz_shimmer_banner "✦ $(oz_t title) · v${OZ_ADDON_VERSION} ✦"
+
+# 2. Lưu và đọc cấu hình JSON an toàn (mode 0600 + flock, truyền qua stdin để không lộ trên ps)
+printf '%s' '{"webhook_enabled":true,"retention_days":14}' | oz_set settings
+oz_get settings
+
+# 3. Gọi trực tiếp REST API v7.2.3 hoặc Local-Ops Engine
+# oz_api_call mail audit
+# oz_local_ops mail-cli audit example.com</code></pre>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="oz-sec dk" id="sec-10">
+      <div class="oz-kicker">Chương 10 · Python Context API</div>
+      <h2 class="oz-h2">Thư viện Helper Python (lib/ozaddon.py) &amp; Typed API Wrappers</h2>
+      <p>Trong SDK v1.2.0, lớp <code>Context</code> trong <code>lib/ozaddon.py</code> được bổ sung các phương thức gọi nhanh tới các phân hệ mới của OZPanel v7.2.3 (Mail chống Spam, OzonFS FileOps, SSL Cloudflare, Local-Ops):</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>python · sử dụng ozaddon.Context</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code>import os, sys
+sys.path.insert(0, os.path.join(os.environ["OZ_SDK_RELEASE"], "lib"))
+from ozaddon import Context
+
+ctx = Context()
+
+# 1. Đọc/ghi cấu hình JSON nguyên tử (chống symlink & race condition)
+ctx.set("last_audit_domain", "cdnv1.cm.io.vn")
+domain = ctx.get("last_audit_domain")
+
+# 2. Gọi API Gateway [31] (tự động chặn HTTP ngoài mạng LAN và không chuyển tiếp Bearer Token qua Redirect)
+# Yêu cầu biến môi trường OZ_API_BASE và OZ_API_TOKEN
+dns_records = ctx.mail_antispam_dns(domain)
+audit_report = ctx.mail_deliverability_audit(domain)
+
+# 3. Thao tác tệp thông minh qua OzonFS API [5] (copy/move với xử lý trùng tên 'rename'|'overwrite'|'skip')
+ctx.file_action("copy", "/var/www/site/config.sample.php", "/var/www/site/config.php", conflict="rename", confirm=True)
+
+# 4. Cấp chứng chỉ SSL hỗ trợ Cloudflare Proxy màu cam
+ctx.ssl_issue(domain, provider="letsencrypt", confirm=True)</code></pre>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="oz-sec lt" id="sec-11">
+      <div class="oz-kicker">Chương 11 · Web Admin GUI [27] Integration</div>
+      <h2 class="oz-h2">Tương thích Giao diện Quản trị Web [27] (Visual Action Workbench)</h2>
+      <p>Trong OZPanel v7.2.3, hàm <code>[27] Giao diện quản trị</code> đã được nâng cấp thành trung tâm điều khiển trực quan: ngoài việc tự động chuyển đổi các dòng lựa chọn <code>[1] ...</code> thành nút bấm trên Web, GUI còn có thanh <strong>Thao tác nhanh trực quan</strong> gửi lệnh trực tiếp xuống CLI/Backend.</p>
+      <div class="oz-grid-2">
+        <div class="oz-card">
+          <h4>Quy tắc Thiết kế Menu Tương thích Kép</h4>
+          <ul>
+            <li>Luôn in mỗi lựa chọn trên một dòng riêng biệt theo định dạng <code>[1] Tên thao tác</code> hoặc <code>1) Tên thao tác</code>.</li>
+            <li>Dùng <code>oz_is_gui_form</code> (hoặc kiểm tra <code>OZ_GUI_FORM=1</code>) nếu muốn tinh giản câu nhắc khi chạy trên trình duyệt.</li>
+            <li>Khi cần nhập mật khẩu/token, câu nhắc <code>read -r -s -p</code> phải chứa từ khóa <code>mật khẩu</code>, <code>password</code>, <code>token</code>, <code>secret</code> hoặc <code>api key</code> để Web GUI tự động chuyển ô nhập sang chế độ <code>type="password"</code>.</li>
+          </ul>
+        </div>
+        <div class="oz-card inv">
+          <h4>Tích hợp Web Code Editor [5]/[21]/[25]</h4>
+          <p>Khi Addon gọi <code>oz_edit "/đường/dẫn/file.conf"</code> (hoặc gọi <code>nano</code> / <code>vim</code> qua <code>$PATH</code>), Web GUI [27] sẽ tự động bắt tín hiệu và mở <strong>Trình soạn thảo mã nguồn trực quan có tô màu cú pháp &amp; lịch sử sao lưu</strong> ngay trên trình duyệt thay vì làm treo phiên PTY!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="oz-sec dk" id="sec-12">
+      <div class="oz-kicker">Chương 12 · Smart File Manager [5] (OzonFS)</div>
+      <h2 class="oz-h2">Tích hợp Trình Quản lý Tệp OzonFS [5] Thông minh</h2>
+      <p>Phân hệ <code>[5] Trình quản lý tệp</code> trong v7.2.3 bổ sung trình duyệt chọn thư mục đích trực quan, chế độ xử lý trùng tên tệp (<code>overwrite</code> / <code>rename</code> / <code>skip</code>), tải lên từ URL từ xa kèm đối chiếu SHA-256 và tự động kiểm tra/nạp lại cấu hình Web Server khi lưu tệp <code>.conf</code> / <code>.htaccess</code>.</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · gọi api fileops từ addon</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># Sao chép hoặc di chuyển tệp có tự động đổi tên nếu trùng (conflict: "rename" | "overwrite" | "skip")
+printf '%s' '{"operation":"copy","path":"/var/www/html/index.html","destination":"/var/www/backup/index.html","conflict":"rename"}' \
+  | oz_api_call fileops action --confirm</code></pre>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="oz-sec lt" id="sec-13">
+      <div class="oz-kicker">Chương 13 · Multi-Domain Anti-Spam Mail Server [9]</div>
+      <h2 class="oz-h2">Tích hợp Máy chủ Thư Đa Tên Miền Chống Spam [9]</h2>
+      <p>Trong OZPanel v7.2.3, hàm <code>[9] Máy chủ thư</code> được trang bị động cơ chống rơi vào hộp thư Rác (Spam) của <strong>Google Gmail, Microsoft Outlook/Hotmail và Yahoo</strong> cho không giới hạn tên miền:</p>
+      <ul>
+        <li><strong>Bảng Ký số OpenDKIM Đa Miền Tự động:</strong> Tự động sinh khóa RSA 2048-bit riêng cho từng tên miền tại <code>/etc/ozon/mail/dkim/&lt;domain&gt;.private</code> và đồng bộ vào <code>/etc/opendkim/KeyTable</code>, <code>SigningTable</code>, <code>TrustedHosts</code>.</li>
+        <li><strong>Làm sạch Header SMTP Submission:</strong> Tự động cấu hình <code>/etc/postfix/header_checks_submission</code> để ẩn IP dân cư của trình gửi mail (Thunderbird/Outlook) và tắt lộ phiên bản <code>X-Mailer</code>, tránh bị Spamhaus ZEN đánh cờ.</li>
+        <li><strong>Bộ 8 Bản ghi DNS Chống Spam Chuẩn:</strong> Tự động xuất và đồng bộ Cloudflare cho <code>MX</code>, <code>SPF (v=spf1 a mx ip4:... ~all)</code>, <code>DKIM (2048-bit)</code>, <code>DMARC (p=quarantine; pct=100)</code>, <code>MTA-STS</code>, <code>TLS-RPT</code>, <code>autoconfig</code> và <code>autodiscover</code>.</li>
+      </ul>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · kiểm tra điểm deliverability &amp; xuất dns chống spam từ addon</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># Chấm điểm chống Spam trực tiếp qua Local-Ops Engine (kiểm tra PTR/rDNS, Spamhaus/SpamCop/Barracuda, SPF/DKIM/DMARC)
+sudo /usr/bin/oz --local-ops mail-cli audit
+
+# Xuất bảng bản ghi DNS chuẩn Gmail/Microsoft cho một tên miền cụ thể
+sudo /usr/bin/oz --local-ops mail-cli dns example.com</code></pre>
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="oz-sec dk" id="sec-14">
+      <div class="oz-kicker">Chương 14 · SSL/TLS &amp; Cloudflare Proxy [3]</div>
+      <h2 class="oz-h2">Tích hợp SSL/TLS [3] &amp; ACME HTTP-01 Qua Proxy Cloudflare Màu Cam</h2>
+      <p>OZPanel v7.2.3 khắc phục triệt để lỗi <code>Error reading HTTP response body: reader size limit exceeded</code> và lỗi <code>retryafter=86400</code> của ZeroSSL khi tên miền đang bật đám mây cam Cloudflare:</p>
+      <ul>
+        <li><strong>Loại bỏ xung đột <code>gzip on;</code> trong ACME Location:</strong> Khối <code>/.well-known/acme-challenge/</code> được đồng bộ trực tiếp vào tất cả các tệp Virtual Host của tên miền với <code>gzip off; default_type text/plain;</code>.</li>
+        <li><strong>Preflight Công khai &amp; Ưu tiên Let’s Encrypt:</strong> Kiểm tra phản hồi thực tế từ Internet trước khi gọi Certbot / <code>acme.sh --server letsencrypt</code>.</li>
+      </ul>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · kiểm tra preflight &amp; cấp ssl từ cli / addon</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># Kiểm tra ACME HTTP-01 preflight cho tên miền
+sudo /usr/bin/oz --acme-preflight cdnv1.cm.io.vn /var/lib/ozon/acme-webroot
+
+# Cấp phát chứng chỉ SSL Let's Encrypt tự động đồng bộ webroot
+sudo /usr/bin/oz --ssl-issue cdnv1.cm.io.vn -- letsencrypt</code></pre>
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="oz-sec lt" id="sec-15">
+      <div class="oz-kicker">Chương 15 · Enterprise API Gateway [31] Catalog</div>
+      <h2 class="oz-h2">Ma trận 25 Nhóm Tài nguyên &amp; REST API Endpoints [31] (v7.2.3)</h2>
+      <p>Cổng API <code>[31]</code> trong OZPanel v7.2.3 mở rộng lên <strong>25 nhóm tài nguyên</strong> trải dài toàn bộ 46 chức năng của Panel. Mọi thao tác thay đổi trạng thái hệ thống (<code>POST</code> / <code>DELETE</code>) đều yêu cầu trường <code>"confirm": true</code> trong JSON body và kiểm tra quyền hạn theo chuẩn RBAC Scope.</p>
+
+      <div class="oz-filter-bar">
+        <div class="oz-filters" role="tablist" aria-label="Bộ lọc nhóm API">
+          <button type="button" class="oz-api-filter active" data-group="all">Tất cả (25 Nhóm)</button>
+          <button type="button" class="oz-api-filter" data-group="web">Web / SSL / Proxy</button>
+          <button type="button" class="oz-api-filter" data-group="data">Mail / DB / OzonFS</button>
+          <button type="button" class="oz-api-filter" data-group="sec">Bảo mật / DNS / Alert</button>
+          <button type="button" class="oz-api-filter" data-group="elite">Elite / Fleet / n8n</button>
+        </div>
+        <span class="oz-badge inv" id="ozApiCountBadge">Hiển thị 25 nhóm tài nguyên</span>
+      </div>
+
+      <div class="oz-table-wrap">
+        <table class="oz-table" id="ozApiMatrixTable">
+          <thead>
+            <tr>
+              <th>Nhóm Tài nguyên</th>
+              <th>Endpoints tiêu biểu (<code>/api/v1/&lt;resource&gt;/&lt;action&gt;</code>)</th>
+              <th>Quyền RBAC (Scope)</th>
+              <th>Mô tả chức năng trong v7.2.3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-group="web"><td><code>domains</code></td><td><code>list</code>, <code>create</code>, <code>delete</code>, <code>vhost_get</code>, <code>vhost_put</code></td><td><code>domains.read</code> / <code>domains.write</code></td><td>Quản lý tên miền, khởi tạo và cập nhật cấu hình Virtual Host</td></tr>
+            <tr data-group="web"><td><code>ssl</code></td><td><code>status</code>, <code>issue</code>, <code>preflight</code>, <code>renew</code>, <code>remove</code></td><td><code>ssl.read</code> / <code>ssl.write</code></td><td>Cấp phát Let’s Encrypt / ZeroSSL hỗ trợ Cloudflare Proxy, kiểm tra ACME preflight</td></tr>
+            <tr data-group="web"><td><code>proxy</code></td><td><code>list</code>, <code>apply</code>, <code>remove</code>, <code>https</code>, <code>diagnose</code></td><td><code>proxy.read</code> / <code>proxy.write</code></td><td>Quản trị Reverse Proxy [22], đồng bộ HTTPS và chẩn đoán upstream</td></tr>
+            <tr data-group="web"><td><code>hosting</code></td><td><code>list</code>, <code>create</code>, <code>action</code>, <code>delete</code>, <code>logs</code></td><td><code>hosting.read</code> / <code>hosting.write</code></td><td>Quản lý ứng dụng Node.js [14], Go [23] và Python ASGI/WSGI [24]</td></tr>
+            <tr data-group="web"><td><code>webconfig</code></td><td><code>list</code>, <code>read</code>, <code>write</code>, <code>test</code>, <code>reload</code></td><td><code>webconfig.read</code> / <code>webconfig.write</code></td><td>Soạn thảo cấu hình Web Server giao dịch [25] có kiểm thử cú pháp và tự rollback</td></tr>
+            <tr data-group="web"><td><code>redirects</code></td><td><code>list</code>, <code>simulate</code>, <code>put</code>, <code>delete</code></td><td><code>redirects.read</code> / <code>redirects.write</code></td><td>Thiết lập và mô phỏng quy tắc chuyển hướng 301/302 [28]</td></tr>
+            <tr data-group="data"><td><code>fileops</code></td><td><code>list</code>, <code>read</code>, <code>write</code>, <code>action</code>, <code>chmod</code>, <code>archive</code>, <code>extract</code></td><td><code>fileops.read</code> / <code>fileops.write</code></td><td>Trình quản lý tệp OzonFS [5]: copy/move thông minh, nén/giải nén, phân quyền</td></tr>
+            <tr data-group="data"><td><code>mail</code></td><td><code>status</code>, <code>domains</code>, <code>add_domain</code>, <code>mailboxes</code>, <code>add_mailbox</code>, <code>dkim_dns</code>, <code>audit</code></td><td><code>mail.read</code> / <code>mail.write</code></td><td>Máy chủ thư đa tên miền [9], sinh khóa DKIM 2048-bit và chấm điểm chống Spam</td></tr>
+            <tr data-group="data"><td><code>databases</code></td><td><code>list</code>, <code>create</code>, <code>delete</code>, <code>backup</code>, <code>sso</code></td><td><code>databases.read</code> / <code>databases.write</code></td><td>Quản trị MySQL/MariaDB, PostgreSQL [4], sao lưu nhanh và tạo liên kết SSO</td></tr>
+            <tr data-group="data"><td><code>cache</code></td><td><code>status</code>, <code>autotune</code>, <code>flush</code></td><td><code>cache.read</code> / <code>cache.write</code></td><td>Quản lý Redis, Memcached, Meilisearch [19] và tự động chia RAM tối ưu (Auto-Tune)</td></tr>
+            <tr data-group="data"><td><code>migration</code></td><td><code>list</code>, <code>export</code>, <code>import</code>, <code>verify</code></td><td><code>migration.read</code> / <code>migration.write</code></td><td>Đóng gói Bundle bất biến và di chuyển dữ liệu giữa các máy chủ [26]</td></tr>
+            <tr data-group="sec"><td><code>dns</code></td><td><code>status</code>, <code>zones</code>, <code>put</code>, <code>delete</code></td><td><code>dns.read</code> / <code>dns.write</code></td><td>24 tác vụ vận hành Authoritative DNS BIND9 [29] có kiểm tra cú pháp</td></tr>
+            <tr data-group="sec"><td><code>notifications</code></td><td><code>status</code>, <code>channels</code>, <code>put</code>, <code>test</code>, <code>event</code></td><td><code>notifications.read</code> / <code>notifications.write</code></td><td>Cảnh báo đa kênh [30] qua Telegram, Slack, Discord, Teams, WhatsApp, Webhook</td></tr>
+            <tr data-group="sec"><td><code>firewall</code></td><td><code>status</code>, <code>allow</code>, <code>deny</code></td><td><code>firewall.read</code> / <code>firewall.write</code></td><td>Kiểm soát cổng mạng và chính sách IP qua UFW / iptables [13]</td></tr>
+            <tr data-group="sec"><td><code>waf</code></td><td><code>status</code>, <code>enable</code>, <code>disable</code>, <code>logs</code></td><td><code>waf.read</code> / <code>waf.write</code></td><td>Tường lửa ứng dụng Web ModSecurity + bộ luật OWASP CRS [36]</td></tr>
+            <tr data-group="sec"><td><code>cloudflare</code></td><td><code>status</code>, <code>purge</code>, <code>under_attack</code>, <code>sync_dns</code></td><td><code>cloudflare.read</code> / <code>cloudflare.write</code></td><td>Đồng bộ DNS, xóa bộ nhớ đệm Edge và bật chế độ chống DDoS Cloudflare [38]</td></tr>
+            <tr data-group="sec"><td><code>system</code></td><td><code>status</code>, <code>metrics</code>, <code>services</code>, <code>update_check</code></td><td><code>system.read</code></td><td>Đo lường tài nguyên [18], trạng thái dịch vụ và kiểm tra bản cập nhật mới [44]</td></tr>
+            <tr data-group="sec"><td><code>cron</code></td><td><code>list</code>, <code>add</code>, <code>remove</code></td><td><code>cron.read</code> / <code>cron.write</code></td><td>Quản lý lịch chạy tác vụ định kỳ Crontab [12]</td></tr>
+            <tr data-group="elite"><td><code>backup</code></td><td><code>status</code>, <code>list</code>, <code>create</code>, <code>run</code>, <code>verify</code>, <code>delete</code></td><td><code>backup.read</code> / <code>backup.write</code></td><td>Sao lưu định kỳ, kiểm tra toàn vẹn mã băm và đồng bộ Rclone Cloud [37]</td></tr>
+            <tr data-group="elite"><td><code>fleet</code></td><td><code>list</code>, <code>add</code>, <code>probe</code>, <code>mcp_call</code></td><td><code>fleet.read</code> / <code>fleet.write</code></td><td>Điều phối cụm 8 loại Control Panel &amp; thực thi MCP Streamable HTTP [39]</td></tr>
+            <tr data-group="elite"><td><code>n8n</code></td><td><code>status</code>, <code>deploy</code>, <code>start</code>, <code>stop</code>, <code>workflows</code></td><td><code>n8n.read</code> / <code>n8n.write</code></td><td>Triển khai và quản lý vòng đời n8n Workflow Automation Container [40]</td></tr>
+            <tr data-group="elite"><td><code>iam</code></td><td><code>users</code>, <code>roles</code>, <code>policy</code></td><td><code>iam.read</code> / <code>iam.write</code></td><td>Quản trị người dùng, phòng ban, vai trò RBAC và chính sách MFA [34]</td></tr>
+            <tr data-group="elite"><td><code>guiops</code></td><td><code>status</code>, <code>hostnames</code>, <code>port</code>, <code>restart</code></td><td><code>guiops.read</code> / <code>guiops.write</code></td><td>Quản trị cổng HTTPS, tên miền truy cập và dịch vụ Web Admin GUI [27]</td></tr>
+            <tr data-group="elite"><td><code>addons</code></td><td><code>list</code>, <code>installed</code>, <code>refresh</code>, <code>install</code>, <code>remove</code></td><td><code>addon.read</code> / <code>addon.write</code></td><td>Liệt kê, làm mới và quản lý tiện ích mở rộng từ xa [15]</td></tr>
+            <tr data-group="elite"><td><code>cli</code></td><td><code>create</code>, <code>output</code>, <code>input</code>, <code>close</code></td><td><code>cli.full</code></td><td>Phiên PTY CLI từ xa cho toàn bộ 46 module (tối đa 2 phiên đồng thời)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 16 -->
+    <section class="oz-sec dk" id="sec-16">
+      <div class="oz-kicker">Chương 16 · Local Operations Engine</div>
+      <h2 class="oz-h2">Cầu nối Thực thi Cục bộ (oz --local-ops) trong v7.2.3</h2>
+      <p>Trong OZPanel v7.2.3, bộ thực thi nội bộ <code>oz_local_ops_engine</code> cho phép các module <code>[9] Mail</code>, <code>[19] Cache</code>, <code>[34] IAM</code>, <code>[36] WAF</code> và <code>[37] Backup</code> hoạt động độc lập 100% trên máy chủ mà không phụ thuộc vào tệp <code>/opt/ozon-control-agent/oz_cloud_menu.py</code> bên ngoài. Addon của bạn có thể gọi trực tiếp qua <code>ctx.local_ops(...)</code> hoặc lệnh CLI:</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · gọi local-ops engine từ addon</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># 1. Quản trị Mail đa tên miền & kiểm tra chống Spam
+sudo /usr/bin/oz --local-ops mail-cli status
+sudo /usr/bin/oz --local-ops mail-cli audit
+
+# 2. Gọi JSON API nội bộ cho Backup [37], IAM [34] hoặc WAF [36]
+printf '{"action":"status"}' | sudo /usr/bin/oz --local-ops backup-api
+printf '{"action":"list"}'   | sudo /usr/bin/oz --local-ops iam-api users</code></pre>
+      </div>
+    </section>
+
+    <!-- 17 -->
+    <section class="oz-sec lt" id="sec-17">
+      <div class="oz-kicker">Chương 17 · Commercial Addon Licensing</div>
+      <h2 class="oz-h2">Ba Cơ chế Bản quyền Addon Trả phí</h2>
+      <p>Khi phát triển Addon thương mại, bạn cần phân biệt rõ 3 cơ chế cấp phép để chọn đúng mô hình bảo vệ:</p>
+      <div class="oz-grid-3">
+        <div class="oz-card">
+          <span class="oz-badge">Cơ chế 1 · Legacy Key</span>
+          <h4 style="margin-top:10px">File license_ID.key</h4>
+          <p>Khi cột 8 của Catalog ghi <code>Trả phí</code>, menu [15] hỏi chuỗi Key và lưu vào <code>/etc/ozon/addons/license_ID.key</code>. Addon tự đọc file này qua <code>oz_license_path</code> và tự xác thực.</p>
+        </div>
+        <div class="oz-card inv">
+          <span class="oz-badge">Cơ chế 2 · SDK Offline Ed25519</span>
+          <h4 style="margin-top:10px">license-sign / license-verify</h4>
+          <p>Dùng <code>ozsdk.py license-sign</code> ký tệp JSON chứa <code>product</code> và <code>expires_at</code> (UTC) bằng khóa Ed25519 của bạn. Addon gọi <code>oz_license_verify</code> để xác thực ngoại tuyến.</p>
+        </div>
+        <div class="oz-card">
+          <span class="oz-badge">Cơ chế 3 · Core Guarded Entitlement</span>
+          <h4 style="margin-top:10px">oz --addon-entitlement</h4>
+          <p>Dùng <code>ozsdk.py core-trust-cmd</code> để sinh lệnh ghim khóa vào <code>/usr/bin/oz --addon-license-trust</code>. Khi đó chính Core sẽ chặn khởi chạy nếu giấy phép hết hạn!</p>
+        </div>
+      </div>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · ký và xác thực license ngoại tuyến bằng ozsdk.py</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># Nhà phát hành ký cấp License cho khách hàng (hết hạn vào Unix timestamp UTC)
+python3 ozsdk.py license-sign --private ../publisher.key --product mail-guard-pro --expires-at 1893456000 --out customer_license.json
+
+# Xác thực trong mã nguồn Addon trước khi chạy tính năng Pro
+python3 ozsdk.py license-verify customer_license.json customer_license.json.sig ./publisher.pem --product mail-guard-pro</code></pre>
+      </div>
+    </section>
+
+    <!-- 18 -->
+    <section class="oz-sec dk" id="sec-18">
+      <div class="oz-kicker">Chương 18 · Store Catalog &amp; Publishing</div>
+      <h2 class="oz-h2">Cấu trúc Catalog 10 Trường &amp; Quy trình Phát hành lên Kho [15]</h2>
+      <p>Danh sách Kho tiện ích (<code>/etc/ozon/store.list</code>) sử dụng định dạng 10 trường phân cách bởi ký tự <code>|</code>. Lệnh <code>ozsdk.py catalog</code> tự động trích xuất metadata từ <code>manifest.json</code> và kiểm tra chặt chẽ định dạng URL HTTPS:</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · xuất bundle legacy và dòng catalog 10 trường</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code># 1. Đóng gói thành Bundle .sh tự xác thực chữ ký Ed25519
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/addon_9002.sh --private ../publisher.key --legacy
+
+# 2. Sinh dòng Catalog 10 trường chuẩn store.list
+python3 ozsdk.py catalog ./my-addon \
+  --url https://usercontent.chgm.in/ozpanel/sdk-1.0.2/addon_9002.sh \
+  --author "Chương Minh Studio" \
+  --company "Ozon Cloud" \
+  --size "18 KB" \
+  --license "Miễn phí" \
+  --description "Bộ công cụ kiểm tra chống Spam Mail & SSL Cloudflare" \
+  --out ./my-addon/dist/catalog-row.txt</code></pre>
+      </div>
+    </section>
+
+    <!-- 19 -->
+    <section class="oz-sec lt" id="sec-19">
+      <div class="oz-kicker">Chương 19 · Automated Quality Assurance</div>
+      <h2 class="oz-h2">Ma trận Kiểm thử Tự động (42 Unit Tests Đạt 100%)</h2>
+      <p>Bộ kiểm thử <code>tests/test_sdk.py</code> đi kèm trong gói ZIP bao phủ 42 kịch bản kiểm thử độc lập (tạo môi trường giả lập trong <code>/tmp</code>, không tác động tới hệ thống thật):</p>
+      <div class="oz-code">
+        <div class="oz-code-head"><span>bash · chạy toàn bộ 42 unit tests</span><button type="button" onclick="copyCodeBlock(this)">Sao chép</button></div>
+        <pre><code>python3 -m unittest discover -s tests -v
+# Kết quả: Ran 42 tests in ~6.5s — OK (100% Pass)</code></pre>
+      </div>
+      <div class="oz-grid-3">
+        <div class="oz-card"><h4>Bảo mật Archive &amp; Manifest</h4><p>Chống Path Traversal (<code>../</code>), chặn Symlink trong archive, chặn đóng gói nhầm file <code>.env</code> / Private Key, đảm bảo tính tái lập (Reproducible Build).</p></div>
+        <div class="oz-card"><h4>Chữ ký Ed25519 &amp; Lifecycle</h4><p>Chặn giả mạo chữ ký, chặn bypass chữ ký khi Publisher đã Trust, tự động giữ bản cũ khi Hook <code>install</code>/<code>health</code> báo lỗi, kiểm tra khóa đồng thời <code>flock</code>.</p></div>
+        <div class="oz-card"><h4>Tích hợp API &amp; Helpers v7.2.3</h4><p>Kiểm tra <code>api-catalog</code>, <code>core-status</code>, <code>core-trust-cmd</code>, <code>mail_antispam_dns</code>, <code>file_action</code>, <code>ssl_issue</code>, <code>oz_shimmer_banner</code> và chống rò rỉ Token qua HTTP Redirect.</p></div>
+      </div>
+    </section>
+
+    <!-- 20 -->
+    <section class="oz-sec dk" id="sec-20">
+      <div class="oz-kicker">Chương 20 · Release Intelligence</div>
+      <h2 class="oz-h2">Lịch sử Phiên bản SDK &amp; OZPanel Core</h2>
+      <p>Tra cứu nhanh các mốc nâng cấp giữa bộ SDK và nhân điều khiển OZPanel Cloud:</p>
+      <div class="oz-release-grid">
+        <div class="oz-release-list" role="tablist">
+          <button type="button" class="oz-release-btn active" data-rel="1.2.0"><b>SDK v1.2.0 · Core v7.2.3</b><small>CURRENT · Production Release</small></button>
+          <button type="button" class="oz-release-btn" data-rel="1.1.0"><b>SDK v1.1.0 · Core v7.2.1</b><small>MILESTONE · APT &amp; EL Runtime</small></button>
+          <button type="button" class="oz-release-btn" data-rel="1.0.0"><b>SDK v1.0.0 · Core v7.2.0</b><small>MILESTONE · Initial Spec</small></button>
+        </div>
+        <div class="oz-release-detail" id="ozSdkReleaseDetail"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* 1. Theme Toggle (.dk / .lt) */
+(function(){
+  const body = document.getElementById('ozDocBody');
+  const btn = document.getElementById('ozThemeBtn');
+  btn.addEventListener('click', () => {
+    const isDark = body.classList.contains('dk');
+    body.classList.toggle('dk', !isDark);
+    body.classList.toggle('lt', isDark);
+  });
+})();
+
+/* 2. Hero 4-Tab SDK Console */
+(function(){
+  const tabs = Array.from(document.querySelectorAll('#sdkConsole .oz-tab'));
+  const panes = {
+    init: document.getElementById('ozPaneInit'),
+    deploy: document.getElementById('ozPaneDeploy'),
+    legacy: document.getElementById('ozPaneLegacy'),
+    repair: document.getElementById('ozPaneRepair')
+  };
+  const prompts = {
+    init: 'dev@workstation:~/oz-sdk# ozsdk.py pack --private',
+    deploy: 'root@vps:/etc/ozon# ozsdk.py install --confirm --legacy',
+    legacy: 'dev@workstation:~/oz-sdk# ozsdk.py catalog --url',
+    repair: 'root@vps:~# oz-recovery-upgrade v7.2.3'
+  };
+  const hints = {
+    init: '<i class="ph-bold ph-check-circle"></i><strong>Chuẩn SDK v1.2.0:</strong> Tự động kiểm tra cú pháp <code>bash -n</code>, tạo bảng băm SHA-256 và ký Ed25519',
+    deploy: '<i class="ph-bold ph-shield-check"></i><strong>Triển khai an toàn:</strong> Giải nén vào Staging, kiểm tra <code>health</code> trước khi kích hoạt và giữ bản cũ để Rollback',
+    legacy: '<i class="ph-bold ph-storefront"></i><strong>Tương thích Kho [15]:</strong> Sinh Bundle <code>.sh</code> tự xác thực chữ ký Ed25519 và dòng Catalog 10 trường',
+    repair: '<i class="ph-bold ph-arrows-clockwise"></i><strong>Khôi phục &amp; Cập nhật nóng:</strong> Tải <code>oz_installer_vi</code> mới nhất bỏ qua cache CDN, cài đè nguyên tử và giữ nguyên 100% dữ liệu'
+  };
+  let active = 'init';
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      active = t.dataset.tab;
+      tabs.forEach(x => x.setAttribute('aria-selected', x === t ? 'true' : 'false'));
+      Object.keys(panes).forEach(k => panes[k].hidden = (k !== active));
+      document.getElementById('ozConsolePrompt').textContent = prompts[active];
+      document.getElementById('ozConsoleHint').innerHTML = hints[active];
+    });
+  });
+  document.getElementById('ozHeroCopyBtn').addEventListener('click', function(){
+    copyText(panes[active].textContent, this);
+  });
+})();
+
+/* 3. Copy Helper */
+async function copyText(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (_) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (_) {}
+    document.body.removeChild(ta);
+  }
+  if (!btn) return;
+  const span = btn.querySelector('span') || btn;
+  const orig = span.textContent;
+  span.textContent = 'Đã sao chép';
+  btn.classList.add('is-done');
+  setTimeout(() => { span.textContent = orig; btn.classList.remove('is-done'); }, 1800);
+}
+window.copyCodeBlock = function(btn) {
+  const pre = btn.closest('.oz-code').querySelector('pre');
+  if (pre) copyText(pre.textContent, btn);
+};
+
+/* 4. Live Search (Ctrl+K) & Sidebar Active Highlight */
+(function(){
+  const input = document.getElementById('ozDocSearch');
+  const sections = Array.from(document.querySelectorAll('.oz-sec'));
+  const navLinks = Array.from(document.querySelectorAll('.oz-nav-link'));
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    sections.forEach(sec => {
+      const match = !q || sec.textContent.toLowerCase().includes(q);
+      sec.style.display = match ? '' : 'none';
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      input.focus();
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+})();
+
+/* 5. API Matrix Filter */
+(function(){
+  const btns = Array.from(document.querySelectorAll('.oz-api-filter'));
+  const rows = Array.from(document.querySelectorAll('#ozApiMatrixTable tbody tr'));
+  const badge = document.getElementById('ozApiCountBadge');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const g = btn.dataset.group;
+      btns.forEach(b => b.classList.toggle('active', b === btn));
+      let n = 0;
+      rows.forEach(r => {
+        const show = (g === 'all' || r.dataset.group === g);
+        r.hidden = !show;
+        if (show) n++;
+      });
+      badge.textContent = 'Hiển thị ' + n + ' nhóm tài nguyên';
+    });
+  });
+})();
+
+/* 6. Release Explorer */
+(function(){
+  const data = {
+    '1.2.0': {
+      title: 'Đồng bộ Toàn diện OZPanel v7.2.3 · GUI [27] Workbench · Mail Anti-Spam [9] · OzonFS [5] · 25 Nhóm API [31]',
+      items: [
+        'Nâng chuẩn tương thích baseline lên OZPanel Cloud v7.2.3; bổ sung lệnh ozsdk.py api-catalog, core-status và core-trust-cmd.',
+        'Mở rộng manifest.json Schema v1 hỗ trợ khai báo category và gui_workbench cho Giao diện Quản trị Web [27].',
+        'Nâng cấp lib/ozaddon.py với các phương thức gọi trực tiếp API v7.2.3: api_call(), mail_antispam_dns(), mail_deliverability_audit(), file_action(), ssl_issue(), local_ops() và check_core_entitlement().',
+        'Nâng cấp lib/ozaddon.sh với hàm oz_shimmer_banner (hiệu ứng ánh sáng chuyển động nhẹ nhàng trên CLI và tự động tương thích OZ_GUI_FORM=1), oz_api_call và oz_local_ops.',
+        'Mở rộng bộ kiểm thử tự động tests/test_sdk.py từ 37 lên 42 bài test đạt 100%; thiết kế lại toàn bộ tài liệu theo ngôn ngữ Square Mono của trang chủ OZPanel.'
+      ]
+    },
+    '1.1.0': {
+      title: 'Hợp nhất Runtime APT & EL · Ký số Ed25519 · Offline Addon License',
+      items: [
+        'Bổ sung runtime thực thi đầy đủ cho nhánh APT (Ubuntu 24.04, Debian 11/12/13) song song với nhánh EL (AlmaLinux/Rocky 9/10).',
+        'Hỗ trợ đóng gói .ozaddon có chữ ký Ed25519, xuất bundle --legacy .sh, sinh dòng catalog 10 trường và ký/xác thực license ngoại tuyến.',
+        'Khóa chặt bảo mật: không cho phép --allow-unsigned vượt qua Publisher đã Trust, kiểm tra tính bất biến của payload sau khi chạy Hook.'
+      ]
+    },
+    '1.0.0': {
+      title: 'Đặc tả Kiến trúc SDK Ban đầu cho OZPanel v7.2.0',
+      items: [
+        'Định nghĩa chuẩn manifest.json Schema v1, bố cục thư mục bin/, hooks/, locales/ và quy ước phân biệt 3 luồng Addon.'
+      ]
+    }
+  };
+  const btns = Array.from(document.querySelectorAll('.oz-release-btn'));
+  const host = document.getElementById('ozSdkReleaseDetail');
+  function render(ver) {
+    const d = data[ver];
+    host.innerHTML = '<span class="oz-badge inv">RELEASE v' + ver + '</span>' +
+      '<h3 class="oz-h3" style="margin-top:10px">' + d.title + '</h3>' +
+      '<ul>' + d.items.map(x => '<li>' + x + '</li>').join('') + '</ul>';
+  }
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.classList.toggle('active', x === b));
+    render(b.dataset.rel);
+  }));
+  render('1.2.0');
+})();
+
+/* 7. CDN Sample & SDK Links (https://usercontent.chgm.in/ozpanel/sdk-1.0.2) */
+window.OZ_SDK_CDN_BASE = 'https://usercontent.chgm.in/ozpanel/sdk-1.0.2';
+</script>
+</body>
+</html>

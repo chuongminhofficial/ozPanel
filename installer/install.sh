@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# OZPanel 9.1.3 (OZV8-Fortress) — Signed Native Bootstrap & Atomic Updater
+# OZPanel 9.1.4 (OZV8-Fortress+) — Signed Native Bootstrap & Atomic Updater
 # ==============================================================================
 # - Acquires /etc/ozon/native/release.lock BEFORE any state read or mutation.
 # - Preserves /etc/ozon/native/revoked.lock, /etc/ozon/native/runtime.lease, and

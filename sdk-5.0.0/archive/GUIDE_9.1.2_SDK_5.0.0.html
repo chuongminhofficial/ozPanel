@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OZPanel v9.1.2 · Addon Developer &amp; User Guide (SDK 5.0.0)</title>
+<style>
+:root{--bg:#f8fafc;--surface:#ffffff;--surface2:#f1f5f9;--text:#0f172a;--muted:#475569;--border:#e2e8f0;--accent:#2563eb;--accent2:#1d4ed8;--accent-soft:#eff6ff;--ok:#10b981;--warn:#f59e0b;--code-bg:#0f172a;--code-fg:#e2e8f0;--shadow:0 4px 18px rgba(15,23,42,.06)}
+html.dark{--bg:#0b1120;--surface:#111827;--surface2:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--border:#1f2937;--accent:#60a5fa;--accent2:#3b82f6;--accent-soft:rgba(37,99,235,.16);--code-bg:#020617;--code-fg:#e2e8f0;--shadow:0 4px 20px rgba(0,0,0,.35)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.68 "Segoe UI",Inter,system-ui,-apple-system,sans-serif;transition:background .2s,color .2s}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 24px;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:750;font-size:16px;letter-spacing:-.02em}
+.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent);border:1px solid rgba(37,99,235,.22)}
+.tabs{display:flex;gap:6px;background:var(--surface2);padding:4px;border-radius:10px}
+.tab-btn{border:0;background:transparent;color:var(--muted);padding:7px 14px;border-radius:7px;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
+.tab-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3)}
+.controls{display:flex;align-items:center;gap:8px}
+.search-box{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;width:220px}
+.theme-btn{border:1px solid var(--border);background:var(--surface2);color:var(--text);padding:7px 11px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
+.layout{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;padding:24px}
+.toc{position:sticky;top:76px;align-self:start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 100px);overflow:auto;box-shadow:var(--shadow)}
+.toc h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.toc a{display:block;padding:6px 9px;border-radius:7px;color:var(--muted);font-size:13px;margin:2px 0;transition:.13s}
+.toc a:hover{background:var(--accent-soft);color:var(--accent);text-decoration:none}
+.content{min-width:0}
+.hero{background:linear-gradient(135deg,#1d4ed8 0%,#0f172a 100%);color:#fff;padding:28px 30px;border-radius:16px;margin-bottom:20px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 8px;font-size:26px;letter-spacing:-.02em}
+.hero p{margin:0 0 14px;color:#cbd5e1;max-width:780px}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px}
+.hero-chips span{font-size:12px;background:rgba(255,255,255,.12);padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:18px;box-shadow:var(--shadow)}
+.card h2{margin:0 0 12px;font-size:18px;padding-bottom:10px;border-bottom:1px solid var(--border);letter-spacing:-.01em}
+.card h3{margin:16px 0 8px;font-size:15px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:12px 0}
+.mini{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px 15px}
+.mini strong{display:block;margin-bottom:4px;font-size:13.5px}
+.mini p{margin:0;color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--surface2);color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+code{font-family:ui-monospace,"JetBrains Mono",Consolas,monospace;font-size:12.5px;background:var(--surface2);padding:2px 6px;border-radius:5px}
+.code-wrap{position:relative;margin:12px 0}
+pre{margin:0;background:var(--code-bg);color:var(--code-fg);padding:14px 16px;border-radius:10px;overflow:auto;font:12.5px/1.6 ui-monospace,"JetBrains Mono",Consolas,monospace}
+.copy-btn{position:absolute;top:8px;right:8px;border:1px solid rgba(148,163,184,.3);background:rgba(15,23,42,.8);color:#e2e8f0;padding:4px 9px;border-radius:6px;font-size:11.5px;cursor:pointer}
+.copy-btn:hover{background:#2563eb;border-color:#2563eb}
+.callout{padding:12px 15px;border-radius:10px;background:var(--accent-soft);border-left:4px solid var(--accent);margin:12px 0;font-size:13.5px}
+.footer{text-align:center;color:var(--muted);font-size:12.5px;padding:20px 0 36px}
+[hidden]{display:none!important}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.toc{position:static;max-height:none}.search-box{width:100%}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>⚡ OZPanel Addon Guide</span><span class="badge">v9.1.2 · SDK 5.0.0</span></div>
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="dev" type="button">👨‍💻 Nhà phát triển Addon</button>
+    <button class="tab-btn" data-tab="user" type="button">👤 Người dùng cuối</button>
+  </div>
+  <div class="controls">
+    <input id="searchInput" class="search-box" type="search" placeholder="Tìm nhanh (manifest, hook, ký số...)">
+    <button id="themeToggle" class="theme-btn" type="button">🌙 Tối</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="toc" id="tocBox"></aside>
+  <main class="content">
+    <section class="hero">
+      <h1>OZPanel v9.1.2 — Bộ Tài liệu Addon SDK 5.0.0</h1>
+      <p>Hướng dẫn toàn diện cho Nhà phát triển xây dựng, ký số Ed25519 &amp; xuất bản Addon chuẩn <code>.ozaddon</code>, và cho Người dùng cuối cài đặt, vận hành an toàn trên CLI <code>[15]</code>, Web GUI <code>[27]</code> &amp; Trợ lý AI DevOps <code>[32]</code>.</p>
+      <div class="hero-chips">
+        <span>OZPanel v9.1.2 (Linux x64 &amp; ARM64)</span>
+        <span>SDK 5.0.0 (Win/Mac/Linux CLI)</span>
+        <span>OZV7-Fortress · Ed25519 + SHA-256</span>
+        <span>46 Nhóm · 830 API Ops · AI [32]</span>
+      </div>
+    </section>
+
+    <!-- TAB 1: DEVELOPER GUIDE -->
+    <div id="pane-dev">
+      <section class="card" id="dev-quickstart" data-title="1. Bắt đầu nhanh (5 phút)">
+        <h2>1. Bắt đầu nhanh cho Nhà phát triển (5 phút)</h2>
+        <p><code>ozsdk.py</code> trong SDK 5.0.0 hỗ trợ chạy trực tiếp trên <strong>Linux, macOS và Windows</strong> để bạn khởi tạo, kiểm thử và đóng gói Addon ngay trên máy lập trình.</p>
+        <div class="code-wrap"><button class="copy-btn" type="button">Copy</button><pre>python3 ozsdk.py --version
+python3 ozsdk.py init ./my-addon --id 9010 --publisher my-studio --name "My Super Addon" --category automation
+python3 ozsdk.py validate ./my-addon
+python3 ozsdk.py audit ./my-addon
+python3 ozsdk.py keygen --out ./keys
+python3 ozsdk.py pack ./my-addon --out ./dist/addon_9010.ozaddon --sign-key ./keys/publisher-private.pem
+python3 ozsdk.py verify ./dist/addon_9010.ozaddon --pub-key ./keys/publisher-public.pem</pre></div>
+      </section>
+
+      <section class="card" id="dev-manifest" data-title="2. Cấu trúc & manifest.json">
+        <h2>2. Cấu trúc gói .ozaddon &amp; Đặc tả manifest.json</h2>
+        <div class="code-wrap"><button class="copy-btn" type="button">Copy</button><pre>{
+  "schema": 1,
+  "id": 9010,
+  "publisher": "my-studio",
+  "name": "My Super Addon (OZPanel v9.1.2)",
+  "version": "1.0.0",
+  "min_panel_version": "9.0.0",
+  "category": "automation",
+  "entrypoint": "bin/main.sh",
+  "architectures": ["any"],
+  "permissions": ["system.read", "ssl.read", "ai.read"],
+  "hooks": {
+    "install": "hooks/install.sh",
+    "upgrade": "hooks/upgrade.sh",
+    "health": "hooks/health.sh",
+    "rollback": "hooks/rollback.sh",
+    "uninstall": "hooks/uninstall.sh"
+  },
+  "locales": { "vi": "locales/vi.json", "en": "locales/en.json" },
+  "gui_workbench": {
+    "actions": [
+      { "key": "1", "label": "Kiểm tra hệ thống & OZPanel v9.1.2" },
+      { "key": "2", "label": "Lấy Báo cáo Ca trực SRE AI [32]" }
+    ]
+  }
+}</pre></div>
+        <div class="grid2">
+          <div class="mini"><strong>5 Lifecycle Hooks</strong><p><code>install.sh</code>, <code>upgrade.sh</code>, <code>health.sh</code>, <code>rollback.sh</code>, <code>uninstall.sh</code> — đều phải idempotent và không hỏi <code>read</code> tương tác trong <code>install.sh</code>.</p></div>
+          <div class="mini"><strong>Web GUI [27] tự động</strong><p>Chỉ cần khai báo <code>gui_workbench.actions</code>, Web GUI [27] tự tạo thanh công cụ và form bấm nút trực quan.</p></div>
+        </div>
+      </section>
+
+      <section class="card" id="dev-runtime" data-title="3. Thư viện ozaddon.sh & API v9.1.2">
+        <h2>3. Thư viện Runtime ozaddon.sh / ozaddon.py &amp; API v9.1.2</h2>
+        <table>
+          <thead><tr><th>Hàm Bash (SDK 5.0.0)</th><th>Chức năng</th></tr></thead>
+          <tbody>
+            <tr><td><code>oz_get &lt;k&gt;</code> / <code>oz_set &lt;k&gt;</code></td><td>Đọc/ghi cấu hình JSON nguyên tử (atomic) trong <code>$OZ_ADDON_DATA/config.json</code></td></tr>
+            <tr><td><code>oz_shield_status</code> / <code>oz_lease_status</code></td><td>Kiểm tra trạng thái bảo vệ <code>OZV7-Fortress</code> &amp; Cloud Lease 72-byte</td></tr>
+            <tr><td><code>oz_api_call &lt;res&gt; &lt;act&gt;</code></td><td>Gọi trực tiếp 830 thao tác REST API <code>[31]</code> (OpenAPI 3.1)</td></tr>
+            <tr><td><code>oz_ai_shift_report</code> <em>(v9.1.2)</em></td><td>Lấy Báo cáo Ca trực SRE từ Trợ lý AI DevOps <code>[32]</code></td></tr>
+            <tr><td><code>oz_loadbalancer</code> / <code>oz_cloudflare</code></td><td>Tương tác Cân bằng tải <code>[33]</code> &amp; Cloudflare Proxy Xám/Cam <code>[38]</code></td></tr>
+            <tr><td><code>oz_fleet</code> / <code>oz_panel_groups</code> / <code>oz_gui_sso</code></td><td>Quản lý Đa máy chủ Fleet/MCP <code>[39]</code>, danh mục 46 nhóm &amp; SSO Web GUI <code>[27]</code></td></tr>
+            <tr><td><code>oz_log "msg"</code></td><td>Ghi nhật ký chuẩn hiển thị ngay tại <code>[15] → [7]</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card" id="dev-publish" data-title="4. Ký số, Kiểm thử & Xuất bản">
+        <h2>4. Ký số Ed25519, SBOM &amp; Phân phối qua GitHub Raw</h2>
+        <div class="callout"><strong>Khuyên dùng:</strong> Phân phối gói <code>.ozaddon</code> qua <code>https://raw.githubusercontent.com/&lt;user&gt;/&lt;repo&gt;/main/addon_9010.ozaddon</code> để tránh lỗi redirect khi máy chủ tải trực tiếp.</div>
+        <div class="code-wrap"><button class="copy-btn" type="button">Copy</button><pre>python3 ozsdk.py sbom ./my-addon --out ./dist/addon_9010.sbom.json
+python3 ozsdk.py catalog ./dist/addon_9010.ozaddon --url "https://raw.githubusercontent.com/user/repo/main/addon_9010.ozaddon"
+python3 -m unittest discover -s tests -p "test_*.py" -v</pre></div>
+      </section>
+    </div>
+
+    <!-- TAB 2: END USER GUIDE -->
+    <div id="pane-user" hidden>
+      <section class="card" id="user-install" data-title="1. Cài đặt Addon trên OZPanel">
+        <h2>1. Cách cài đặt Addon trên OZPanel v9.1.2</h2>
+        <div class="grid2">
+          <div class="mini"><strong>Qua SSH Terminal [15]</strong><p>Gõ <code>oz</code> → chọn <code>15</code> (Kho tiện ích) → chọn <code>1</code> để cài từ Chợ hoặc <code>6</code> để dán URL <code>.ozaddon</code> trực tiếp.</p></div>
+          <div class="mini"><strong>Qua Web GUI [27]</strong><p>Đăng nhập Web GUI (cổng 8443) → mở thẻ <strong>[15] Kho tiện ích</strong> → bấm nút cài đặt / chạy trực quan bằng chuột.</p></div>
+        </div>
+        <div class="code-wrap"><button class="copy-btn" type="button">Copy</button><pre># Cài nhanh OZPanel v9.1.2 từ link Raw chính thức
+curl -fsSL https://raw.githubusercontent.com/chuongminhofficial/ozPanel/main/install.sh | sudo bash</pre></div>
+      </section>
+
+      <section class="card" id="user-menu" data-title="2. Bảng 8 chức năng Menu [15]">
+        <h2>2. Bảng 8 chức năng quản lý Addon trong Menu [15]</h2>
+        <table>
+          <thead><tr><th>Mục</th><th>Tính năng</th><th>Công dụng thực tế</th></tr></thead>
+          <tbody>
+            <tr><td><code>[1]</code></td><td>Tải xuống / Nhập License</td><td>Cài Addon từ Kho theo ID, nhập mã bản quyền nếu là gói trả phí</td></tr>
+            <tr><td><code>[2]</code></td><td>Cập nhật Addon</td><td>Nâng lên phiên bản mới nhất, giữ nguyên dữ liệu cấu hình cũ</td></tr>
+            <tr><td><code>[3]</code></td><td>Khởi chạy Addon</td><td>Mở menu/công cụ Addon đã cài (hỗ trợ <code>.ozaddon</code>, <code>.sh</code>, <code>.bin</code>)</td></tr>
+            <tr><td><code>[4]</code></td><td>Gỡ cài đặt / Xóa License</td><td>Gỡ sạch Addon không còn sử dụng</td></tr>
+            <tr><td><code>[5]</code></td><td>Làm mới danh sách Chợ</td><td>Cập nhật danh mục mới nhất từ máy chủ</td></tr>
+            <tr><td><code>[6]</code></td><td>Thêm Addon nội bộ từ URL</td><td>Cài trực tiếp gói <code>.ozaddon</code> từ link GitHub Raw hoặc URL riêng</td></tr>
+            <tr><td><code>[7]</code></td><td>Xem nhật ký theo ID</td><td>Đọc log chạy/lỗi để chẩn đoán sự cố nhanh</td></tr>
+            <tr><td><code>[8]</code></td><td>Xem / Khôi phục cách ly</td><td>Khôi phục (Rollback) Addon nếu có bản cập nhật lỗi</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card" id="user-faq" data-title="3. An toàn & Xử lý sự cố">
+        <h2>3. Kiểm tra an toàn &amp; Xử lý sự cố thường gặp</h2>
+        <ul>
+          <li><strong>Xác minh SHA-256 trước khi cài:</strong> Chạy <code>sha256sum -c addon_9002.ozaddon.sha256</code>.</li>
+          <li><strong>Lỗi phiên bản <code>min_panel_version</code>:</strong> Mở <code>[44] Cập nhật hệ thống</code> để nâng OZPanel lên <code>v9.1.2</code> rồi cài lại.</li>
+          <li><strong>Addon bị cách ly:</strong> Xem nguyên nhân tại <code>[15] → [7]</code> và khôi phục bản ổn định tại <code>[15] → [8]</code>.</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="footer">OZPanel v9.1.2 · Addon Developer &amp; User Documentation (SDK 5.0.0) · © 2026 Chương Minh Studio</footer>
+  </main>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const panes = { dev: document.getElementById('pane-dev'), user: document.getElementById('pane-user') };
+const tocBox = document.getElementById('tocBox');
+let activeTab = 'dev';
+
+function buildToc() {
+  const pane = panes[activeTab];
+  const cards = pane.querySelectorAll('.card[id]');
+  tocBox.innerHTML = '<h3>' + (activeTab === 'dev' ? 'Mục lục Nhà phát triển' : 'Mục lục Người dùng') + '</h3>' +
+    Array.from(cards).map(c => `<a href="#${c.id}">${c.dataset.title || c.querySelector('h2')?.textContent}</a>`).join('');
+}
+tabs.forEach(b => b.onclick = () => {
+  activeTab = b.dataset.tab;
+  tabs.forEach(x => x.classList.toggle('active', x === b));
+  Object.entries(panes).forEach(([k, p]) => p.hidden = (k !== activeTab));
+  buildToc();
+});
+document.getElementById('searchInput').oninput = e => {
+  const q = e.target.value.trim().toLowerCase();
+  panes[activeTab].querySelectorAll('.card').forEach(c => {
+    c.hidden = Boolean(q && !c.textContent.toLowerCase().includes(q));
+  });
+};
+const themeBtn = document.getElementById('themeToggle');
+themeBtn.onclick = () => {
+  const isDark = document.documentElement.classList.toggle('dark');
+  themeBtn.textContent = isDark ? '☀️ Sáng' : '🌙 Tối';
+};
+document.querySelectorAll('.copy-btn').forEach(btn => btn.onclick = async () => {
+  const code = btn.nextElementSibling?.textContent || '';
+  try { await navigator.clipboard.writeText(code); btn.textContent = '✓ Đã copy'; setTimeout(() => btn.textContent = 'Copy', 1400); } catch {}
+});
+buildToc();
+</script>
+</body>
+</html>

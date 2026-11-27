@@ -4,4 +4,7 @@ Thumbs.db
 *.bak
 *.key
 *.pem
+!**/publisher-demo-public.pem
 .env
+__pycache__/
+*.py[cod]

@@ -1,0 +1,2 @@
+9001|OZPanel Classic Demo (OZV8-Fortress+)|Chương Minh Studio|Ozon Cloud|5.0.0|2026-11-28|4 KB|Miễn phí|Addon mẫu Classic 1-file tương thích OZPanel v9.1.4, OZV8-Fortress+ & Web GUI [27]|https://usercontent.chgm.in/ozpanel/sdk-5.0.0/addon_demo_9001.sh
+9002|OZ Native Example (OZPanel v9.1.4 · SDK 5.0.0)|Chương Minh Studio|Ozon Cloud|5.0.0|2026-11-28|15 KB|Miễn phí|OZ Native Example (OZPanel v9.1.4 · OZV8-Fortress+ · SDK 5.0.0 · GUI Workbench)|https://usercontent.chgm.in/ozpanel/sdk-5.0.0/addon_9002.sh

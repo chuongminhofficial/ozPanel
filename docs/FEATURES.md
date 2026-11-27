@@ -1,4 +1,4 @@
-﻿# OZPanel v9.1.3 — Complete 46-Group Feature Matrix
+﻿# OZPanel v9.1.4 — Complete 46-Group Feature Matrix
 
 | ID | Module | Capabilities |
 | :-: | :--- | :--- |
@@ -16,7 +16,7 @@
 | 12 | Cronjob Scheduler | Shell/URL/PHP/Laravel/WordPress crons, Systemd timers, instant test run |
 | 13 | Firewall & Fail2Ban | UFW/iptables port rules, multi-layer IP ban/unban, stealth ping, Fail2Ban sync |
 | 14 | Node.js Applications | Deploy/start/stop/restart, PM2/systemd, `.env` sync, cluster scale, domain binding |
-| 15 | Addon Store | Cloud addon catalog, install/update/remove CLI & system tools |
+| 15 | Addon Store & SDK 5.0.0 | Cloud addon catalog, install/update/remove CLI & system tools, Ed25519 `.ozaddon` SDK 5.0.0 (`sdk-5.0.0/`) |
 | 16 | Swap Memory | Create/resize/remove swapfile, `vm.swappiness` & VFS cache tuning |
 | 17 | Malware & Virus Scanner | Heuristic webshell engine, ClamAV deep scan, quarantine vault, daily cron |
 | 18 | Resource Monitor | Real-time CPU/RAM/Disk/Inodes, top processes, listening ports, safe PageCache drop |
@@ -28,12 +28,12 @@
 | 24 | Python Applications | Venv + ASGI/WSGI deploy, start/stop/restart, `.env` sync, domain binding |
 | 25 | Website Config | Vhost inspection/editing, 503 maintenance mode, security headers, snapshots & rollback |
 | 26 | Server Migration | Inventory, 1-click `.tar.gz` bundle export/import, SSH remote check |
-| 27 | Web Admin GUI | Standalone 100% Standalone HTTPS Web Admin Studio (zero CLI dependency, Ctrl+K palette, Live PTY/Quick Exec, 1-Click SSO) |
+| 27 | Web Admin GUI | 100% Standalone HTTPS Web Admin Studio (zero CLI dependency, full forms/controls, Ctrl+K palette, Live PTY/Quick Exec, 1-Click SSO) |
 | 28 | URL Redirects | 301/302 rules, www canonicalization, Force HTTPS |
 | 29 | Authoritative DNS | BIND9 zones & records CRUD, syntax check, Cloudflare DNS sync |
-| 30 | Multi-Channel Alerts | Telegram, Zalo, Slack, WhatsApp, Discord notifications & resource thresholds |
-| 31 | Enterprise API Gateway | Go gateway, OpenAPI 3.1 (854 endpoints / 119 resources, Batch/DAG, Cloudflare/SSL/DB/Trash/IAM), Bearer/RBAC tokens, IP ACL, Swagger UI |
-| 32 | AI DevOps Engineer | Multi-provider LLM, Multi-Task DAG, 7-tool MCP server, 1-prompt Multi-Task DevOps synthesis, 24/7 Watchdog & Shift Infrastructure Reports |
+| 30 | Multi-Channel Alerts | Telegram, Zalo, Slack, WhatsApp, Discord notifications & load-aware thresholds |
+| 31 | Enterprise API Gateway | Go gateway, OpenAPI 3.1 (932 operations / 125 resources, Batch/DAG, Cloudflare/SSL/DB/Trash/IAM), Bearer/RBAC tokens, IP ACL, Swagger UI |
+| 32 | AI DevOps Engineer | Multi-provider LLM, deep config/log auto-remediation, single-prompt compound execution, 8-Tool MCP server, load-aware Watchdog & Shift Reports |
 | 33 | Load Balancer | Nginx L7 Upstream pools (Round-Robin, Least-Conn, IP-Hash), live TCP latency health probe |
 | 34 | IAM & RBAC | Subaccounts, roles, departments, scoped permissions |
 | 35 | Immutable Secure Folders | `chattr +i` web core protection & emergency unlock |

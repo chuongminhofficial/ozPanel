@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="vi" data-type="tech">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OZPanel Addon SDK 5.0.0: Tài liệu phát triển và vận hành cho v9.1.4</title>
+<meta name="description" content="Tài liệu kỹ thuật và hướng dẫn vận hành Addon SDK 5.0.0 trên OZPanel v9.1.4 cho nhà phát triển và quản trị viên máy chủ Linux.">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="site-kind" content="tech">
+<style>
+:root{
+  --bg:#f8fafc;
+  --surface:#ffffff;
+  --surface-2:#f1f5f9;
+  --text:#0f172a;
+  --muted:#334155;
+  --border:#cbd5e1;
+  --accent:#1d4ed8;
+  --accent-strong:#1e40af;
+  --accent-soft:#eff6ff;
+  --accent-border:#93c5fd;
+  --ok:#047857;
+  --code-bg:#0f172a;
+  --code-bar:#1e293b;
+  --code-fg:#f1f5f9;
+  --shadow:0 4px 16px -4px rgba(15,23,42,.08);
+  --scroll-track:#f1f5f9;
+  --scroll-thumb:#94a3b8;
+}
+html.dark{
+  --bg:#0b1120;
+  --surface:#111827;
+  --surface-2:#1e293b;
+  --text:#f8fafc;
+  --muted:#cbd5e1;
+  --border:#334155;
+  --accent:#60a5fa;
+  --accent-strong:#3b82f6;
+  --accent-soft:rgba(37,99,235,.18);
+  --accent-border:rgba(96,165,250,.45);
+  --ok:#34d399;
+  --code-bg:#020617;
+  --code-bar:#0f172a;
+  --code-fg:#f1f5f9;
+  --shadow:0 6px 20px -4px rgba(0,0,0,.45);
+  --scroll-track:#0b1120;
+  --scroll-thumb:#475569;
+}
+*{box-sizing:border-box}
+button,input,select,textarea{font-family:inherit}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--scroll-track)}
+::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:999px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  caret-color:var(--accent);
+  font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  overflow-x:clip;
+}
+a{color:var(--accent);text-decoration:none;text-underline-offset:3px}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tab-btn.active:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.copy-btn:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+.skip-link{
+  position:absolute;left:12px;top:8px;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;z-index:100;
+  background:var(--accent);color:#fff;border-radius:8px;font-weight:700;
+}
+.skip-link:focus{position:fixed;width:auto;height:auto;overflow:visible;clip-path:none;padding:10px 14px}
+
+.topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding:10px 24px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.02em}
+.brand-mark{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;flex:none;
+}
+.ver-pill{
+  font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-border);
+  white-space:nowrap;
+}
+.tabs{display:inline-flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:10px;border:1px solid var(--border)}
+.tab-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;
+  border:0;background:transparent;color:var(--text);
+  padding:8px 14px;border-radius:7px;font-weight:600;font-size:14px;cursor:pointer;
+  white-space:nowrap;
+}
+.tab-btn:hover{background:var(--surface)}
+.tab-btn.active{background:var(--accent);color:#fff}
+.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.search-field{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.search-label{font-size:13.5px;font-weight:600;color:var(--text);white-space:nowrap}
+.search-box{
+  min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:14.5px;width:210px;max-width:100%;
+}
+.theme-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text);
+  padding:8px 13px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap;
+}
+
+.layout{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;padding:24px}
+.toc{
+  position:sticky;top:82px;align-self:start;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px;max-height:calc(100vh - 102px);overflow:auto;box-shadow:var(--shadow);
+}
+.toc h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.toc a{
+  display:flex;align-items:center;min-height:44px;padding:6px 0;border-radius:7px;
+  color:var(--text);font-size:14px;margin:2px 0;font-weight:500;
+}
+.toc a:hover,.toc a.current{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+
+.content{min-width:0}
+.overview-panel{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:28px;margin-bottom:22px;box-shadow:var(--shadow);
+}
+.overview-panel h1{
+  margin:0 0 10px;font-size:clamp(22px,2.8vw,30px);line-height:1.22;
+  letter-spacing:-.025em;font-weight:750;text-wrap:balance;
+}
+.overview-panel p{margin:0 0 18px;color:var(--text);max-width:68ch;font-size:16px;text-wrap:pretty}
+.spec-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.spec-item{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:0;
+}
+.spec-k{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.spec-v{display:block;font-size:15px;font-weight:700;color:var(--text)}
+
+.section-block{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:26px 28px;margin-bottom:22px;box-shadow:var(--shadow);
+}
+.section-block h2{
+  margin:0 0 16px;font-size:20px;letter-spacing:-.015em;text-wrap:balance;
+}
+.section-block h3{margin:20px 0 10px;font-size:16px}
+.section-block p,.section-block li{max-width:72ch;font-size:16px;color:var(--text);text-wrap:pretty;overflow-wrap:anywhere}
+.section-block ul,.section-block ol{padding-left:20px;margin:12px 0}
+.section-block li+li{margin-top:8px}
+
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:16px 0 4px}
+.info-tile{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:15px 16px;min-width:0}
+.info-tile strong{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:15px;color:var(--text)}
+.info-tile p{margin:0;color:var(--text);font-size:16px;text-wrap:pretty}
+
+.table-scroll{overflow-x:auto;margin:14px 0 4px;border:1px solid var(--border);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:var(--surface)}
+th,td{padding:11px 13px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+tr:last-child td{border-bottom:0}
+th{background:var(--surface-2);color:var(--text);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.fn-col td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;font-weight:700;color:var(--accent);white-space:nowrap}
+
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;
+  background:var(--surface-2);color:var(--text);padding:2px 6px;border-radius:5px;border:1px solid var(--border);
+  overflow-wrap:anywhere;word-break:break-word;
+}
+.code-wrap{
+  margin:14px 0;border-radius:10px;overflow:hidden;
+  border:1px solid var(--border);background:var(--code-bg);max-width:100%;
+}
+.code-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:6px 12px;background:var(--code-bar);border-bottom:1px solid rgba(148,163,184,.2);
+  color:#e2e8f0;font-size:12.5px;font-weight:600;
+}
+pre{
+  margin:0;background:var(--code-bg);color:var(--code-fg);
+  padding:14px 16px;overflow-x:auto;
+  font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;
+}
+.copy-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;
+  border:1px solid rgba(148,163,184,.45);background:#0f172a;color:#f8fafc;
+  padding:6px 12px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;
+}
+.copy-btn:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+.copy-btn.copied{background:var(--ok);border-color:var(--ok);color:#fff}
+
+.notice{
+  display:flex;align-items:flex-start;gap:12px;min-width:0;max-width:100%;
+  padding:15px 16px;border-radius:10px;margin:14px 0;font-size:16px;
+  background:var(--accent-soft);border:1px solid var(--accent-border);color:var(--text);
+}
+.notice svg{flex:none;margin-top:3px;color:var(--accent)}
+.notice > div{min-width:0;flex:1;overflow-wrap:anywhere;word-break:break-word}
+
+.empty-state{
+  text-align:center;padding:34px 20px;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;margin-bottom:20px;
+}
+.empty-state p{margin:0 0 14px;color:var(--text);font-size:16px}
+.reset-btn{
+  min-height:44px;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent);
+  padding:8px 16px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;
+}
+.footer{text-align:center;color:var(--muted);font-size:14px;padding:18px 0 36px}
+[hidden]{display:none!important}
+@media(max-width:1024px){
+  .spec-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;padding:14px;gap:16px}
+  .toc{position:static;max-height:none;padding:24px 28px}
+  .topbar{padding:10px 14px}
+  .controls{width:100%;justify-content:space-between}
+  .search-field{flex:1;min-width:0}
+  .search-box{width:100%;min-width:0}
+}
+@media(max-width:560px){
+  .spec-strip{grid-template-columns:minmax(0,1fr)}
+  .overview-panel,.section-block,.toc{padding:18px 16px}
+  .tabs{width:100%}
+  .tab-btn{flex:1;padding:8px 10px;font-size:13.5px}
+  .search-label{display:none}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="skip-link" href="#mainContent">Bỏ qua điều hướng</a>
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+    </span>
+    <span>OZPanel Addon Guide</span>
+    <span class="ver-pill num">v9.1.4 · SDK 5.0.0</span>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Chế độ xem tài liệu">
+    <button class="tab-btn active" data-tab="dev" type="button" role="tab" aria-selected="true">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      <span>Nhà phát triển</span>
+    </button>
+    <button class="tab-btn" data-tab="user" type="button" role="tab" aria-selected="false">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Người dùng</span>
+    </button>
+  </div>
+  <div class="controls">
+    <div class="search-field">
+      <label class="search-label" for="searchInput">Tìm mục</label>
+      <input id="searchInput" class="search-box" type="search" placeholder="lease, ed25519, api..." aria-label="Tìm nhanh nội dung tài liệu">
+    </div>
+    <button id="themeToggle" class="theme-btn" type="button" aria-label="Chuyển giao diện Sáng hoặc Tối">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="themeLabel">Đổi nền Tối</span>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="toc" id="tocBox" aria-label="Mục lục"></aside>
+  <main class="content" id="mainContent">
+    <section class="overview-panel">
+      <h1>OZPanel Addon SDK 5.0.0 — Tài liệu Kỹ thuật v9.1.4</h1>
+      <p>Đặc tả kiến trúc và hướng dẫn vận hành Addon chuẩn <code>.ozaddon</code> trên nền tảng OZPanel v9.1.4: bảo vệ <code>OZV8-Fortress+</code>, Cloud Lease 6 giờ (<code>21600s</code> little-endian <code>&lt;Q</code>), <span class="num">125</span> API Resources / <span class="num">932</span> Operations, Web GUI <code>[27]</code> và 8-Tool MCP.</p>
+      <div class="spec-strip">
+        <div class="spec-item">
+          <span class="spec-k"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Nền tảng lõi</span>
+          <span class="spec-v num">OZPanel v9.1.4</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Chuẩn SDK</span>
+          <span class="spec-v num">SDK 5.0.0 · Schema 1</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Bảo vệ &amp; Ký số</span>
+          <span class="spec-v">OZV8-Fortress+ · Ed25519</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-k"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.77 1 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> REST API [31]</span>
+          <span class="spec-v num">125 Resources · 932 Ops</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="emptySearch" class="empty-state" hidden>
+      <p>Không có mục nào khớp với từ khóa tìm kiếm hiện tại.</p>
+      <button id="resetSearchBtn" class="reset-btn" type="button">Xóa bộ lọc tìm kiếm</button>
+    </div>
+
+    <div id="pane-dev">
+      <section class="section-block" id="dev-quickstart" data-title="Bắt đầu nhanh (5 phút)">
+        <h2>Bắt đầu nhanh cho Nhà phát triển (5 phút)</h2>
+        <p>Công cụ <code>ozsdk.py</code> hoạt động trên Linux, macOS và Windows. Bản v9.1.4 đã đồng bộ đầy đủ các cờ CLI (<code>--category</code>, <code>keygen --out</code>, <code>pack --sign-key</code>, <code>verify --pub-key</code>, <code>trust --publisher --pub-key</code>).</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span>Terminal · CLI Quickstart</span><button class="copy-btn" type="button">Sao chép lệnh</button></div>
+          <pre>python3 ozsdk.py --version
+python3 ozsdk.py doctor
+python3 ozsdk.py init ./my-addon --id 9010 --publisher my-studio --name "My Super Addon" --category automation
+python3 ozsdk.py validate ./my-addon
+python3 ozsdk.py audit ./my-addon
+python3 ozsdk.py keygen --out ./keys
+python3 ozsdk.py pack ./my-addon --out ./dist/addon_9010.ozaddon --sign-key ./keys/publisher-private.pem
+python3 ozsdk.py verify ./dist/addon_9010.ozaddon --pub-key ./keys/publisher-public.pem</pre>
+        </div>
+      </section>
+
+      <section class="section-block" id="dev-manifest" data-title="Cấu trúc &amp; manifest.json">
+        <h2>Cấu trúc gói .ozaddon &amp; Đặc tả manifest.json (Schema 1)</h2>
+        <div class="code-wrap">
+          <div class="code-bar"><span>JSON · manifest.json</span><button class="copy-btn" type="button">Sao chép mẫu</button></div>
+          <pre>{
+  "schema": 1,
+  "id": 9010,
+  "publisher": "my-studio",
+  "name": "My Super Addon (OZPanel v9.1.4)",
+  "version": "1.0.0",
+  "min_panel_version": "9.1.4",
+  "category": "automation",
+  "entrypoint": "bin/main.sh",
+  "architectures": ["any"],
+  "permissions": ["system.read", "ssl.read", "ai.read"],
+  "hooks": {
+    "install": "hooks/install.sh",
+    "upgrade": "hooks/upgrade.sh",
+    "health": "hooks/health.sh",
+    "rollback": "hooks/rollback.sh",
+    "uninstall": "hooks/uninstall.sh"
+  },
+  "locales": { "vi": "locales/vi.json", "en": "locales/en.json" },
+  "gui_workbench": {
+    "actions": [
+      { "key": "1", "label": "Kiểm tra hệ điều hành &amp; OZPanel v9.1.4" },
+      { "key": "5", "label": "Kiểm tra Health JSON (&lt;30ms) &amp; AI Watchdog" }
+    ]
+  }
+}</pre>
+        </div>
+        <div class="info-grid">
+          <div class="info-tile">
+            <strong><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 5 Lifecycle Hooks Idempotent</strong>
+            <p>Các hook <code>install.sh</code>, <code>upgrade.sh</code>, <code>health.sh</code>, <code>rollback.sh</code> và <code>uninstall.sh</code> không được dùng lệnh <code>read</code> tương tác để cài mượt qua Web GUI <code>[27]</code>.</p>
+          </div>
+          <div class="info-tile">
+            <strong><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> Web GUI [27] Workbench (OZ_GUI_FORM=1)</strong>
+            <p>Khai báo <code>gui_workbench.actions</code> và đọc biến môi trường <code>OZ_ACTION_KEY</code> khi <code>oz_is_gui_form</code> kích hoạt để chạy không cần terminal.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block" id="dev-runtime" data-title="Thư viện ozaddon &amp; API v9.1.4">
+        <h2>Thư viện Runtime ozaddon.sh / ozaddon.py &amp; Helpers v9.1.4</h2>
+        <p>Tất cả thao tác đọc trong <code>API_V914_CATALOG</code> (bao gồm <code>shift_report</code>, <code>groups</code>, <code>cache_stats</code>, <code>config_inspect</code>, <code>pulse</code>, <code>packages</code>, <code>tables_list</code>) đã tự động định tuyến HTTP <code>GET</code> kèm query string chuẩn xác.</p>
+        <div class="table-scroll">
+          <table class="fn-col">
+            <thead><tr><th>Hàm Bash (SDK 5.0.0)</th><th>Phương thức Python</th><th>Chức năng chính</th></tr></thead>
+            <tbody>
+              <tr><td>oz_health_json</td><td><code>ctx.health_json()</code></td><td>Telemetry nhanh <code>/usr/bin/oz --health-json</code> (&lt;30ms) kèm fallback SDK</td></tr>
+              <tr><td>oz_lease_status</td><td><code>ctx.lease_status()</code></td><td>Đọc chuẩn <code>runtime.lease</code> 72-byte little-endian <code>&lt;Q</code> (TTL 21600s / 6h)</td></tr>
+              <tr><td>oz_ai_cache_stats</td><td><code>ctx.ai_cache_stats()</code></td><td>Theo dõi &amp; xóa cache phản hồi LLM của Trợ lý AI <code>[32]</code></td></tr>
+              <tr><td>oz_config_inspect</td><td><code>ctx.ai_config_inspect(path)</code></td><td>Đọc an toàn cấu hình hệ thống &amp; danh sách bản sao lưu <code>.ozbak</code></td></tr>
+              <tr><td>oz_app_pulse</td><td><code>ctx.app_pulse()</code></td><td>Chỉ số CPU/RAM/Disk tức thời (&lt;2ms) cho Dashboard &amp; Mobile App</td></tr>
+              <tr><td>oz_webhooks &lt;act&gt;</td><td><code>ctx.webhooks_action(act)</code></td><td>Quản lý Outbound Webhooks ký số HMAC-SHA256</td></tr>
+              <tr><td>oz_db_tables &lt;db&gt;</td><td><code>ctx.db_tables_list(db)</code></td><td>Kiểm kê bảng, storage engine &amp; dung lượng DB MySQL/PostgreSQL</td></tr>
+              <tr><td>oz_api_call &lt;r&gt; &lt;a&gt;</td><td><code>ctx.api_call(r, a)</code></td><td>Gọi toàn bộ <span class="num">125</span> resources / <span class="num">932</span> operations trên REST API <code>[31]</code></td></tr>
+              <tr><td>oz_ai_shift_report</td><td><code>ctx.api_call('ai','shift_report')</code></td><td>Lấy Báo cáo Ca trực DevOps AI <code>[32]</code> &amp; danh mục 46 nhóm chức năng</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section-block" id="dev-publish" data-title="Ký số Ed25519, SBOM &amp; Phân phối">
+        <h2>Ký số Ed25519, Kiểm toán Bảo mật &amp; Phân phối GitHub Raw</h2>
+        <div class="notice">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div><strong>Khuyến nghị triển khai:</strong> Đẩy trực tiếp tệp <code>addon_&lt;ID&gt;.ozaddon</code>, <code>addon_&lt;ID&gt;.ozaddon.sha256</code> và <code>publisher-public.pem</code> lên GitHub Raw URL (<code>https://raw.githubusercontent.com/...</code>) để cài đặt trực tiếp từ SSH <code>[15] → [6]</code> hoặc Web GUI <code>[27] → [15]</code>.</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span>Terminal · Kiểm toán, SBOM &amp; Unit Test</span><button class="copy-btn" type="button">Sao chép lệnh</button></div>
+          <pre>python3 ozsdk.py audit ./my-addon
+python3 ozsdk.py sbom ./my-addon --out ./dist/addon_9010.sbom.json
+python3 ozsdk.py catalog ./dist/addon_9010.ozaddon --url "https://raw.githubusercontent.com/user/repo/main/addon_9010.ozaddon"
+python3 -m unittest discover -s tests -p "test_*.py" -v</pre>
+        </div>
+      </section>
+    </div>
+
+    <div id="pane-user" hidden>
+      <section class="section-block" id="user-install" data-title="Cài đặt Addon trên v9.1.4">
+        <h2>Cách cài đặt &amp; vận hành Addon trên OZPanel v9.1.4</h2>
+        <div class="info-grid">
+          <div class="info-tile">
+            <strong><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg> Qua SSH Terminal [15]</strong>
+            <p>Gõ <code>oz</code>, chọn mục <code>15</code> rồi chọn <code>1</code> để tải từ Kho hoặc chọn <code>6</code> để cài trực tiếp gói <code>.ozaddon</code>, <code>.sh</code>, <code>.bin</code> từ URL HTTPS.</p>
+          </div>
+          <div class="info-tile">
+            <strong><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> Qua Web Admin GUI [27] → [15]</strong>
+            <p>Mở mục <code>[15] Kho tiện ích</code> trên trình duyệt: dùng <code>addon.sdk_import_url</code> để cài URL, <code>addon.sdk_run</code> để chạy Workbench và <code>addon.sdk_health</code> để kiểm tra toàn vẹn.</p>
+          </div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span>Terminal · Đồng bộ v9.1.4 &amp; SDK Runtime</span><button class="copy-btn" type="button">Sao chép lệnh</button></div>
+          <pre>cd /var/www/ozhub/html &amp;&amp; bash build.sh &amp;&amp; hash -r &amp;&amp; oz</pre>
+        </div>
+      </section>
+
+      <section class="section-block" id="user-menu" data-title="8 Chức năng Menu [15]">
+        <h2>Bảng 8 chức năng quản lý Addon trong Menu [15]</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Mục</th><th>Tính năng</th><th>Công dụng thực tế</th></tr></thead>
+            <tbody>
+              <tr><td><code>[1]</code></td><td>Tải xuống / Nhập License</td><td>Cài Addon từ Kho theo ID, nhập mã bản quyền nếu là gói thương mại</td></tr>
+              <tr><td><code>[2]</code></td><td>Cập nhật Addon</td><td>Nâng cấp giữ nguyên dữ liệu cấu hình trong <code>addon-data</code></td></tr>
+              <tr><td><code>[3]</code></td><td>Khởi chạy Addon</td><td>Thực thi Addon đã cài (hỗ trợ <code>.ozaddon</code>, <code>.sh</code>, <code>.bin</code>)</td></tr>
+              <tr><td><code>[4]</code></td><td>Gỡ cài đặt / Xóa License</td><td>Chạy <code>hooks/uninstall.sh</code> (nếu có) và dọn sạch gói Addon</td></tr>
+              <tr><td><code>[5]</code></td><td>Làm mới danh sách Chợ</td><td>Đồng bộ danh mục mới nhất từ API máy chủ</td></tr>
+              <tr><td><code>[6]</code></td><td>Thêm Addon nội bộ từ URL</td><td>Tải &amp; xác thực trực tiếp <code>.ozaddon</code> / <code>.sh</code> / <code>.bin</code>, tự cấp ID <code>900000+</code></td></tr>
+              <tr><td><code>[7]</code></td><td>Xem nhật ký theo ID</td><td>Đọc log chạy/lỗi JSONL để chẩn đoán sự cố</td></tr>
+              <tr><td><code>[8]</code></td><td>Xem / Khôi phục cách ly</td><td>Khôi phục Addon bị cách ly sau khi đã xử lý nguyên nhân</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section-block" id="user-faq" data-title="Xác minh Bảo mật &amp; Xử lý sự cố">
+        <h2>Xác minh Chữ ký &amp; Xử lý sự cố thường gặp</h2>
+        <ul>
+          <li><strong>Kiểm tra SHA-256 &amp; chữ ký Ed25519:</strong> chạy <code>sha256sum -c addon_9002.ozaddon.sha256</code> và <code>ozsdk verify addon_9002.ozaddon --pub-key publisher-demo-public.pem</code>.</li>
+          <li><strong>Chưa có SDK Runtime trên máy:</strong> chạy <code>cd /var/www/ozhub/html &amp;&amp; bash build.sh</code> hoặc <code>sudo python3 ozsdk.py runtime-install --confirm</code>.</li>
+          <li><strong>Lỗi phiên bản <code>min_panel_version</code>:</strong> mở mục <code>[44] Cập nhật hệ thống</code> để nâng OZPanel lên <code>v9.1.4</code>.</li>
+          <li><strong>Addon bị cách ly:</strong> xem nguyên nhân tại <code>[15] → [7]</code> rồi khôi phục an toàn tại <code>[15] → [8]</code>.</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="footer num">OZPanel v9.1.4 · Addon Developer Kit (SDK 5.0.0) · Chương Minh Studio</footer>
+  </main>
+</div>
+
+<script>
+(() => {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panes = { dev: document.getElementById('pane-dev'), user: document.getElementById('pane-user') };
+  const tocBox = document.getElementById('tocBox');
+  const searchInput = document.getElementById('searchInput');
+  const emptySearch = document.getElementById('emptySearch');
+  const resetBtn = document.getElementById('resetSearchBtn');
+  const themeBtn = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  let activeTab = 'dev';
+
+  function updateActiveToc() {
+    const links = Array.from(tocBox.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+    let activeId = links[0].getAttribute('href').slice(1);
+    const offset = 120;
+    for (const a of links) {
+      const target = document.getElementById(a.getAttribute('href').slice(1));
+      if (target && !target.hidden && target.getBoundingClientRect().top <= offset) {
+        activeId = target.id;
+      }
+    }
+    links.forEach(a => {
+      const hit = a.getAttribute('href') === '#' + activeId;
+      a.classList.toggle('current', hit);
+      if (hit) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  function buildToc() {
+    const cards = Array.from(panes[activeTab].querySelectorAll('.section-block[id]')).filter(c => !c.hidden);
+    const title = activeTab === 'dev' ? 'Mục lục Nhà phát triển' : 'Mục lục Người dùng';
+    tocBox.innerHTML = '<h3>' + title + '</h3>' +
+      (cards.length ? cards.map(c => `<a href="#${c.id}">${c.dataset.title || c.querySelector('h2')?.textContent || ''}</a>`).join('') : '<p style="font-size:14px;color:var(--muted);margin:0">Không có mục hiển thị.</p>');
+    updateActiveToc();
+  }
+
+  function applySearch() {
+    const q = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+    panes[activeTab].querySelectorAll('.section-block').forEach(c => {
+      const show = !q || c.textContent.toLowerCase().includes(q);
+      c.hidden = !show;
+      if (show) visible++;
+    });
+    emptySearch.hidden = !(q && visible === 0);
+    buildToc();
+  }
+
+  tabs.forEach(btn => btn.addEventListener('click', () => {
+    activeTab = btn.dataset.tab;
+    tabs.forEach(x => {
+      const on = (x === btn);
+      x.classList.toggle('active', on);
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    Object.entries(panes).forEach(([k, pane]) => { pane.hidden = (k !== activeTab); });
+    applySearch();
+  }));
+
+  searchInput.addEventListener('input', applySearch);
+  resetBtn.addEventListener('click', () => { searchInput.value = ''; applySearch(); searchInput.focus(); });
+  window.addEventListener('scroll', updateActiveToc, { passive: true });
+
+  function setTheme(dark) {
+    document.documentElement.classList.toggle('dark', dark);
+    themeLabel.textContent = dark ? 'Đổi nền Sáng' : 'Đổi nền Tối';
+    try { localStorage.setItem('oz_sdk_guide_theme', dark ? 'dark' : 'light'); } catch {}
+  }
+  try {
+    if (localStorage.getItem('oz_sdk_guide_theme') === 'dark') setTheme(true);
+  } catch {}
+  themeBtn.addEventListener('click', () => setTheme(!document.documentElement.classList.contains('dark')));
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const wrap = btn.closest('.code-wrap');
+      const pre = wrap ? wrap.querySelector('pre') : null;
+      const code = pre ? pre.textContent : '';
+      let ok = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(code);
+          ok = true;
+        }
+      } catch {}
+      if (!ok) {
+        const ta = document.createElement('textarea');
+        ta.value = code;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { ok = document.execCommand('copy'); } catch {}
+        ta.remove();
+      }
+      const prev = btn.textContent;
+      btn.textContent = ok ? 'Đã chép' : 'Lỗi chép';
+      btn.classList.toggle('copied', ok);
+      setTimeout(() => { btn.textContent = prev || 'Sao chép lệnh'; btn.classList.remove('copied'); }, 1500);
+    });
+  });
+
+  buildToc();
+})();
+</script>
+</body>
+</html>

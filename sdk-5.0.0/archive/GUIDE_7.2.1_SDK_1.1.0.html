@@ -1,0 +1,100 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OZPanel SDK 1.1.0 · Panel 7.2.1</title><style>body{font:16px/1.65 system-ui;background:#f3f5f8;color:#18243a;margin:0}header,main{max-width:1000px;margin:auto;padding:24px}header{background:#132b4f;color:#fff;border-radius:0 0 20px 20px}nav{display:flex;gap:12px;flex-wrap:wrap}nav a{color:#bce3ff;font-size:14px}section{background:white;padding:24px;border-radius:14px;margin:18px 0;border:1px solid #dce3ed}pre{font:14px/1.7 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}main a{color:#235caa}h2{font-size:23px}@media print{nav{display:none}section{break-inside:avoid}}</style><header><h1>OZPanel SDK 1.1.0</h1><p>Panel 7.2.1 · Ubuntu 24.04 / Debian 11–13</p><nav><a href="#s0">Phạm vi thực hiện</a><a href="#s1">Điều kiện</a><a href="#s2">Chạy nhanh trên máy phát triển</a><a href="#s3">Cài trên VPS staging có panel 7.2.1</a><a href="#s4">Đưa lên catalog legacy [15]</a><a href="#s5">License offline riêng của addon</a><a href="#s6">Helpers</a><a href="#s7">Giới hạn và xác minh</a></nav></header><main><p><a href="README_VI.md">Hướng dẫn đầy đủ tiếng Việt</a> · <a href="README_EN.md">English</a></p><section id="s0"><h2>Phạm vi thực hiện</h2><pre>
+| Nhóm | Có trong gói |
+|---|---|
+| Tooling | doctor, init, validate, inspect, pack, list |
+| Phân phối | keygen, trust, verify, SHA256, Ed25519, pack --legacy, catalog 10 trường |
+| Runtime | runtime-install, install/upgrade, run, health, rollback, remove |
+| License | license-sign, license-verify; JSON canonical + chữ ký Ed25519 raw 64 byte |
+| Bash/Python | config get/set atomic, log, locale, API, editor, service, native package install |
+| Kiểm thử | tests/test_sdk.py: 37 test; có cả lifecycle, trust, lỗi hook, lock, helper |
+</pre></section><section id="s1"><h2>Điều kiện</h2><pre>
+Python &gt;=3.9, Bash, OpenSSL; ký/xác minh cần OpenSSL &gt;=3 hoặc Python cryptography có Ed25519. Không tự cài gói khi mở menu/doctor. Native runtime chấp nhận Ubuntu 24.04; Debian 11/12/13; tooling đóng gói chạy được trên máy phát triển Linux khác. Debian 11 đã hết LTS tiêu chuẩn ngày 31/08/2026: cần ELTS cho bản vá OS. OpenSSL 1.1.1 dùng backend Python cryptography; cài bằng `apt-get install python3-cryptography` nếu `doctor` báo chưa có backend.
+
+`permissions` là metadata khai báo, **không phải sandbox**. Hook chạy với quyền của người gọi. API token do quản trị viên cấp; SDK không tự cấp quyền hoặc bỏ license panel. SDK không nhúng PHP nên PHP2Shell được vá ở panel/PHP runtime, không bằng cách nâng version SDK.
+</pre></section><section id="s2"><h2>Chạy nhanh trên máy phát triển</h2><pre>
+```bash
+python3 ozsdk.py --version
+python3 ozsdk.py doctor
+python3 -m unittest discover -s tests -v
+python3 ozsdk.py init ./my-addon --id 9002 --publisher your-studio
+python3 ozsdk.py validate ./my-addon
+python3 ozsdk.py keygen --private ../publisher-private.pem --public ../publisher-public.pem
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/demo.ozaddon --private ../publisher-private.pem
+python3 ozsdk.py inspect ./my-addon/dist/demo.ozaddon
+```
+
+ID 9001/9002 chỉ dùng ví dụ; đổi ID/publisher trước khi phát hành. Output đặt trong `dist/` hoặc ngoài project để tránh pack lặp output cũ. Pack sinh `.sha256`, archive có thể tái tạo từ cùng source/key. Private key không để trong project hay trên VPS khách.
+</pre></section><section id="s3"><h2>Cài trên VPS staging có panel 7.2.1</h2><pre>
+Trong thư mục SDK đã giải nén:
+
+```bash
+sudo python3 ozsdk.py runtime-install --confirm
+sudo python3 ozsdk.py --root /etc/ozon trust your-studio ../publisher-public.pem --confirm
+sudo python3 ozsdk.py --root /etc/ozon verify ./my-addon/dist/demo.ozaddon
+sudo python3 ozsdk.py --root /etc/ozon install ./my-addon/dist/demo.ozaddon --confirm --legacy
+sudo python3 ozsdk.py --root /etc/ozon run 9002
+sudo python3 ozsdk.py --root /etc/ozon health 9002
+```
+
+Xác minh fingerprint public key qua kênh độc lập **trước** khi trust. Runtime được cài ở `/usr/local/lib/ozpanel/sdk/ozsdk.py`. Runtime-install không ghi đè `/usr/bin/oz`, không sửa license hoặc endpoint của panel; file SDK cũ khác nội dung có backup `.before-sdk-update`. Nếu lần cập nhật core sau này tạo lại runtime SDK nhúng cũ, chạy lại runtime-install của gói này.
+
+`--legacy` tạo `addons/addon_ID.sh` và `.version` theo hợp đồng menu [15], không ghi đè addon classic đang chiếm ID. Với EL, giữ định dạng registry/marker của RC1 để đọc addon đã cài. Đóng menu addon cũ trước khi nâng runtime từ RC1.
+
+Lệnh upgrade là install archive có version mới; version là immutable. Hook install/upgrade và health phải đạt trước khi registry đổi. Lỗi hook giữ release cũ được chọn nhưng không tự hoàn nguyên DB/dịch vụ bên ngoài. Payload release không được sửa trong hook; dữ liệu ghi dưới `OZ_ADDON_DATA`. Run/health dùng shared lock theo addon; lifecycle thay đổi dùng exclusive lock theo addon; registry có khóa ghi riêng.
+
+```bash
+sudo python3 ozsdk.py --root /etc/ozon rollback 9002 --confirm
+sudo python3 ozsdk.py --root /etc/ozon remove 9002 --confirm
+# Chỉ khi thật sự muốn xóa dữ liệu addon:
+# sudo python3 ozsdk.py --root /etc/ozon remove 9002 --confirm --purge-data
+```
+</pre></section><section id="s4"><h2>Đưa lên catalog legacy [15]</h2><pre>
+`.ozaddon` là tar.gz nhiều file, **không tải trực tiếp bằng catalog legacy**. Có hai lựa chọn:
+
+- Addon classic: script trong `examples/classic/` dùng trực tiếp; tự thiết kế vòng đời và license.
+- Addon SDK: tạo bundle Bash có archive đã ký; VPS phải cài đúng SDK runtime và trust publisher trước. Khi mở bundle lần đầu, nó verify chữ ký, hỏi người dùng rồi mới cài và chạy addon.
+
+```bash
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/addon_9002.sh --private ../publisher-private.pem --legacy
+python3 ozsdk.py catalog ./my-addon --url https://your-cdn.example/addon_9002.sh --out ./my-addon/dist/catalog-row.txt --description &#x27;My addon&#x27;
+```
+
+Upload script và `.sha256` lên CDN riêng; đăng ký dòng 10 trường với đơn vị vận hành kho. Lệnh catalog chỉ sinh dữ liệu local, không tự đăng lên cloud. Bundle không tự trust public key và không có cờ bỏ chữ ký. Metadata catalog phụ thuộc publisher nhập đúng; nó không chứng minh URL đã chứa đúng artifact.
+</pre></section><section id="s5"><h2>License offline riêng của addon</h2><pre>
+```bash
+python3 ozsdk.py license-sign --private ../publisher-private.pem --product my-product --expires-at 1893456000 --out license.json
+python3 ozsdk.py license-verify license.json license.json.sig ../publisher-public.pem --product my-product
+```
+
+`expires-at` là Unix seconds UTC; signature là raw 64 byte. SDK verify product, hạn và chữ ký; không có activation/revocation online hoặc ràng buộc thiết bị. Addon phải gọi verifier trước từng tính năng trả phí. Cơ chế này không tự cấp entitlement panel/core và không thay `oz --addon-entitlement ID` hoặc quy trình trust/import license addon của core.
+</pre></section><section id="s6"><h2>Helpers</h2><pre>
+```bash
+source &quot;$OZ_SDK_RELEASE/lib/ozaddon.sh&quot;
+oz_os
+printf &#x27;%s&#x27; &#x27;&quot;demo&quot;&#x27; | oz_set note
+oz_get note
+oz_t title
+# Chỉ gọi sau khi người vận hành chọn hành động:
+# oz_confirm &#x27;Install jq?&#x27; &amp;&amp; oz_install_packages jq
+# oz_service status httpd   # EL; APT tự ánh xạ httpd -&gt; apache2
+# oz_api /api/v1/addons/installed GET
+```
+
+```python
+import os, sys
+sys.path.insert(0, os.path.join(os.environ[&#x27;OZ_SDK_RELEASE&#x27;], &#x27;lib&#x27;))
+from ozaddon import Context
+ctx = Context()
+ctx.set(&#x27;note&#x27;, &#x27;demo&#x27;)
+print(ctx.get(&#x27;note&#x27;))
+print(ctx.t(&#x27;title&#x27;))
+# ctx.api(&#x27;/api/v1/addons/installed&#x27;)  # cần OZ_API_BASE, OZ_API_TOKEN
+```
+
+`OZ_LOCALE` ưu tiên locale khai báo trong manifest, sau đó ngôn ngữ gốc, en, vi. `OZ_API_BASE` là URL API thực tế của menu [31], không phải URL GUI. HTTPS hoặc HTTP loopback; không theo redirect mang token, giới hạn response 1 MiB. Editor qua `EDITOR`; package/service chỉ dùng native tên hợp lệ, không tự tắt SELinux/firewall.
+</pre></section><section id="s7"><h2>Giới hạn và xác minh</h2><pre>
+- Archive schema 1 giữ tương thích wire format của SDK EL được gửi. Addon muốn dùng chung hệ phải có hook/helper phù hợp và khai báo `platforms`; không đổi tên gói EL thành APT rồi coi là tương thích.
+- Min panel version kiểm ở runtime theo `version.json` nếu có, fallback baseline SDK 7.2.1 khi thiếu. Tooling vẫn cho đóng gói target version cao hơn; runtime sẽ chặn nếu panel không đủ.
+- `--allow-unsigned` chỉ dành dev khi publisher chưa trust. Publisher đã trust luôn phải có chữ ký.
+- Đã chạy 37 test/gói và kiểm cú pháp Python 3.9/Bash. OS gate được mô phỏng; chưa chạy trên toàn bộ VPS thật, GUI/API menu [15] hoặc SELinux enforcing.
+- Guide HTML cũ được giữ trong `archive/` để tra cứu lịch sử; README này và guide 7.2.1 ở thư mục gốc là tài liệu hiện hành.</pre></section></main></html>

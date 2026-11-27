@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>OZPanel · Addon Developer Guide 7.2.0 + SDK 1.0.0</title>
+<style>
+:root{--bg:#f4f7fc;--paper:#fff;--ink:#15243b;--muted:#60718a;--line:#dbe4ef;--accent:#2869d6;--soft:#2869d610;--code:#101b2c;--codetxt:#dce8f8}body.dark{--bg:#0b1220;--paper:#121e30;--ink:#e4edf9;--muted:#a1b1c8;--line:#283a53;--accent:#8cb8ff;--soft:#8cb8ff15;--code:#080e18;--codetxt:#dce8f8}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--accent)}header{position:sticky;top:0;z-index:5;display:flex;gap:12px;align-items:center;padding:12px 24px;background:var(--paper);border-bottom:1px solid var(--line)}.logo{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#1e5fc6;color:white;font-weight:850;font-size:16px;letter-spacing:-.6px}.brand{font-weight:800;line-height:1.25}.brand small{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.7px;margin-top:4px}header input{margin-left:auto;max-width:340px;width:28vw}button,input{font:inherit}input,button{border:1px solid var(--line);border-radius:8px;padding:8px 11px;background:var(--paper);color:var(--ink)}button{cursor:pointer}button:hover{border-color:var(--accent)}.shell{max-width:1600px;margin:auto;display:grid;grid-template-columns:290px minmax(0,1fr)}nav{position:sticky;top:69px;height:calc(100dvh - 69px);overflow:auto;padding:20px 14px 36px;border-right:1px solid var(--line)}nav p{font-size:10px;letter-spacing:1.5px;color:var(--muted);padding:0 10px}nav a{display:block;text-decoration:none;color:var(--muted);font-size:12px;padding:7px 10px;margin:2px 0;border-radius:7px;line-height:1.55}nav a:hover,nav a.active{background:var(--soft);color:var(--accent)}main{min-width:0;max-width:1120px;padding:40px 52px 90px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--accent)}h1{font-size:clamp(30px,4vw,48px);line-height:1.13;letter-spacing:-1.5px;margin:12px 0 16px}h2{font-size:24px;line-height:1.4;letter-spacing:-.55px;margin:0 0 18px}h3{font-size:18px;margin:26px 0 10px}p{margin:0 0 16px}li{margin:0 0 8px}.lead{font-size:18px;color:var(--muted);max-width:850px}section{padding:34px 0;border-bottom:1px solid var(--line)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}.cards>div{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:17px}.cards b{display:block;font-size:20px}.cards span{display:block;color:var(--muted);font-size:12px;line-height:1.5}.badge{display:inline-block;padding:3px 7px;border-radius:5px;border:1px solid #22895542;background:#22895514;color:#238654;font-size:10px;font-weight:800;letter-spacing:.35px;white-space:nowrap}.badge.blue{background:#2869d615;border-color:#2869d638;color:var(--accent)}.badge.amber{background:#bf852018;border-color:#bf852040;color:#a46c08}.note{margin:18px 0;padding:14px 17px;border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:var(--soft);font-size:14px}.note.warn{border-left-color:#c68b22;background:#c68b2210}.table-scroll{overflow:auto;margin:18px 0;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;background:var(--paper);font-size:13px}th{background:var(--bg);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}td,th{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}td:first-child{min-width:100px}code{font:12px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--soft);padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}.code{margin:18px 0;border-radius:10px;overflow:hidden;border:1px solid #30435d;background:var(--code);color:var(--codetxt)}.code-head{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;border-bottom:1px solid #293b55;color:#a9bed9;font-size:11px}.code-head button{background:#17273d;color:#d3e1f4;border-color:#38516e;font-size:11px;padding:4px 9px}pre{overflow:auto;margin:0;padding:18px;tab-size:2;white-space:pre}pre code{background:transparent;color:inherit;padding:0;white-space:pre;overflow-wrap:normal}.primary{background:#2869d6;color:white;border-color:#2869d6;font-weight:700}#noResults{display:none;padding:20px;border:1px dashed var(--line);border-radius:10px;color:var(--muted)}footer{color:var(--muted);font-size:12px;padding:24px 0}@media(max-width:1000px){.shell{grid-template-columns:220px minmax(0,1fr)}main{padding:28px 26px 60px}}@media(max-width:700px){header{padding:10px 12px;flex-wrap:wrap}.brand{flex:1}header input{order:5;width:100%;max-width:none;margin:0}.shell{display:block}nav{position:static;height:auto;max-height:230px;border-right:0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;padding:10px}nav p{grid-column:1/-1}nav a{font-size:11px}main{padding:26px 16px 60px}.cards{grid-template-columns:1fr}h2{font-size:21px}pre{padding:13px}td,th{min-width:125px;padding:9px}}@media print{header,nav,.copy-btn,#downloadDemo,#noResults{display:none!important}.shell{display:block}main{max-width:none;padding:0 10px}body{--bg:#fff;--paper:#fff;--ink:#111;--muted:#444;--line:#ccc;--accent:#123f7a;font-size:11px}section{padding:18px 0}section[hidden]{display:block}.table-scroll{overflow:visible}table{font-size:9px}td,th{padding:6px}.code{background:#f4f6f9;color:#111;border-color:#ccc}pre{white-space:pre-wrap;overflow:visible;padding:10px}pre code{white-space:pre-wrap;font-size:8px}a{text-decoration:none}h2,h3{break-after:avoid}}
+</style></head><body>
+<header><span class="logo">OZ</span><div class="brand">Addon Developer Guide<small>CORE 7.2.0 · SDK 1.0.0 · HỢP NHẤT</small></div><input id="search" type="search" placeholder="Tìm nội dung… Ctrl+K" aria-label="Tìm trong tài liệu"><button id="theme" type="button">Sáng / Tối</button><button id="print" type="button">In / PDF</button><button id="downloadDemo" type="button" class="primary">Tải addon mẫu</button></header>
+<div class="shell"><nav aria-label="Mục lục"><p>HƯỚNG DẪN NHÀ PHÁT TRIỂN</p><a href="#start">01 · Bắt đầu từ đúng mô hình</a><a href="#tracks">02 · Chọn đường tích hợp</a><a href="#function15">03 · Hàm [15] Kho tiện ích trong OZPanel 7.2.0</a><a href="#quickstart">04 · Bắt đầu: addon legacy chạy được ngay</a><a href="#catalog">05 · Catalog Kho legacy: cấu trúc chính xác</a><a href="#legacy-runtime">06 · Đường dẫn và vòng đời addon legacy</a><a href="#classic-example">07 · Mẫu Bash đầy đủ và quy ước GUI</a><a href="#internal">08 · Luồng addon nội bộ [15] → [6]</a><a href="#sdk">09 · OZPanel Addon SDK 1.0.0: mô hình và bố cục</a><a href="#manifest">10 · Manifest, package và giới hạn artifact</a><a href="#signing">11 · Ký, trust publisher và kiểm chứng chuỗi phân phối</a><a href="#lifecycle">12 · Hook, dữ liệu, nâng cấp và rollback SDK</a><a href="#helpers">13 · Helper Bash/Python và cấu hình an toàn</a><a href="#api">14 · API addon và cầu nối CLI</a><a href="#license">15 · License trả phí: ba cơ chế không được nhầm lẫn</a><a href="#services">16 · Dữ liệu, service, web server và cleanup</a><a href="#publishing">17 · Quy trình phát hành và đưa addon lên kho</a><a href="#testing">18 · Ma trận kiểm thử trước phát hành</a><a href="#troubleshooting">19 · Chẩn đoán nhanh</a><a href="#audit">20 · Kết quả đối chiếu và thay đổi so với tài liệu cũ</a></nav><main><div class="eyebrow">BUILD WITH OZPANEL</div><h1>Phát triển addon<br>cho OZPanel.</h1><p class="lead">Từ addon Bash đầu tiên đến gói SDK có manifest, chữ ký, hook và rollback. Một tài liệu thống nhất với các giới hạn được đối chiếu rõ theo core 7.2.0.</p><div class="note"><strong>Lộ trình khuyến nghị:</strong> chọn loại addon → đọc hợp đồng tích hợp → tạo addon mẫu → kiểm tra CLI/GUI → kiểm tra integrity/license → chuẩn bị phát hành.</div><div id="noResults">Không tìm thấy nội dung phù hợp. Hãy thử từ khóa khác.</div><section id="start" data-title="01 · Bắt đầu từ đúng mô hình"><h2>01 · Bắt đầu từ đúng mô hình</h2>
+<p class="lead">Tài liệu hợp nhất dành cho nhà phát triển addon OZPanel. Phần core được đối chiếu với mã nguồn <code>oz_v7.2.0.sh</code>; phần SDK dựa trên tài liệu SDK 1.0.0 được đính kèm.</p>
+<div class="cards"><div><b>Core 7.2.0</b><span>Hàm [15] Kho tiện ích + addon nội bộ</span></div><div><b>SDK 1.0.0</b><span>Manifest, archive, chữ ký, hook, rollback</span></div><div><b>2 luồng phát hành</b><span>Kho legacy không đồng nhất với SDK runtime</span></div></div>
+<aside class="note warn"><strong>Ranh giới quan trọng:</strong> các tệp được gửi trong cuộc trò chuyện là hai tài liệu HTML và mã core shell; chưa có mã nguồn SDK thực tế như <code>ozsdk.py</code>, <code>lib/ozaddon.sh</code>, <code>lib/ozaddon.py</code> và thư mục <code>tests/</code>. Vì vậy tài liệu dưới đây hợp nhất và cập nhật hướng dẫn, nhưng không tuyên bố đã sửa/chạy kiểm thử mã SDK chưa được cung cấp.</aside>
+<p>Để đọc đúng tài liệu: <span class="badge">CORE ĐÃ ĐỐI CHIẾU</span> nghĩa là hành vi nhìn thấy trong <code>oz_v7.2.0.sh</code>; <span class="badge blue">SDK THEO TÀI LIỆU</span> là giao diện SDK được mô tả trong file SDK guide; <span class="badge amber">KHUYẾN NGHỊ</span> là nguyên tắc phát hành an toàn, không phải tính năng tự động của core.</p>
+</section><section id="tracks" data-title="02 · Chọn đường tích hợp"><h2>02 · Chọn đường tích hợp</h2>
+<div class="table-scroll"><table><thead><tr><th>Tiêu chí</th><th>Addon Kho legacy / [15]</th><th>Addon SDK 1.0.0</th><th>Addon nội bộ [15] → [6]</th></tr></thead><tbody>
+<tr><td>Định dạng nhận</td><td><code>.sh</code> hoặc <code>.bin</code></td><td><code>.ozaddon</code>; có thể xuất launcher <code>.sh</code> qua <code>--legacy</code></td><td>Tệp Bash hoặc Linux ELF trực tiếp</td></tr>
+<tr><td>Cài đặt</td><td>Menu [15] → [1], hoặc API legacy có giới hạn</td><td><code>ozsdk.py install</code> với SDK runtime và trust phù hợp</td><td>Menu [15] → [6], core tự cấp ID nội bộ</td></tr>
+<tr><td>Manifest / quyền</td><td>Catalog 10 trường; không có manifest quyền runtime</td><td><code>manifest.json</code>, permission declaration, hook, checksum</td><td>Metadata registry nội bộ; không phải manifest SDK</td></tr>
+<tr><td>Checksum / chữ ký</td><td>Luồng kho legacy không tự xác minh SHA256/Ed25519 của payload</td><td>SDK hỗ trợ SHA256 + chữ ký Ed25519 và publisher trust</td><td>SHA256 tùy chọn lúc nhập; băm lại khi chạy với metadata nội bộ</td></tr>
+<tr><td>Rollback</td><td>Không có lịch sử release/rollback hoàn chỉnh; cập nhật không atomic đầy đủ</td><td>Có release staging/rollback của SDK; hook tự khôi phục tác động ngoài runtime</td><td>Có cách ly/khôi phục payload đã cách ly, không phải quản lý phiên bản release</td></tr>
+<tr><td>Chạy trong [15]</td><td>Có</td><td>Không chạy file <code>.ozaddon</code> trực tiếp; launcher legacy chỉ phù hợp khi hiểu rõ giới hạn xác minh</td><td>Có; dữ liệu được đăng ký trong registry nội bộ</td></tr>
+</tbody></table></div>
+<p><strong>Lựa chọn thực tế:</strong> cần đăng lên Kho tiện ích hiện tại thì tuân thủ hợp đồng legacy. Muốn quản lý nhiều file, hook, release và rollback thì dùng SDK runtime. Muốn thử tải một script/binary riêng trên một máy chủ mà không đăng lên catalog thì dùng luồng addon nội bộ.</p>
+<aside class="note">Không đặt tệp <code>.ozaddon</code> vào catalog legacy và kỳ vọng [15] tự giải nén. Trong mã 7.2.0, [15] nhận payload dựa theo URL có <code>.bin</code> hay không; còn lại được lưu như script Bash.</aside>
+</section><section id="function15" data-title="03 · Hàm [15] Kho tiện ích trong OZPanel 7.2.0"><h2>03 · Hàm [15] Kho tiện ích trong OZPanel 7.2.0</h2>
+<p>Vào <strong>OZPanel CLI → [15] Kho tiện ích</strong>. Menu hiện có các lựa chọn sau:</p>
+<div class="table-scroll"><table><thead><tr><th>Lựa chọn</th><th>Tác dụng trong mã 7.2.0</th><th>Lưu ý cho nhà phát triển</th></tr></thead><tbody>
+<tr><td><code>[1]</code></td><td>Tìm ID trên catalog, xem mô tả/phiên bản/loại bản quyền, xác nhận tải; addon trả phí sẽ hỏi License Key.</td><td>Luồng legacy lưu key thô theo ID; điều đó không tự xác minh tính hợp lệ của key.</td></tr>
+<tr><td><code>[2]</code></td><td>So phiên bản đã cài với catalog bằng GNU <code>sort -V</code>; cập nhật một hoặc tất cả.</td><td>Chỉ phát hành version dạng dễ so sánh, khuyến nghị <code>x.y.z</code>. Bản legacy thiếu metadata version không được nâng cấp tự động.</td></tr>
+<tr><td><code>[3]</code></td><td>Khởi chạy payload theo ID. Core đưa việc chạy qua helper guarded để ghi log/chặn entitlement nếu ID đã thiết lập trust/receipt.</td><td>Addon chạy với quyền của panel (thường root); không có sandbox OS cho từng addon.</td></tr>
+<tr><td><code>[4]</code></td><td>Gỡ payload legacy, license và version; với addon nội bộ, yêu cầu xác nhận và xóa metadata/payload nội bộ.</td><td>Core không tự dừng service/cron/vhost mà addon đã tạo; addon cần quy trình cleanup riêng.</td></tr>
+<tr><td><code>[5]</code></td><td>Làm mới danh sách catalog từ API của OZPanel.</td><td>Catalog là dữ liệu do server phát hành, không phải nơi ghi trạng thái cài local.</td></tr>
+<tr><td><code>[6]</code></td><td>Nhập addon nội bộ qua URL trực tiếp; tự cấp ID trong dải <code>900000–999999</code>.</td><td>Hỗ trợ Bash hoặc Linux ELF, tối đa 32 MiB, SHA256 tùy chọn; có kiểm tra payload và registry.</td></tr>
+<tr><td><code>[7]</code></td><td>Xem log addon theo ID; ID <code>0</code> dành cho lỗi quá trình nhập URL.</td><td>Ghi chi tiết stderr là tùy chọn; chỉ bật khi cần debug vì log có thể chứa dữ liệu nhạy cảm.</td></tr>
+<tr><td><code>[8]</code></td><td>Xem addon nội bộ bị cách ly và xác nhận khôi phục.</td><td>Khôi phục không tự chạy addon. Xác định nguyên nhân trước khi cho chạy lại.</td></tr>
+<tr><td><code>[0]</code></td><td>Quay về menu chính.</td><td>Không dùng logic phụ thuộc trạng thái màu/ANSI; menu GUI đọc prompt văn bản.</td></tr>
+</tbody></table></div>
+<p><strong>Shortcut:</strong> menu chính hiển thị addon đã có ở dạng <code>ID + 100</code>. Ví dụ ID <code>900123</code> tạo shortcut <code>900223</code>. Không được tự chọn ID công khai nếu chưa được cấp; kho nội bộ tự cấp ID để tránh va chạm với catalog và tệp đã cài.</p>
+</section><section id="quickstart" data-title="04 · Bắt đầu: addon legacy chạy được ngay"><h2>04 · Bắt đầu: addon legacy chạy được ngay</h2>
+<h3>Cách nhanh nhất để thử</h3>
+<ol><li>Tải ví dụ an toàn ở bộ tài liệu: <a href="#classic-example"><code>addon_demo_9001.sh</code></a>.</li><li>Kiểm cú pháp trên máy phát triển: <code>bash -n addon_demo_9001.sh</code>.</li><li>Trên VPS thử nghiệm, sao lưu trước nếu đã có tệp addon mang ID này.</li><li>Cài bản thử nghiệm ở thư mục addon và ghi metadata version bằng lệnh bên dưới.</li><li>Mở [15] → [3] → nhập ID <code>9001</code>. Hoặc kiểm menu chính sau khi nó được vẽ lại để xem shortcut <code>9101</code>.</li></ol>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>bash -n examples/classic/addon_demo_9001.sh
+sudo install -d -m 700 /etc/ozon/addons
+sudo install -m 700 examples/classic/addon_demo_9001.sh /etc/ozon/addons/addon_9001.sh
+printf &#x27;%s\n&#x27; &#x27;1.0.0&#x27; | sudo tee /etc/ozon/addons/addon_9001.version &gt;/dev/null
+sudo chmod 600 /etc/ozon/addons/addon_9001.version
+# Sau đó mở /usr/bin/oz → [15] → [3] → 9001</code></pre></div>
+<aside class="note warn">ID <code>9001</code> chỉ là ví dụ phát triển. Cài thủ công chỉ phục vụ thử nghiệm, không đưa addon lên catalog cloud. Không chép đè ID đã được addon khác sử dụng.</aside>
+<h3>Đối với SDK</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code># Chạy trong thư mục SDK đã giải nén (cần có ozsdk.py thật)
+python3 ozsdk.py --version
+python3 ozsdk.py doctor
+python3 ozsdk.py init ./my-addon --id 9001 --publisher your-studio
+python3 ozsdk.py validate ./my-addon
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/demo.ozaddon
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; install ./my-addon/dist/demo.ozaddon --allow-unsigned
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; run 9001
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; health 9001
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; list</code></pre></div>
+<p>Các lệnh SDK phía trên theo tài liệu SDK 1.0.0 và giả định thư mục SDK chính thức có đủ <code>ozsdk.py</code>, thư viện và kiểm thử. Chỉ dùng <code>--allow-unsigned</code> cho gói dev không ký mà bạn chủ động chấp thuận; cờ này không bỏ qua yêu cầu chữ ký của publisher đã trust.</p>
+</section><section id="catalog" data-title="05 · Catalog Kho legacy: cấu trúc chính xác"><h2>05 · Catalog Kho legacy: cấu trúc chính xác</h2>
+<p><span class="badge">CORE ĐÃ ĐỐI CHIẾU</span> Core 7.2.0 đọc catalog tại <code>https://api.l.lc/oz/api/client/addons/list</code>, lưu cache ở <code>/etc/ozon/store.list</code>. Không có endpoint publisher/upload được xác nhận trong mã được cung cấp.</p>
+<div class="code"><div class="code-head"><span>text</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>a_id|a_name|a_auth|a_org|a_ver|a_date|a_size|a_type|a_desc|a_url</code></pre></div><div class="table-scroll"><table><thead><tr><th>Trường</th><th>Ý nghĩa</th><th>Quy tắc</th></tr></thead><tbody>
+<tr><td><code>a_id</code></td><td>ID số của addon</td><td>Định danh duy nhất; dòng phải có đúng 10 trường.</td></tr>
+<tr><td><code>a_name</code></td><td>Tên hiển thị</td><td>Danh sách CLI rút gọn khoảng 20 ký tự.</td></tr>
+<tr><td><code>a_auth</code></td><td>Tác giả</td><td>Tên hiển thị; danh sách rút gọn khoảng 14 ký tự.</td></tr>
+<tr><td><code>a_org</code></td><td>Tổ chức/đơn vị</td><td>Metadata hiển thị, không phải xác minh publisher.</td></tr>
+<tr><td><code>a_ver</code></td><td>Phiên bản</td><td>So sánh bằng <code>sort -V</code>; nên dùng <code>x.y.z</code>.</td></tr>
+<tr><td><code>a_date</code></td><td>Ngày cập nhật</td><td>Hiển thị; khuyến nghị <code>YYYY-MM-DD</code>.</td></tr>
+<tr><td><code>a_size</code></td><td>Dung lượng</td><td>Chỉ là metadata hiển thị; không được dùng làm checksum.</td></tr>
+<tr><td><code>a_type</code></td><td>Loại bản quyền</td><td>Nếu chuỗi có <code>Trả phí</code> thì CLI hỏi nhập key.</td></tr>
+<tr><td><code>a_desc</code></td><td>Mô tả một dòng</td><td>Không chứa ký tự phân tách <code>|</code>, CR hoặc LF.</td></tr>
+<tr><td><code>a_url</code></td><td>URL payload</td><td>URL có chuỗi <code>.bin</code> được CLI chọn làm binary; còn lại là Bash.</td></tr>
+</tbody></table></div>
+<div class="code"><div class="code-head"><span>text</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>9001|OZ Demo|Your Studio|Your Company|1.0.0|2026-10-21|4 KB|Miễn phí|Addon demo để học hợp đồng legacy|https://downloads.example.net/oz/addon_9001-1.0.0.sh</code></pre></div>
+<ul><li>Encoding UTF-8, một addon mỗi dòng, đủ 10 trường; kết thúc dòng bằng LF.</li><li>Không có CSV quoting/escape cho <code>|</code>. Không chèn <code>|</code>, CR hay LF bên trong trường.</li><li>Không thêm header. <code>ERROR|...</code> và <code>EMPTY|...</code> là trạng thái của store, không phải addon.</li><li>URL <code>example.net</code> là ví dụ chưa tồn tại gói; thay bằng URL phát hành thật.</li></ul>
+<aside class="note">Mã hiện tại dùng file tạm để nhận catalog, kiểm tra cấu trúc cơ bản rồi thay cache. Khi API lỗi, nếu cache cũ không rỗng và không phải trạng thái ERROR/EMPTY thì core giữ lại và tiếp tục dùng danh sách đã lưu.</aside>
+</section><section id="legacy-runtime" data-title="06 · Đường dẫn và vòng đời addon legacy"><h2>06 · Đường dẫn và vòng đời addon legacy</h2>
+<div class="table-scroll"><table><thead><tr><th>Hạng mục</th><th>Đường dẫn / hợp đồng trong core 7.2.0</th></tr></thead><tbody>
+<tr><td>Thư mục addon</td><td><code>/etc/ozon/addons/</code></td></tr><tr><td>Payload Bash</td><td><code>/etc/ozon/addons/addon_ID.sh</code></td></tr><tr><td>Payload binary</td><td><code>/etc/ozon/addons/addon_ID.bin</code></td></tr><tr><td>Version</td><td><code>/etc/ozon/addons/addon_ID.version</code> (quyền 600 được đặt khi tải qua CLI)</td></tr><tr><td>License raw legacy</td><td><code>/etc/ozon/addons/license_ID.key</code> (quyền 600 cố gắng áp dụng)</td></tr><tr><td>Dữ liệu riêng đề xuất</td><td><code>/etc/ozon/addon-data/ID/</code> — addon tự tạo và tự quản lý</td></tr><tr><td>Log / registry addon nội bộ</td><td><code>/etc/ozon/addons/.internal/records/</code>, <code>logs/</code>, <code>quarantine/</code></td></tr></tbody></table></div>
+<p>Khi chạy từ [15], core export <code>OZON_ADDON_DIR</code>, <code>OZON_ROOT_DIR</code> và <code>OZON_LICENSE_FILE</code> theo đúng ID. Nên dùng các biến này thay vì hard-code đường dẫn. Payload được chạy như tiến trình con; không <code>source</code> mã addon vào shell core, và không cần gọi lại menu OZPanel.</p>
+<h3>Vòng đời Kho legacy</h3>
+<ol><li><strong>Install:</strong> hỏi xác nhận; nếu catalog ghi loại chứa <code>Trả phí</code>, hỏi key; tải vào tệp tạm, từ chối tệp rỗng, rồi thay payload và ghi version.</li><li><strong>Update:</strong> so version với catalog. Nếu bản legacy thiếu file version, mục cập nhật sẽ từ chối ghi đè để tránh rủi ro.</li><li><strong>Run:</strong> helper guarded ghi nhật ký; nếu có trust/receipt license addon đã cấu hình thì yêu cầu entitlement hợp lệ.</li><li><strong>Remove:</strong> xóa payload và metadata; không gọi uninstall hook và không dọn service/cron/database/vhost.</li></ol>
+<aside class="note warn"><strong>Điểm cần biết khi cập nhật:</strong> mã <code>addon_download</code> tải xong và kiểm tra tệp không rỗng, sau đó xóa bản <code>.sh</code>/<code>.bin</code> cũ trước khi <code>mv</code> tệp mới. Đây chưa phải transaction atomic có backup/rollback; không nên mô tả là giữ bản cũ trong mọi trường hợp thất bại.</aside>
+</section><section id="classic-example" data-title="07 · Mẫu Bash đầy đủ và quy ước GUI"><h2>07 · Mẫu Bash đầy đủ và quy ước GUI</h2>
+<p>Bộ ZIP kèm sẵn file <a href="#classic-example"><code>addon_demo_9001.sh</code></a>. Mẫu hiển thị thông tin ổ đĩa, lưu một ghi chú không nhạy cảm bằng file tạm, quyền dữ liệu riêng 700 và file 600. Không có tải mã mạng, <code>eval</code> hay thay cấu hình web server.</p>
+<h3>Hợp đồng giao diện</h3><ul><li>In từng lựa chọn trên một dòng: <code>[1] Xem thông tin</code>, <code>[0] Quay lại</code>.</li><li>Dùng <code>read -r -p</code> cho input; <code>read -r -s -p</code> khi cần nhập bí mật. Không echo, log hoặc truyền key qua argv.</li><li><code>OZ_GUI_FORM=1</code> cho biết prompt đang được cầu nối GUI hiển thị như biểu mẫu.</li><li>Với nano/vi/vim, dùng tên lệnh trong <code>PATH</code> hoặc biến <code>EDITOR</code> để GUI có thể chuyển hướng sang web editor. Đường dẫn tuyệt đối có thể bỏ qua shim.</li><li>Curses, <code>top</code>/<code>htop</code>, full-screen TUI, shell lồng nhau và chương trình cần TTY trực tiếp có thể cần Terminal nâng cao; phải thử CLI và GUI thực tế.</li><li>Đừng tự tạo file cấu hình giả hoặc cài dependency khi chỉ mở menu. Báo rõ file/service còn thiếu.</li></ul>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>if [[ &quot;${OZ_GUI_FORM:-0}&quot; == 1 ]]; then
+  printf &#x27;Đang chạy qua biểu mẫu GUI.\n&#x27;
+fi
+
+# Chỉ mở file cấu hình nếu file đã tồn tại.
+if [[ -f &quot;$OZON_ROOT_DIR/addon-data/9001/settings.conf&quot; ]]; then
+  nano &quot;$OZON_ROOT_DIR/addon-data/9001/settings.conf&quot;
+fi</code></pre></div>
+<p>Addon CLI chạy với quyền của tiến trình panel (thường root). Thiết kế menu nên tách thao tác đọc khỏi thay đổi hệ thống; yêu cầu xác nhận trước khi ghi cấu hình, cài package, mở cổng, tạo service hoặc xóa dữ liệu.</p>
+</section><section id="internal" data-title="08 · Luồng addon nội bộ [15] → [6]"><h2>08 · Luồng addon nội bộ [15] → [6]</h2>
+<p>Đây là luồng riêng, không đăng ký addon lên cloud catalog. Core cấp ID từ dải <code>900000–999999</code>, tránh các ID đã thấy trong file addon, registry nội bộ và cache store.</p>
+<div class="table-scroll"><table><thead><tr><th>Kiểm tra</th><th>Hành vi trong mã 7.2.0</th></tr></thead><tbody>
+<tr><td>Nguồn tải</td><td>URL trực tiếp HTTP/HTTPS, qua <code>curl</code> với timeout/giới hạn; redirect được giới hạn theo scheme.</td></tr><tr><td>Kích thước</td><td>Tối đa 32 MiB.</td></tr><tr><td>SHA256</td><td>Có thể cung cấp checksum 64 ký tự hex; nếu cung cấp và không khớp thì từ chối cài.</td></tr><tr><td>Bash</td><td>Từ chối tệp rỗng, phát hiện một số payload HTML/NUL và chạy <code>bash -n</code> trước cài.</td></tr><tr><td>Binary</td><td>Kiểm ELF header và architecture; kiểm tra machine x86_64/amd64 hoặc aarch64/arm64 theo môi trường.</td></tr><tr><td>Registry</td><td>Lưu tên/version/kiểu/SHA256/trạng thái và số lỗi; file được ghi theo quy trình atomic.</td></tr><tr><td>Run</td><td>Khóa chạy; nếu có metadata, so SHA256 khi chạy; giữ TTY/stdin để addon tương tác.</td></tr><tr><td>Cách ly</td><td>Cách ly lỗi nghiêm trọng hoặc sau 3 lần lỗi liên tiếp không phải thao tác dừng thông thường.</td></tr><tr><td>Restore</td><td>Đối chiếu lại SHA256 trước khi khôi phục; không tự thực thi sau khi restore.</td></tr></tbody></table></div>
+<p>Menu [7] đọc log. Log sự kiện là JSONL và được xoay vòng khoảng 2 MiB. Nếu bật thu thập stderr, tối đa một phần output được ghi log để hỗ trợ chẩn đoán; không bật mặc định cho luồng chứa secret.</p>
+<aside class="note warn">Luồng nội bộ tăng cường kiểm tra tính toàn vẹn nhưng không phải sandbox. Addon vẫn có thể chạy bằng quyền quản trị. SHA256 do cùng một nguồn không đáng tin cung cấp không chứng minh publisher là ai; dùng checksum lấy qua kênh độc lập.</aside>
+</section><section id="sdk" data-title="09 · OZPanel Addon SDK 1.0.0: mô hình và bố cục"><h2>09 · OZPanel Addon SDK 1.0.0: mô hình và bố cục</h2>
+<p><span class="badge blue">SDK THEO TÀI LIỆU</span> SDK mô tả một công cụ Python stdlib để tạo, kiểm tra, đóng gói và quản lý release addon; dựa trên tài liệu được gửi, không yêu cầu pip/Node/daemon riêng.</p>
+<div class="table-scroll"><table><thead><tr><th>Thành phần</th><th>Năng lực theo tài liệu SDK</th><th>Giới hạn</th></tr></thead><tbody>
+<tr><td>Tooling</td><td><code>init</code>, <code>validate</code>, <code>inspect</code>, <code>pack</code>, <code>catalog</code>, <code>doctor</code></td><td>Máy phát triển Linux/WSL, Python 3.9+ và Bash.</td></tr>
+<tr><td>Artifact</td><td>Archive nhiều file <code>.ozaddon</code>; có thể xuất launcher legacy <code>.sh</code>.</td><td>Launcher <code>.sh</code> không được core legacy xác minh chữ ký trên toàn bộ chuỗi phân phối trước khi chạy.</td></tr>
+<tr><td>Trust</td><td>SHA256 file, Ed25519 trên canonical manifest, trust theo publisher.</td><td>Public key phải được xác minh qua kênh độc lập.</td></tr>
+<tr><td>Lifecycle</td><td>Install/upgrade, health, rollback, uninstall; staging và giữ release.</td><td>Rollback các thay đổi hệ thống/dữ liệu chỉ hoàn chỉnh nếu hook addon biết sao lưu và phục hồi.</td></tr>
+<tr><td>Helpers</td><td>Bash <code>lib/ozaddon.sh</code>, Python <code>lib/ozaddon.py</code>; API helper tổng quát.</td><td>Không tự sinh endpoint OZPanel, không tự cấp quyền API hay bỏ qua license Elite.</td></tr>
+<tr><td>License offline</td><td>JSON canonical + detached Ed25519, kiểm product và expiry.</td><td>Không có server activation/revocation, device binding hay DRM chống root theo mô tả SDK.</td></tr>
+</tbody></table></div>
+<h3>Bố cục project khuyến nghị</h3>
+<div class="code"><div class="code-head"><span>text</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>my-addon/
+├── manifest.json
+├── bin/
+│   └── main.sh
+├── hooks/
+│   ├── install.sh
+│   ├── upgrade.sh
+│   ├── health.sh
+│   ├── rollback.sh
+│   └── uninstall.sh
+└── locales/
+    ├── vi.json
+    └── en.json</code></pre></div>
+<p>SDK <code>init</code> theo tài liệu tạo sẵn hook <code>install</code>, <code>health</code> và <code>uninstall</code>; nếu khai báo hook <code>upgrade</code>/<code>rollback</code> trong manifest, hãy tạo các file đó trước khi validate. Thư viện helper nằm trong bộ SDK release và được runtime cung cấp qua <code>OZ_SDK_RELEASE</code>.</p>
+</section><section id="manifest" data-title="10 · Manifest, package và giới hạn artifact"><h2>10 · Manifest, package và giới hạn artifact</h2>
+<p>Ví dụ dưới đây là <strong>template để tham khảo</strong>; SDK phải validate và tạo map checksum <code>files</code> khi pack. Chỉnh ID, publisher, min version, permission, entrypoint và đường dẫn hook đúng project thực tế.</p>
+<div class="code"><div class="code-head"><span>json</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>{
+  &quot;schema&quot;: 1,
+  &quot;id&quot;: 9001,
+  &quot;publisher&quot;: &quot;your-studio&quot;,
+  &quot;name&quot;: &quot;My OZ Addon&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;min_panel_version&quot;: &quot;7.2.0&quot;,
+  &quot;entrypoint&quot;: &quot;bin/main.sh&quot;,
+  &quot;architectures&quot;: [&quot;any&quot;],
+  &quot;permissions&quot;: [&quot;system.read&quot;],
+  &quot;hooks&quot;: {
+    &quot;install&quot;: &quot;hooks/install.sh&quot;,
+    &quot;upgrade&quot;: &quot;hooks/upgrade.sh&quot;,
+    &quot;health&quot;: &quot;hooks/health.sh&quot;,
+    &quot;rollback&quot;: &quot;hooks/rollback.sh&quot;,
+    &quot;uninstall&quot;: &quot;hooks/uninstall.sh&quot;
+  },
+  &quot;locales&quot;: {&quot;vi&quot;: &quot;locales/vi.json&quot;, &quot;en&quot;: &quot;locales/en.json&quot;}
+}</code></pre></div>
+<ul><li>ID SDK theo tài liệu: <code>1–999999</code>; publisher slug 2–48 ký tự; version hiện theo <code>x.y.z</code>, chưa nhận prerelease/build metadata.</li><li>Archive chỉ được chứa file khai báo và metadata; từ chối symlink/device, path tuyệt đối, <code>../</code>, file trùng hoặc file ngoài manifest.</li><li>Giới hạn theo tài liệu SDK: 24 MiB nén, 64 MiB sau bung, 16 MiB/file và 2.000 payload file.</li><li>Bỏ qua <code>dist/</code>, <code>.git/</code>, <code>__pycache__/</code>; từ chối các tên/đường dẫn nhạy cảm như <code>.env</code> và private key dễ nhận diện.</li><li><code>architectures</code> kiểm tra tính phù hợp, không tự chọn/tải binary đúng CPU thay cho publisher.</li><li>Để phát hành đa kiến trúc, build và kiểm thử từng artifact phù hợp; không đóng nhiều binary rồi trông chờ loader tự phát hiện.</li></ul>
+</section><section id="signing" data-title="11 · Ký, trust publisher và kiểm chứng chuỗi phân phối"><h2>11 · Ký, trust publisher và kiểm chứng chuỗi phân phối</h2>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code># Sinh key ở máy phát triển; private key tuyệt đối không phát hành
+python3 ozsdk.py keygen --private ../sdk-keys/private.pem --public ../sdk-keys/public.pem
+
+# Đóng gói archive có chữ ký
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/demo.ozaddon \
+  --sign-key ../sdk-keys/private.pem
+
+# Đăng ký public key nhận qua kênh tin cậy và kiểm tra gói
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; trust your-studio ../sdk-keys/public.pem
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; verify ./my-addon/dist/demo.ozaddon
+python3 ozsdk.py --root &quot;$PWD/demo-panel&quot; install ./my-addon/dist/demo.ozaddon
+
+# Nếu cần launcher tương thích kho legacy — hiểu rõ giới hạn bên dưới
+python3 ozsdk.py pack ./my-addon --out ./my-addon/dist/addon_9001.sh \
+  --sign-key ../sdk-keys/private.pem --legacy</code></pre></div>
+<p>Theo tài liệu SDK, chữ ký Ed25519 bao phủ canonical UTF-8 manifest (sorted keys, compact); manifest chứa checksum các file payload. Archive dùng timestamp cố định để hỗ trợ build tái lập. Lệnh <code>fetch</code> yêu cầu HTTPS, checksum SHA256, giới hạn dung lượng và không theo redirect.</p>
+<ol><li>Giữ private key ngoài repo và ngoài artifact.</li><li>Phân phối public key/fingerprint qua một kênh độc lập với URL tải gói.</li><li>Kiểm tra checksum và chữ ký trước khi cài. Không coi TLS đơn lẻ là bằng chứng publisher.</li><li>Đổi trust key sẽ làm các release ký bằng key cũ không còn verify; SDK 1.0.0 theo tài liệu chưa có key-ID/multi-key rotation, vì vậy cần kế hoạch ký lại trước.</li></ol>
+<aside class="note warn"><strong>Không trộn trust boundary:</strong> SDK verify/install chỉ bảo vệ luồng được thực thi qua SDK và trust store đúng. Core [15] legacy không giải nén/kiểm tra toàn bộ archive <code>.ozaddon</code>. Launcher <code>--legacy</code> chạy qua core không có nghĩa core đã cưỡng chế xác minh Ed25519 trước khi launcher được thực thi. Nếu cần cưỡng chế ở mọi đường cài đặt, phải tích hợp verifier vào core hoặc chỉ dùng đường SDK đáng tin cậy.</aside>
+</section><section id="lifecycle" data-title="12 · Hook, dữ liệu, nâng cấp và rollback SDK"><h2>12 · Hook, dữ liệu, nâng cấp và rollback SDK</h2>
+<div class="table-scroll"><table><thead><tr><th>Biến / đường dẫn</th><th>Vai trò theo SDK 1.0.0</th></tr></thead><tbody>
+<tr><td><code>OZ_SDK_ID</code></td><td>ID đã validate.</td></tr><tr><td><code>OZ_SDK_RELEASE</code></td><td>Thư mục release hiện tại; entrypoint chạy với cwd là release.</td></tr><tr><td><code>OZ_SDK_DATA</code></td><td>Dữ liệu bền vững qua nâng cấp; giữ lại khi gỡ theo mặc định.</td></tr><tr><td><code>OZ_SDK_PREVIOUS</code></td><td>Release trước, hỗ trợ migration/rollback.</td></tr><tr><td><code>OZ_SDK_EXEC</code></td><td>Đường dẫn tới <code>ozsdk.py</code> để gọi helper quản lý.</td></tr><tr><td><code>OZON_LICENSE_FILE</code></td><td>License file đúng ID theo runtime.</td></tr><tr><td><code>OZ_SDK_LOCALE</code></td><td>Locale caller nếu được đặt; mặc định helper là <code>vi</code>, chưa tự đồng bộ ngôn ngữ GUI.</td></tr><tr><td><code>/etc/ozon/sdk-v1/addons/ID/state.json</code></td><td>Active/previous release, hash, version và trạng thái unsigned acceptance.</td></tr><tr><td><code>/etc/ozon/sdk-v1/addons/ID/releases/</code></td><td>Các release giữ để rollback; không có tự dọn revision theo mô tả SDK.</td></tr><tr><td><code>/etc/ozon/sdk-v1/audit.jsonl</code></td><td>Audit cài/chạy/gỡ/rollback; rotation khoảng 2 MiB.</td></tr></tbody></table></div>
+<p>Quy trình install/upgrade theo SDK: validate package → khóa addon → staging → chạy hook → health check → đăng ký launcher/version → commit state. Hook install/upgrade/uninstall có timeout khoảng 60 giây; health/rollback khoảng 30 giây. Hook không tương tác (stdin rỗng); entrypoint run giữ stdin/PTY để menu hoạt động.</p>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>python3 ozsdk.py --root /etc/ozon install ./release-1.1.0.ozaddon
+python3 ozsdk.py --root /etc/ozon rollback 9001 --confirm
+python3 ozsdk.py --root /etc/ozon remove 9001 --confirm
+# Chỉ xóa dữ liệu khi đã đánh giá và xác nhận:
+python3 ozsdk.py --root /etc/ozon remove 9001 --confirm --purge-data</code></pre></div>
+<p>Nếu hook thất bại, SDK gọi hook rollback best-effort và giữ bản active trước; lỗi commit cố gắng khôi phục launcher/version/state. Đây không phải giao dịch phân tán cho database, DNS, vhost hoặc service OS. Hook của addon vẫn phải sao lưu, validate, áp dụng và phục hồi các thay đổi đó.</p>
+<aside class="note warn">Gỡ addon SDK bằng [15] → [4] của core legacy không gọi uninstall hook SDK. Dùng lệnh <code>ozsdk.py remove</code> trong đúng runtime SDK để chạy cleanup. Các ví dụ gỡ là lựa chọn thay thế, không chạy nối tiếp một cách máy móc.</aside>
+</section><section id="helpers" data-title="13 · Helper Bash/Python và cấu hình an toàn"><h2>13 · Helper Bash/Python và cấu hình an toàn</h2>
+<h3>Bash helper</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>source &quot;$OZ_SDK_RELEASE/lib/ozaddon.sh&quot;
+oz_t welcome
+printf &#x27;%s&#x27; &#x27;&quot;ghi chú&quot;&#x27; | oz_config_set note
+oz_config_get note
+oz_edit &quot;$OZ_SDK_DATA/settings.conf&quot;  # File phải tồn tại
+# Chỉ gọi endpoint API có thật và được cấp quyền:
+oz_api system version</code></pre></div>
+<h3>Python helper</h3>
+<div class="code"><div class="code-head"><span>python</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>import os, sys
+sys.path.insert(0, os.path.join(os.environ[&quot;OZ_SDK_RELEASE&quot;], &quot;lib&quot;))
+from ozaddon import Context
+
+ctx = Context()
+ctx.set(&quot;note&quot;, &quot;Python addon&quot;)
+print(ctx.get(&quot;note&quot;))
+print(ctx.t(&quot;welcome&quot;, &quot;vi-VN&quot;))
+# Khi API được cấu hình và token được cấp đúng quyền:
+# result = ctx.api(&quot;system&quot;, &quot;version&quot;)</code></pre></div>
+<p>Theo tài liệu SDK, Bash còn có <code>oz_menu</code>, <code>oz_confirm</code>, <code>oz_require</code>, <code>oz_log</code>, <code>oz_license_path</code>. Python <code>Context</code> có <code>get/set/t/log/api/edit/license_path</code>. Config JSON được ghi atomic, mode 600; các giá trị set đi qua stdin để tránh lộ secret trong argv.</p>
+<p>API client hỗ trợ GET/POST/DELETE, timeout 20 giây, response tối đa 4 MiB, không theo redirect để tránh chuyển token sang origin khác. HTTP chỉ cho loopback; API công khai cần HTTPS. SDK không cấp quyền thay cho API token và không mở rộng quyền license Elite.</p>
+</section><section id="api" data-title="14 · API addon và cầu nối CLI"><h2>14 · API addon và cầu nối CLI</h2>
+<p>API công khai thuộc hệ API do [31] quản lý; đừng nhầm cổng GUI với URL API. Dùng API base thực tế của máy đã cài, token được cấp quyền tối thiểu và OpenAPI của đúng bản core.</p>
+<div class="table-scroll"><table><thead><tr><th>Method</th><th>Route</th><th>Permission</th><th>Ghi chú từ adapter trong 7.2.0</th></tr></thead><tbody>
+<tr><td>GET</td><td><code>/api/v1/addons/list</code></td><td><code>addon.read</code></td><td>Đọc cache catalog. Nhánh khi file tồn tại có thể trả mảng thô, trong khi nhánh fallback bọc response; cần kiểm tra envelope ở máy thực tế.</td></tr>
+<tr><td>GET</td><td><code>/api/v1/addons/installed</code></td><td><code>addon.read</code></td><td>Liệt kê tên file và dung lượng, không phải manifest đầy đủ.</td></tr>
+<tr><td>POST</td><td><code>/api/v1/addons/refresh</code></td><td><code>addon.write</code></td><td>Thao tác thay đổi dữ liệu; cần xác nhận.</td></tr>
+<tr><td>POST</td><td><code>/api/v1/addons/install</code></td><td><code>addon.write</code></td><td>Cho URL dưới hai prefix nguồn Ozon cho phép; ghi trực tiếp thành <code>addon_ID.sh</code>, không cùng logic CLI về version/binary/license.</td></tr>
+<tr><td>POST</td><td><code>/api/v1/addons/update</code></td><td><code>addon.write</code></td><td>Dùng chung nhánh trực tiếp với install; không phải transaction update của SDK.</td></tr>
+<tr><td>DELETE</td><td><code>/api/v1/addons/remove</code></td><td><code>addon.delete</code></td><td>Xóa <code>.sh</code>, <code>.bin</code>, raw license; adapter không xóa <code>.version</code> trong mã đang rà soát.</td></tr>
+</tbody></table></div>
+<aside class="note warn">Adapter API trong core 7.2.0 là đường legacy rút gọn: URL install/update phải bắt đầu bằng <code>https://api.l.lc/oz/</code> hoặc <code>https://usercontent.chgm.in/ozpanel/</code>; nó tải thẳng vào file Bash, không kiểm manifest/chữ ký SDK, không ghi version, không xử lý binary hoặc license giống CLI. Route install/update cũng chưa kiểm tra ID chặt như luồng nhập addon nội bộ. Chỉ cấp quyền <code>addon.write</code> cho người vận hành đáng tin cậy.</aside>
+<h3>Ví dụ đọc addon đã cài</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>: &quot;${OZ_API_BASE:?Hãy đặt URL API thực tế}&quot;
+: &quot;${OZ_API_TOKEN:?Hãy đặt token do quản trị viên cấp}&quot;
+curl --fail-with-body --silent --show-error \
+  -H &quot;Authorization: Bearer $OZ_API_TOKEN&quot; \
+  &quot;$OZ_API_BASE/api/v1/addons/installed&quot;</code></pre></div>
+<h3>Gọi hàm [15] qua PTY API</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>curl --fail-with-body --silent --show-error \
+  -H &quot;Authorization: Bearer $OZ_API_TOKEN&quot; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{&quot;feature&quot;:15,&quot;confirm&quot;:true}&#x27; \
+  &quot;$OZ_API_BASE/api/v1/cli/create&quot;
+
+# Đọc GET /api/v1/cli/output?id=ID&amp;cursor=0; giải mã data.data từ base64
+# rồi mới gửi lựa chọn quan sát được qua POST /api/v1/cli/input.
+# Đóng phiên bằng POST /api/v1/cli/close khi hoàn tất.</code></pre></div>
+<p>Không giả định session ID cố định. Theo tài liệu trước đó, PTY có giới hạn tổng số phiên, thời gian idle/lifetime và input; xác nhận giới hạn trong bản đang triển khai. Quyền <code>cli.full</code> tương đương quản trị CLI nên không cấp cho token tích hợp thông thường. Không gọi API GUI/CSRF bằng token API công khai.</p>
+</section><section id="license" data-title="15 · License trả phí: ba cơ chế không được nhầm lẫn"><h2>15 · License trả phí: ba cơ chế không được nhầm lẫn</h2>
+<div class="table-scroll"><table><thead><tr><th>Cơ chế</th><th>Nó làm gì</th><th>Nó không tự làm gì</th></tr></thead><tbody>
+<tr><td>Raw legacy <code>license_ID.key</code></td><td>Menu Kho hỏi key khi <code>a_type</code> chứa <code>Trả phí</code> và lưu key theo ID.</td><td>Không xác minh key; addon phải tự gọi verifier/server của publisher hoặc chuyển sang cơ chế ký phù hợp.</td></tr>
+<tr><td>Entitlement addon của core</td><td>Core có lệnh trust/import/entitlement với publisher public key và license ký; launcher guarded kiểm tra khi trust/receipt đã cấu hình.</td><td>Không thay thế hợp đồng license raw của mọi addon legacy tự viết.</td></tr>
+<tr><td>License offline riêng trong SDK</td><td>JSON canonical + chữ ký Ed25519 rời; SDK kiểm product và <code>expires_at</code> theo tài liệu.</td><td>Không đồng nhất với receipt của core; không có activation online, device binding hoặc revocation online theo mô tả SDK.</td></tr>
+</tbody></table></div>
+<h3>Entitlement ký bởi publisher qua core OZPanel</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code># 1) Đăng ký public key publisher qua kênh tin cậy
+sudo oz --addon-license-trust 42 /root/publisher.pem addon-demo --confirm
+
+# 2) Import JSON license và chữ ký detached
+sudo oz --addon-license-import 42 /root/addon-license.json /root/addon-license.sig
+
+# 3) Kiểm tra trước khi thực hiện thao tác trả phí
+sudo /usr/bin/oz --addon-entitlement 42
+# Bash trong addon:
+/usr/bin/oz --addon-entitlement &quot;$ADDON_ID&quot; &gt;/dev/null || exit 1</code></pre></div>
+<p>Payload đã ký phải khớp product, publisher signature, thời hạn và các ràng buộc hardware/addon nếu license khai báo. Không log key, không đưa key vào URL/argv. Khóa riêng luôn thuộc publisher; không đặt trong artifact tải xuống.</p>
+<h3>License offline tự quản lý bằng SDK</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>python3 ozsdk.py license-sign --private ../sdk-keys/private.pem \
+  --product my-product --expires-at 1893456000 --out license.json
+python3 ozsdk.py license-verify license.json license.json.sig \
+  ../sdk-keys/public.pem --product my-product</code></pre></div>
+<aside class="note warn">Nếu dùng license offline của SDK, addon phải tự tạo cách nhập/cung cấp hai tệp và gọi verify trước từng tính năng trả phí. Lưu key vào <code>license_ID.key</code> không tự biến nó thành JSON có chữ ký. Root có thể thay mã và runtime; đây không phải DRM chống root.</aside>
+</section><section id="services" data-title="16 · Dữ liệu, service, web server và cleanup"><h2>16 · Dữ liệu, service, web server và cleanup</h2>
+<ul><li>Tách menu khỏi tác vụ cài đặt: không build, quét toàn ổ đĩa hay cài dependency nặng mỗi lần mở addon.</li><li>Định nghĩa install/upgrade/health/uninstall rõ ràng; các thao tác cần idempotent để có thể chạy lại an toàn.</li><li>Service dài hạn nên dùng systemd unit riêng, user hệ thống riêng nếu khả thi, giới hạn CPU/RAM và log rotation.</li><li>Với multi Nginx/OpenLiteSpeed/Apache, hãy dò engine/vhost thực tế; backup file, validate cú pháp và reload đúng dịch vụ.</li><li>Không tự ghi đè vhost mặc định, SSL, SSH port hoặc firewall chung. Hiển thị rõ domain/path/port sẽ thay đổi và yêu cầu xác nhận.</li><li>Migration DB/config cần version schema, backup trước khi thay đổi, health check sau khi triển khai và cách rollback.</li><li>Quy trình remove cần cho quản trị viên chọn giữ/xóa dữ liệu; dừng service/cron do addon tạo trước khi gỡ payload.</li></ul>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code># Quy trình gợi ý bên trong hook do addon tự triển khai:
+# 1. Kiểm tra quyền, dependency và quyền sở hữu file mục tiêu.
+# 2. Backup cấu hình/dữ liệu vào vị trí chỉ root truy cập.
+# 3. Viết file tạm; kiểm tra cú pháp bằng công cụ của dịch vụ.
+# 4. Chuyển file vào vị trí; reload đúng service.
+# 5. Health check có timeout; phục hồi backup nếu thất bại.
+# 6. Ghi kết quả, tuyệt đối không log password/token/license.</code></pre></div>
+<p>Core không tự tạo service, proxy, firewall, dữ liệu hay uninstall hook cho addon legacy. SDK rollback chỉ quản lý release/state của runtime; việc khôi phục dịch vụ/dữ liệu do hook addon chịu trách nhiệm.</p>
+</section><section id="publishing" data-title="17 · Quy trình phát hành và đưa addon lên kho"><h2>17 · Quy trình phát hành và đưa addon lên kho</h2>
+<ol><li><strong>Cấp ID:</strong> yêu cầu chủ catalog quản lý ID. Không dùng ID ví dụ 9001 cho phát hành thương mại.</li><li><strong>Đóng gói bất biến:</strong> đưa version vào tên artifact, chốt nguồn, không thay bytes sau khi xuất checksum/chữ ký.</li><li><strong>Kiểm thử:</strong> sạch, nâng từ version trước, lỗi tải, rollback, kiến trúc CPU, CLI/GUI, gỡ và cài lại.</li><li><strong>Metadata:</strong> mô tả chức năng, tác giả, tổ chức, version, ngày, kích thước, loại license, dependency, hệ điều hành/CPU, quyền, dữ liệu thu thập và hỗ trợ.</li><li><strong>Kiểm chứng phát hành:</strong> công bố SHA256 riêng; với SDK, ký manifest bằng Ed25519 và quản lý trust publisher.</li><li><strong>Phân phối:</strong> tài liệu mã 7.2.0 xác nhận endpoint đọc catalog, không xác nhận portal hoặc API upload cho publisher. Gửi gói qua quy trình do quản trị viên Kho chỉ định.</li><li><strong>Refresh:</strong> cập nhật catalog phía máy chủ rồi chạy [15] → [5] trên VPS thử nghiệm.</li></ol>
+<div class="table-scroll"><table><thead><tr><th>Artifact / tài liệu</th><th>Mục đích</th></tr></thead><tbody><tr><td><code>addon_9001-1.0.0.sh</code> hoặc <code>.bin</code></td><td>Một payload legacy mà core tải theo URL.</td></tr><tr><td><code>SHA256SUMS</code></td><td>Checksum ngoài catalog để người dùng/CI kiểm tra; core Kho legacy không tự đọc file này.</td></tr><tr><td><code>CHANGELOG.md</code></td><td>Thay đổi, migration, yêu cầu nâng cấp và cách quay lui.</td></tr><tr><td><code>COMPATIBILITY.md</code></td><td>OZPanel tối thiểu/đã thử, OS, CPU, dependency, quyền.</td></tr><tr><td><code>PRIVACY.md</code> / License</td><td>Thông tin gửi đi, nơi lưu dữ liệu, thời hạn, điều khoản sử dụng.</td></tr><tr><td>Manifest và chữ ký SDK</td><td>Danh sách payload, hash, publisher trust, hooks và permissions theo SDK.</td></tr></tbody></table></div>
+<p>Kho legacy chỉ tải một tệp; không có cơ chế giải nén gói nhiều file riêng. Launcher có thể điều phối tài nguyên nhưng phải tự bảo vệ nguồn tải, checksum/chữ ký, timeout, giới hạn dung lượng và rollback.</p>
+</section><section id="testing" data-title="18 · Ma trận kiểm thử trước phát hành"><h2>18 · Ma trận kiểm thử trước phát hành</h2>
+<div class="table-scroll"><table><thead><tr><th>Nhóm</th><th>Ca kiểm thử tối thiểu</th></tr></thead><tbody>
+<tr><td>Manifest/package</td><td>Manifest thiếu trường; version/ID sai; checksum sai; chữ ký sai; publisher chưa trust; path traversal, symlink, file thừa, gói quá giới hạn.</td></tr>
+<tr><td>Install/upgrade</td><td>Máy sạch; version cũ/bằng/mới; hook lỗi; health fail; disk full; file readonly; commit state lỗi; rollback giữ active trước.</td></tr>
+<tr><td>CLI</td><td>Input sai/EOF; Ctrl+C; nhiều lần vào/ra; exit code 0 và khác 0; đường dẫn có khoảng trắng.</td></tr>
+<tr><td>GUI</td><td>[15]→[3]; tất cả menu một dòng; nhập bí mật không echo; editor không có; lưu lỗi; terminal nâng cao cho full-screen.</td></tr>
+<tr><td>Binary</td><td>amd64/x86_64, arm64/aarch64; ELF; libc/loader; quyền thực thi; stdout/stderr UTF-8; giới hạn memory.</td></tr>
+<tr><td>License</td><td>Thiếu/sai key; hết hạn; product khác; chữ ký sai; public key thay đổi; offline; clock skew; không rò rỉ key vào log.</td></tr>
+<tr><td>API</td><td>Token thiếu quyền; confirm thiếu; URL ngoài allowlist; lỗi server; response không đúng envelope; đóng PTY đúng session.</td></tr>
+<tr><td>Remove</td><td>Giữ/xóa dữ liệu có chọn; service/cron được dọn; cài lại không hỏng dữ liệu; hook uninstall fail vẫn có log.</td></tr>
+</tbody></table></div>
+<h3>Kiểm tra mã Bash và checksum</h3>
+<div class="code"><div class="code-head"><span>bash</span><button class="copy-btn" type="button">Sao chép</button></div><pre><code>bash -n examples/classic/addon_demo_9001.sh
+sha256sum examples/classic/addon_demo_9001.sh
+file examples/classic/addon_demo_9001.sh
+# Với SDK source thực tế:
+python3 -m unittest discover -s tests -v</code></pre></div>
+<p>Tài liệu SDK đầu vào ghi rằng các test của SDK từng bao gồm manifest/checksum/signature, gói hỏng/path traversal, publisher trust, upgrade/rollback/hook lỗi, lock, config/locale, launcher stdin, helper Python, license offline, API headers và redirect. Tuy nhiên các test đó chưa được chạy lại trong lượt rà soát này vì bộ mã nguồn SDK không nằm trong tệp được gửi.</p>
+</section><section id="troubleshooting" data-title="19 · Chẩn đoán nhanh"><h2>19 · Chẩn đoán nhanh</h2>
+<div class="table-scroll"><table><thead><tr><th>Triệu chứng</th><th>Nguyên nhân cần kiểm tra</th></tr></thead><tbody>
+<tr><td>Không thấy addon trên kho</td><td>Refresh [15]→[5], kiểm tra 10 trường, ID duy nhất, trạng thái ERROR/EMPTY và cache store; tệp chép tay không tự xuất hiện trên catalog.</td></tr>
+<tr><td>Không có shortcut</td><td>Payload phải là <code>addon_ID.sh</code>/<code>addon_ID.bin</code>; shortcut <code>ID+100</code>; menu chính cần vẽ lại.</td></tr>
+<tr><td>Addon SDK <code>.ozaddon</code> không cài từ [15]</td><td>Đây là archive SDK, không phải payload legacy; dùng SDK runtime hoặc xuất launcher legacy sau khi hiểu giới hạn trust.</td></tr>
+<tr><td>Không chạy được binary</td><td>Kiểm tra định dạng ELF, CPU, dynamic loader/libc, quyền executable; hậu tố <code>.bin</code> không đảm bảo file là binary phù hợp.</td></tr>
+<tr><td>Không hỏi license</td><td><code>a_type</code> không chứa chính xác chuỗi con <code>Trả phí</code>, hoặc addon được cài theo luồng nội bộ/API.</td></tr>
+<tr><td>License đã nhập nhưng vẫn bị từ chối</td><td>Raw key không đồng nghĩa entitlement. Kiểm tra đúng cơ chế publisher, product, chữ ký, hạn, hardware/addon binding.</td></tr>
+<tr><td>Update không xuất hiện</td><td>Kiểm tra file <code>addon_ID.version</code>, version catalog, <code>sort -V</code>; bản legacy chưa có metadata cần xử lý/backup thủ công.</td></tr>
+<tr><td>Core API cài nhưng CLI không giống</td><td>Adapter API tải thẳng thành <code>.sh</code>, không cập nhật metadata/version/handling như CLI. Không dùng API legacy như SDK package manager.</td></tr>
+<tr><td>Gỡ xong service vẫn chạy</td><td>Core chỉ gỡ payload/metadata; addon phải tự stop/disable service và cleanup cron/vhost/dữ liệu.</td></tr>
+<tr><td>Addon nội bộ bị cách ly</td><td>Đọc [15]→[7], xác định nguyên nhân, đối chiếu source/hash rồi mới dùng [15]→[8] để restore.</td></tr>
+<tr><td>GUI không hiện lựa chọn đúng</td><td>In menu theo dòng đơn; prompt rõ ràng; dùng Terminal nâng cao cho chương trình curses/full-screen.</td></tr>
+</tbody></table></div>
+</section><section id="audit" data-title="20 · Kết quả đối chiếu và thay đổi so với tài liệu cũ"><h2>20 · Kết quả đối chiếu và thay đổi so với tài liệu cũ</h2>
+<h3>Điểm được cập nhật theo mã core 7.2.0</h3><ul>
+<li>Đổi URL catalog sang <code>https://api.l.lc/oz/api/client/addons/list</code>.</li>
+<li>Bổ sung các lựa chọn [6] addon nội bộ, [7] log và [8] restore/cách ly.</li>
+<li>Mô tả đúng luồng nội bộ: cấp ID 900000–999999, tối đa 32 MiB, SHA256 tùy chọn, kiểm tra Bash/ELF, registry/log/quarantine và kiểm hash khi chạy nếu có metadata.</li>
+<li>Cập nhật đường dẫn helper/metadata theo <code>/etc/ozon/addons</code> và môi trường mà core export cho addon.</li>
+<li>Sửa nội dung lỗi thời rằng luồng tải legacy luôn giữ payload cũ: mã hiện xóa payload cũ trước bước <code>mv</code> cuối nên chưa có rollback nguyên tử.</li>
+<li>Thêm các giới hạn API thực tế: cài/update API lưu trực tiếp file Bash, không giống CLI; gỡ API chưa xóa version metadata; route catalog có thể có envelope không thống nhất tùy nhánh.</li>
+<li>Tách riêng license raw legacy, entitlement addon của core và license offline riêng của SDK.</li>
+</ul>
+<h3>Những điều không tuyên bố</h3><ul>
+<li>Không tuyên bố đã sửa mã <code>oz_v7.2.0.sh</code> hoặc cài SDK vào control panel.</li>
+<li>Không tuyên bố core legacy đã bắt buộc verify Ed25519/SHA256 trên mọi đường cài đặt.</li>
+<li>Không tuyên bố đã chạy <code>ozsdk.py</code>, unit tests của SDK, compile Go, kiểm browser hoặc triển khai trên VPS; source SDK không được gửi kèm.</li>
+<li>Không khẳng định endpoint publisher/upload của chợ tồn tại; mã được kiểm tra chỉ xác nhận endpoint đọc catalog và các adapter nêu ở trên.</li>
+</ul>
+<p class="muted">Phiên bản tài liệu: Unified Developer Guide 1.0.0 · Core được đối chiếu: OZPanel 7.2.0 · SDK theo tài liệu: 1.0.0 · Ngày rà soát: 21/10/2026.</p>
+</section><footer>OZPanel Addon Developer Guide Unified 1.0.0 · Core audited: 7.2.0 · SDK guide: 1.0.0 · 21/10/2026</footer></main></div>
+<script id="demoPayload" type="application/json">"#!/usr/bin/env bash\n# OZPanel classic addon example — ID 9001 — version 1.0.0\n# Dùng để học và thử nghiệm; đổi ID trước khi phát hành thật.\nset -Eeuo pipefail\numask 077\n\nADDON_ID=9001\nADDON_VERSION='1.0.0'\nROOT_DIR=\"${OZON_ROOT_DIR:-/etc/ozon}\"\nADDON_DIR=\"${OZON_ADDON_DIR:-$ROOT_DIR/addons}\"\nSTATE_DIR=\"$ROOT_DIR/addon-data/$ADDON_ID\"\n\nfail() { printf '[ERROR] %s\\n' \"$*\" >&2; }\nprepare() {\n  if [[ \"$(id -u)\" -ne 0 ]]; then\n    fail 'Ví dụ này cần quyền quản trị khi dùng đường dẫn mặc định trong /etc/ozon.'\n    return 1\n  fi\n  install -d -m 700 -- \"$STATE_DIR\"\n  chmod 700 -- \"$STATE_DIR\"\n}\nshow_info() {\n  printf '\\nOZPanel Addon Demo v%s\\n' \"$ADDON_VERSION\"\n  printf 'Addon ID : %s\\n' \"$ADDON_ID\"\n  printf 'Dữ liệu  : %s\\n' \"$STATE_DIR\"\n  printf 'GUI form : %s\\n' \"${OZ_GUI_FORM:-0}\"\n  df -h / || return 1\n}\nsave_note() {\n  local note tmp\n  read -r -p 'Nhập ghi chú (không nhập mật khẩu/secret): ' note || return 1\n  tmp=\"$(mktemp \"$STATE_DIR/.note.XXXXXX\")\"\n  if ! printf '%s\\n' \"$note\" > \"$tmp\"; then\n    rm -f -- \"$tmp\"\n    return 1\n  fi\n  chmod 600 -- \"$tmp\"\n  if ! mv -f -- \"$tmp\" \"$STATE_DIR/note.txt\"; then\n    rm -f -- \"$tmp\"\n    return 1\n  fi\n  printf 'Đã lưu ghi chú tại %s/note.txt\\n' \"$STATE_DIR\"\n}\nshow_note() {\n  if [[ -f \"$STATE_DIR/note.txt\" ]]; then\n    cat -- \"$STATE_DIR/note.txt\"\n  else\n    printf 'Chưa có ghi chú. Chọn mục 2 để tạo.\\n'\n  fi\n}\nmain() {\n  local choice\n  prepare || return 1\n  while true; do\n    printf '\\n=== OZPanel Addon Demo · v%s ===\\n' \"$ADDON_VERSION\"\n    printf '[1] Xem thông tin hệ thống\\n'\n    printf '[2] Lưu ghi chú thử nghiệm\\n'\n    printf '[3] Đọc ghi chú\\n'\n    printf '[0] Quay lại OZPanel\\n'\n    read -r -p 'Lựa chọn: ' choice || return 0\n    case \"$choice\" in\n      1) show_info || fail 'Không đọc được thông tin.' ;;\n      2) save_note || fail 'Không lưu được ghi chú.' ;;\n      3) show_note ;;\n      0) return 0 ;;\n      *) printf 'Lựa chọn không hợp lệ; hãy chọn 0, 1, 2 hoặc 3.\\n' ;;\n    esac\n  done\n}\nmain \"$@\"\n"</script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s), sections=[...document.querySelectorAll('main section')], links=[...document.querySelectorAll('nav a')];
+const status=(msg)=>{let n=$('#toast');if(!n){n=document.createElement('div');n.id='toast';n.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:20;padding:10px 16px;border-radius:9px;background:var(--ink);color:var(--paper);box-shadow:0 4px 25px #0003';document.body.appendChild(n)}n.textContent=msg;n.hidden=false;clearTimeout(window.__ozDocToast);window.__ozDocToast=setTimeout(()=>n.hidden=true,2600)};
+$('#theme').addEventListener('click',()=>{document.body.classList.toggle('dark');try{localStorage.setItem('oz-addon-guide-theme',document.body.classList.contains('dark')?'dark':'light')}catch{}});
+try{if(localStorage.getItem('oz-addon-guide-theme')==='dark')document.body.classList.add('dark')}catch{}
+$('#print').addEventListener('click',()=>window.print());
+$('#search').addEventListener('input',()=>{const q=$('#search').value.trim().toLowerCase();let count=0;sections.forEach(sec=>{const hit=!q||sec.innerText.toLowerCase().includes(q);sec.hidden=!hit;if(hit)count++});$('#noResults').style.display=count?'none':'block';links.forEach(a=>{const sec=$(a.getAttribute('href'));a.style.display=(!q||sec&&!sec.hidden)?'block':'none'})});
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#search').focus()}});
+document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{const txt=btn.closest('.code').querySelector('pre').innerText;try{await navigator.clipboard.writeText(txt);status('Đã sao chép mã')}catch{const t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();status('Đã sao chép mã')}}));
+$('#downloadDemo').addEventListener('click',()=>{const payload=JSON.parse($('#demoPayload').textContent);const blob=new Blob([payload],{type:'text/x-shellscript;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='addon_demo_9001.sh';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);status('Đã chuẩn bị tệp addon mẫu')});
+const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+entry.target.id))}}),{rootMargin:'-15% 0px -70% 0px'});sections.forEach(s=>io.observe(s));
+})();
+</script></body></html>

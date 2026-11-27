@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": 9002,
+  "publisher": "oz-demo",
+  "name": "OZ Native Example (OZPanel v9.1.4 · SDK 5.0.0)",
+  "version": "5.0.0",
+  "min_panel_version": "9.1.4",
+  "category": "security",
+  "entrypoint": "bin/main.sh",
+  "architectures": [
+    "any"
+  ],
+  "permissions": [
+    "system.read",
+    "mail.read",
+    "ssl.read",
+    "ai.read"
+  ],
+  "hooks": {
+    "install": "hooks/install.sh",
+    "upgrade": "hooks/upgrade.sh",
+    "health": "hooks/health.sh",
+    "rollback": "hooks/rollback.sh",
+    "uninstall": "hooks/uninstall.sh"
+  },
+  "locales": {
+    "vi": "locales/vi.json",
+    "en": "locales/en.json"
+  },
+  "platforms": [
+    "ubuntu:20.04",
+    "ubuntu:22.04",
+    "ubuntu:24.04",
+    "debian:11",
+    "debian:12",
+    "debian:13"
+  ],
+  "gui_workbench": {
+    "actions": [
+      {
+        "key": "1",
+        "label": "Kiểm tra thông tin hệ điều hành & OZPanel v9.1.4"
+      },
+      {
+        "key": "3",
+        "label": "Kiểm tra trạng thái Core v9.1.4 & OZV8-Fortress+"
+      },
+      {
+        "key": "4",
+        "label": "Kiểm tra 72-Byte Boot-Bound Cloud Lease (6h TTL)"
+      },
+      {
+        "key": "5",
+        "label": "Kiểm tra Health JSON (<30ms) & AI Watchdog [32]"
+      },
+      {
+        "key": "6",
+        "label": "Kiểm tra AI Cache & Token Telemetry (v9.1.4)"
+      }
+    ]
+  }
+}
