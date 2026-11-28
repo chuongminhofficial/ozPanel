@@ -10,6 +10,7 @@
 [![Modules](https://img.shields.io/badge/Modules-46%20Groups%20%C2%B7%20312%2B%20Actions-7c3aed?style=for-the-badge)](docs/FEATURES.md)
 [![API](https://img.shields.io/badge/OpenAPI%203.1-932%20Operations-0ea5e9?style=for-the-badge)](docs/FEATURES.md)
 [![M8ven Score](https://m8ven.ai/badge/mcp/chuongminhofficial/ozpanel)](https://m8ven.ai/mcp/chuongminhofficial/ozpanel?s=readme)
+[![M8ven Score](https://m8ven.ai/badge/mcp/chuongminhofficial-ozpanel-wvnans?v=b1c90daffaa5afcec0d5ff00247e098f)](https://m8ven.ai/mcp/chuongminhofficial-ozpanel-wvnans?s=readme)
 *Phát triển bởi **Chương Minh® Studio** · Commercial Production Edition*
 
 </div>
@@ -86,7 +87,6 @@ Mọi bản phát hành trên nhánh `main` và [GitHub Releases](https://github
 Xem chi tiết 46 nhóm tính năng tại [docs/FEATURES.md](docs/FEATURES.md) và chính sách bảo mật tại [SECURITY.md](SECURITY.md).
 
 ---
-[![M8ven Score](https://m8ven.ai/badge/mcp/chuongminhofficial-ozpanel-wvnans?v=b1c90daffaa5afcec0d5ff00247e098f)](https://m8ven.ai/mcp/chuongminhofficial-ozpanel-wvnans?s=readme)
 <div align="center">
 Copyright © Chương Minh® Studio. All rights reserved.
 </div>
