@@ -86,7 +86,7 @@ Mọi bản phát hành trên nhánh `main` và [GitHub Releases](https://github
 Xem chi tiết 46 nhóm tính năng tại [docs/FEATURES.md](docs/FEATURES.md) và chính sách bảo mật tại [SECURITY.md](SECURITY.md).
 
 ---
-
+[![M8ven Score](https://m8ven.ai/badge/mcp/chuongminhofficial-ozpanel-wvnans?v=b1c90daffaa5afcec0d5ff00247e098f)](https://m8ven.ai/mcp/chuongminhofficial-ozpanel-wvnans?s=readme)
 <div align="center">
 Copyright © Chương Minh® Studio. All rights reserved.
 </div>
