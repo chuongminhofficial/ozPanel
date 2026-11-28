@@ -85,5 +85,5 @@ Xem chi tiết 46 nhóm tính năng tại [docs/FEATURES.md](docs/FEATURES.md) v
 
 ---
 <div align="center">
-*Phát triển bởi **Chương Minh® Studio** · Commercial Production Edition*
+Phát triển bởi Chương Minh® Studio · Commercial Production Edition
 </div>
