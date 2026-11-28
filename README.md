@@ -9,7 +9,7 @@
 [![Security](https://img.shields.io/badge/Security-OZV8--Fortress%2B%20Ed25519-f59e0b?style=for-the-badge)](SECURITY.md)
 [![Modules](https://img.shields.io/badge/Modules-46%20Groups%20%C2%B7%20312%2B%20Actions-7c3aed?style=for-the-badge)](docs/FEATURES.md)
 [![API](https://img.shields.io/badge/OpenAPI%203.1-932%20Operations-0ea5e9?style=for-the-badge)](docs/FEATURES.md)
-
+[![M8ven Score](https://m8ven.ai/badge/mcp/chuongminhofficial/ozpanel)](https://m8ven.ai/mcp/chuongminhofficial/ozpanel?s=readme)
 *Phát triển bởi **Chương Minh® Studio** · Commercial Production Edition*
 
 </div>
